@@ -3,7 +3,7 @@ public class Main {
         System.out.println("prueba deaaah" + 2*2*2*2*2*2*2*2*2*2*2);
         System.out.println("Nicky estuvo aqui");
 
-
+        System.out.println("Diego estivo aqiu");
 
     }
 }
