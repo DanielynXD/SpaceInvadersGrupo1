@@ -1,9 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("prueba deaaah" + 2*2*2*2*2*2*2*2*2*2*2);
-        System.out.println("Nicky estuvo aqui");
-
-        System.out.println("Diego estivo aqiu");
+        System.out.println("Ahora si muchachos espero que duerman bien deaah");
+        System.out.println("Mañana empezamos ese proyectisimo att: Diego");
 
     }
 }
