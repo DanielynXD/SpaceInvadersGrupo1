@@ -1,33 +1,52 @@
 package Logica;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
-public class NaveJugador extends Logica.Nave {
+public class NaveJugador extends Nave {
     private int x;
     private int y;
     private int dx;
-    private int dy;
+    //    private int dy;
     private int velocidad;
     private Image image;
+    private int anchoPanel;
+    private int alturaPanel;
+    private final List<Proyectil> proyectiles;
+    private boolean puedeDisparar;
+    private Timer temporizadorDisparo;
 
-    public NaveJugador() {
+    public NaveJugador(int anchoPanel, int alturaPanel) {
+        this.anchoPanel = anchoPanel;
+        this.alturaPanel = alturaPanel;
+        proyectiles = new ArrayList<>();
         iniciarNave();
     }
 
     private void iniciarNave() {
-        Image imagenNave = new ImageIcon(Objects.requireNonNull(NaveJugador.class.getResource("/ImagenesJuego/Jugador/ModeloNaveJugador.png"))).getImage();
-        image = imagenNave;
+        image = new ImageIcon(Objects.requireNonNull(NaveJugador.class.getResource("/ImagenesJuego/Jugador/ModeloNaveJugador.png"))).getImage();
         x = 350;
         y = 500;
         velocidad = 5; // Velocidad de movimiento
+        puedeDisparar = true;
+        temporizadorDisparo = new Timer(650, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                puedeDisparar = true;
+                temporizadorDisparo.stop();
+            }
+        });
     }
 
     public void mover() {
         x += dx;
-        y += dy;
+//        y += dy;
         if (x < 0) {
             x = 0;
         }
@@ -37,9 +56,9 @@ public class NaveJugador extends Logica.Nave {
         if (x > 785 - image.getWidth(null)) {
             x = 785 - image.getWidth(null);
         }
-//        if (y > 600 - image.getHeight(null)) {
-//            y = 600 - image.getHeight(null);
-//        }
+        if (y > 600 - image.getHeight(null)) {
+            y = 600 - image.getHeight(null);
+        }
     }
 
     public int obtenerX() {
@@ -54,6 +73,18 @@ public class NaveJugador extends Logica.Nave {
         return image;
     }
 
+    public List<Proyectil> obtenerProyectiles(){
+        return proyectiles;
+    }
+
+    public void disparar(){
+        if (puedeDisparar) {
+            proyectiles.add(new Proyectil (x + (image.getWidth(null) / 2) - 8, y));
+            puedeDisparar = false;
+            temporizadorDisparo.start();
+        }
+    }
+
     public void teclaPresionada(KeyEvent e) {
         int tecla = e.getKeyCode();
 
@@ -64,7 +95,7 @@ public class NaveJugador extends Logica.Nave {
         if (tecla == KeyEvent.VK_RIGHT || tecla == KeyEvent.VK_D) {
             dx = velocidad;
         }
-
+//
 //        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_W) {
 //            dy = -velocidad;
 //        }
@@ -72,6 +103,10 @@ public class NaveJugador extends Logica.Nave {
 //        if (tecla == KeyEvent.VK_DOWN || tecla == KeyEvent.VK_S) {
 //            dy = velocidad;
 //        }
+
+        if (tecla == KeyEvent.VK_SPACE){
+            disparar();
+        }
     }
 
     public void teclaLiberada(KeyEvent e) {
