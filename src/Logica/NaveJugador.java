@@ -37,9 +37,9 @@ public class NaveJugador extends Logica.Nave {
         if (x > 785 - image.getWidth(null)) {
             x = 785 - image.getWidth(null);
         }
-        if (y > 600 - image.getHeight(null)) {
-            y = 600 - image.getHeight(null);
-        }
+//        if (y > 600 - image.getHeight(null)) {
+//            y = 600 - image.getHeight(null);
+//        }
     }
 
     public int obtenerX() {
@@ -65,13 +65,13 @@ public class NaveJugador extends Logica.Nave {
             dx = velocidad;
         }
 
-        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_W) {
-            dy = -velocidad;
-        }
-
-        if (tecla == KeyEvent.VK_DOWN || tecla == KeyEvent.VK_S) {
-            dy = velocidad;
-        }
+//        if (tecla == KeyEvent.VK_UP || tecla == KeyEvent.VK_W) {
+//            dy = -velocidad;
+//        }
+//
+//        if (tecla == KeyEvent.VK_DOWN || tecla == KeyEvent.VK_S) {
+//            dy = velocidad;
+//        }
     }
 
     public void teclaLiberada(KeyEvent e) {
@@ -81,8 +81,8 @@ public class NaveJugador extends Logica.Nave {
             dx = 0;
         }
 
-        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN || key == KeyEvent.VK_W || key == KeyEvent.VK_S) {
-            dy = 0;
-        }
+//        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN || key == KeyEvent.VK_W || key == KeyEvent.VK_S) {
+//            dy = 0;
+//        }
     }
 }
