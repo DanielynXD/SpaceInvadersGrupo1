@@ -46,4 +46,12 @@ public class Proyectil {
         return visible;
     }
 
+    public Rectangle obtenerHitbox() {
+        return new Rectangle(x, y, imagen.getWidth(null), imagen.getHeight(null));//Funcion que permite obtener la hitbox
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
 }

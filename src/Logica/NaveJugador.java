@@ -1,5 +1,6 @@
 package Logica;
 
+import java.awt.*;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +34,7 @@ public class NaveJugador extends Nave {
         image = new ImageIcon(Objects.requireNonNull(NaveJugador.class.getResource("/ImagenesJuego/Jugador/ModeloNaveJugador.png"))).getImage();
         x = 350;
         y = 500;
-        velocidad = 5; // Velocidad de movimiento
+        velocidad = 4; // Velocidad de movimiento del jugador
         puedeDisparar = true;
         temporizadorDisparo = new Timer(650, new ActionListener() {
             @Override
@@ -119,5 +120,9 @@ public class NaveJugador extends Nave {
 //        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN || key == KeyEvent.VK_W || key == KeyEvent.VK_S) {
 //            dy = 0;
 //        }
+    }
+
+    public Rectangle obtenerHitbox() {
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
 }
