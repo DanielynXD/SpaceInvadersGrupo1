@@ -26,6 +26,8 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     private int posicioInicialDelEnemigoEnY = 50;
     private int contador = 0;
     private int direccionMovimiento;
+    private boolean descendiendo;
+    private int unidadesDescendidas;
 
     public PanelDeJuego() {
         iniciarPanel();
@@ -103,7 +105,11 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         actualizarProyectiles();
         repaint();
         verificarColisiones();
-        actualizarEnemigos();//actualiza la posicion de los enemigos
+        try {
+            actualizarEnemigos();//actualiza la posicion de los enemigos
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private void actualizarProyectiles() {
@@ -122,8 +128,20 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         nave.mover();
     }
 
-    private void actualizarEnemigos() {
+    private void actualizarEnemigos() throws InterruptedException {
         boolean cambiarDireccion = false;
+
+        if (descendiendo) {
+            for (NaveEnemigoUno enemigo : enemigos) {
+                enemigo.descender();
+            }
+            unidadesDescendidas++;
+            if (unidadesDescendidas >= enemigos.get(0).obtenerImagen().getHeight(null) / 3) {
+                descendiendo = false;
+                unidadesDescendidas = 0;
+            }
+            return;
+        }
 
         for (NaveEnemigoUno enemigo : enemigos) {
             enemigo.mover(direccionMovimiento);
@@ -134,9 +152,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
         if (cambiarDireccion) {
             direccionMovimiento = -direccionMovimiento;
-            for (NaveEnemigoUno enemigo : enemigos) {
-                enemigo.descender();
-            }
+            descendiendo = true;
         }
     }
 
@@ -148,11 +164,11 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         List<NaveEnemigoUno> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
 
         for (Proyectil proyectil : proyectiles) {
-            Rectangle hitboxProyectil = proyectil.obtenerHitbox();
+            Rectangle hitboxProyectil = proyectil.obtenerHitBox();
 
             for (int i = 0; i < enemigos.size(); i++) {
                 NaveEnemigoUno enemigo = enemigos.get(i);
-                Rectangle hitboxEnemigo = enemigo.obtenerHitbox();
+                Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
 
                 if (hitboxProyectil.intersects(hitboxEnemigo)) {
                     proyectil.setVisible(false);
@@ -164,7 +180,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         enemigos.removeAll(enemigosAEliminar);//elimina a los enemigos en la lista
 
         for (NaveEnemigoUno enemigo : enemigos) {
-            Rectangle hitboxEnemigo = enemigo.obtenerHitbox();
+            Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
             if (hitboxNave.intersects(hitboxEnemigo)) {
                 System.exit(0); // TERMINA EL JUEGO PORQUE SOLO TIENE 1 VIDA, ese sistem termina el programa
                 // TODO: añadir explosión, mas vidas y reducción de vida

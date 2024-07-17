@@ -36,7 +36,7 @@ public class NaveJugador extends Nave {
         y = 500;
         velocidad = 4; // Velocidad de movimiento del jugador
         puedeDisparar = true;
-        temporizadorDisparo = new Timer(650, new ActionListener() {
+        temporizadorDisparo = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 puedeDisparar = true;
@@ -54,12 +54,10 @@ public class NaveJugador extends Nave {
         if (y < 0) {
             y = 0;
         }
-        if (x > 785 - image.getWidth(null)) {
+        if (x > 785 - image.getWidth(null)) {//limites x
             x = 785 - image.getWidth(null);
         }
-        if (y > 600 - image.getHeight(null)) {
-            y = 600 - image.getHeight(null);
-        }
+
     }
 
     public int obtenerX() {
@@ -68,6 +66,11 @@ public class NaveJugador extends Nave {
 
     public int obtenerY() {
         return y;
+    }
+
+    @Override
+    public Rectangle obtenerHitBox() {
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null)); //hice un cast de int para la velocidad de la nave;
     }
 
     public Image obtenerImagen() {
