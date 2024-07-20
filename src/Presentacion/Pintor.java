@@ -48,6 +48,7 @@ public class Pintor extends JPanel {
         }
     }
 
+
     private void dibujarNave(Graphics g) {
         g.drawImage(imagenNaveJugador, panel.obtenerPosicionEnXNave(), panel.obtenerPosicionEnYNave(), null);
 
