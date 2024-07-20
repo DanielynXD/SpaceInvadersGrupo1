@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Objects;
 import javax.swing.*;
 import java.util.List;
 
@@ -19,8 +18,6 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public static final int ANCHO = 800, ALTO = 600;
     private Timer temporizador;
     private NaveJugador nave;
-   // private NaveEnemigoUno naveEnemigoUno;
-    private Image fondo;
     private List<NaveEnemigoUno> enemigos;
     private int posicioInicialDelEnemigoEnX = 50;
     private int posicioInicialDelEnemigoEnY = 50;
@@ -28,17 +25,18 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     private int direccionMovimiento;
     private boolean descendiendo;
     private int unidadesDescendidas;
+    private Pintor pintor;
 
     public PanelDeJuego() {
         iniciarPanel();
+        pintor = new Pintor(this);
+
     }
 
     private void iniciarPanel() {
         setFocusable(true);
         setSize(ANCHO, ALTO);
-        nave = new NaveJugador(ANCHO, ALTO);
-        //naveEnemigoUno = new NaveEnemigoUno();
-        fondo = new ImageIcon(Objects.requireNonNull(PanelDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoEscena.png"))).getImage();
+        nave = new NaveJugador();
         addKeyListener(new TAdapter());
 
         enemigos = new ArrayList<>();//inicializa el array de enemigos
@@ -68,42 +66,20 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        dibujarFondo(g);
-        dibujarNave(g);
-        dibujarEnemigos(g);//dibuja a los enemigos
-        dibujarProyectiles(g);
-        Toolkit.getDefaultToolkit().sync();
+        pintor.paintComponent(g);
     }
 
-    private void dibujarProyectiles(Graphics g) {
-        List<Proyectil> proyectiles = nave.obtenerProyectiles();
-        for (Proyectil p : proyectiles) {
-            if(p.esVisible()){
-                g.drawImage(p.obtenerImagen(), p.obtenerX(), p.obtenerY(), this);
-            }
-        }
-    }
+    /*
+    Clase emjambre tiene enemigos, emjambre tiene movimient
+     */
 
-    private void dibujarFondo(Graphics g) {
-        g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
-    }
-
-    private void dibujarNave(Graphics g) {
-        g.drawImage(nave.obtenerImagen(), nave.obtenerX(), nave.obtenerY(), this);
-    }
-
-    private void dibujarEnemigos(Graphics g) {
-        for (NaveEnemigoUno enemigo : enemigos) {
-            g.drawImage(enemigo.obtenerImagen(), enemigo.obtenerX(), enemigo.obtenerY(), this);
-            //array para dibujar enemigos todo cambiar dependiendo de la columna de enemigos el diseño
-        }
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         actualizarNave();
         actualizarProyectiles();
         repaint();
+        pintor.actualizar();
         verificarColisiones();
         try {
             actualizarEnemigos();//actualiza la posicion de los enemigos
@@ -136,7 +112,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
                 enemigo.descender();
             }
             unidadesDescendidas++;
-            if (unidadesDescendidas >= enemigos.get(0).obtenerImagen().getHeight(null) / 3) {
+            if (unidadesDescendidas >= (enemigos.get(0).obtenerAncho() / 3)) {
                 descendiendo = false;
                 unidadesDescendidas = 0;
             }
@@ -145,7 +121,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
         for (NaveEnemigoUno enemigo : enemigos) {
             enemigo.mover(direccionMovimiento);
-            if (enemigo.obtenerX() <= 0 || enemigo.obtenerX() >= ANCHO - enemigo.obtenerImagen().getWidth(null)) {
+            if (enemigo.obtenerPosicionEnX() <= 0 || enemigo.obtenerPosicionEnX() >= ANCHO - enemigo.obtenerAncho()) {
                 cambiarDireccion = true;
             }
         }
@@ -187,6 +163,35 @@ public class PanelDeJuego extends JPanel implements ActionListener {
             }
         }
     }
+
+    public int obtenerPosicionEnXNave() {
+        return nave.obtenerPosicionEnX();
+    }
+
+    public int obtenerPosicionEnYNave() {
+        return nave.obtenerPosicionEnY();
+    }
+
+    public ArrayList<int[]> obtenerPosicionesEnemigos() {
+
+        ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
+        for(NaveEnemigoUno enemigo: enemigos){
+            int [] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
+            posicionesEnemigos.add(aux);
+        }
+        return posicionesEnemigos;
+    }
+
+    public ArrayList<int[]> obtenerPosicionesProyectiles() {
+
+        ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
+        for(Proyectil proyectil: nave.obtenerProyectiles()){
+            int [] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
+            posicionesEnemigos.add(aux);
+        }
+        return posicionesEnemigos;
+    }
+
 
     private class TAdapter extends KeyAdapter {
 
