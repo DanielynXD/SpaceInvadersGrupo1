@@ -16,6 +16,7 @@ import java.util.List;
 public class PanelDeJuego extends JPanel implements ActionListener {
 
     public static final int ANCHO = 800, ALTO = 600;
+    public static final int NUMERO_DE_FILAS_ENEMIGOS = 5, NUMERO_DE_COLUMNAS_ENEMIGOS = 7;
     private Timer temporizador;
     private NaveJugador nave;
     private List<NaveEnemigoUno> enemigos;
@@ -30,7 +31,6 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public PanelDeJuego() {
         iniciarPanel();
         pintor = new Pintor(this);
-
     }
 
     private void iniciarPanel() {
@@ -50,10 +50,10 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     //----------------
     private void agregarEnemigos() {
-        for (int i = 0; i < 7; i++) { // se cambia el "i <" para disminuir o aumentar las columnas de los enemigos
+        for (int i = 0; i < (NUMERO_DE_COLUMNAS_ENEMIGOS); i++) { // se cambia el "i <" para disminuir o aumentar las columnas de los enemigos
             enemigos.add(new NaveEnemigoUno(posicioInicialDelEnemigoEnX + i * 100, posicioInicialDelEnemigoEnY));
-            if(i == 6){
-                if (contador < 4) {//controla las filas de enemigos que existe y evita un bucle en la recursividad
+            if(i == NUMERO_DE_COLUMNAS_ENEMIGOS-1){
+                if (contador < NUMERO_DE_FILAS_ENEMIGOS-1) {//controla las filas de enemigos que existe y evita un bucle en la recursividad
                     contador++;
                     posicioInicialDelEnemigoEnY += 50;
                     agregarEnemigos();
@@ -65,7 +65,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        //super.paintComponent(g);
         pintor.paintComponent(g);
     }
 

@@ -1,16 +1,18 @@
 package Logica;
 import java.awt.*;
 
-public class NaveEnemigoUno extends Logica.Nave {
+public class NaveEnemigoUno extends Logica.Nave{
     private static final int ANCHO_NAVE_ENEMIGO = 64;
     private int PosicionEnX;
     private int PosicionEnY;
     private int velocidad;
 
+
     public NaveEnemigoUno(int x, int y) {
         this.PosicionEnX = x;
         this.PosicionEnY = y;
         iniciarEnemigoUno();
+
     }
 
     private void iniciarEnemigoUno() {
