@@ -1,53 +1,47 @@
 package Logica;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public class Proyectil {
-    private int x;
-    private int y;
+    public static final int ANCHO_PROYECTIL = 16;
+    private int posicionEnX;
+    private int posicionEnY;
     private int velocidad;
-    private Image imagen;
     private boolean visible;
 
     public Proyectil(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.posicionEnX = x;
+        this.posicionEnY = y;
         velocidad = 10;
-        imagen = new ImageIcon(Objects.requireNonNull(Proyectil.class.getResource("/ImagenesJuego/Proyectiles/ProyectilJugador.png"))).getImage();
         visible = true;
+
     }
 
     public void mover() {
-        y -= velocidad;
+        posicionEnY -= velocidad;
         if (proyectilLlegoAlLimite()) {
             visible = false;
         }
     }
 
     private boolean proyectilLlegoAlLimite() {
-        return y < 0;
+        return posicionEnY < 0;
     }
 
-    public int obtenerX(){
-        return x;
+    public int obtenerPosicionEnX(){
+        return posicionEnX;
     }
 
-    public int obtenerY(){
-        return y;
-    }
-
-    public Image obtenerImagen(){
-        return imagen;
+    public int obtenerPosicionEnY(){
+        return posicionEnY;
     }
 
     public boolean esVisible(){
         return visible;
     }
 
-    public Rectangle obtenerHitbox() {
-        return new Rectangle(x, y, imagen.getWidth(null), imagen.getHeight(null));//Funcion que permite obtener la hitbox
+    public Rectangle obtenerHitBox() {
+        return new Rectangle(posicionEnX, posicionEnY, ANCHO_PROYECTIL, ANCHO_PROYECTIL);//Funcion que permite obtener la hitbox
     }
 
     public void setVisible(boolean visible) {

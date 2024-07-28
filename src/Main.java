@@ -1,8 +1,8 @@
-import Presentacion.Ventana;
+import Presentacion.Menú;
 
 public class Main {
     public static void main(String[] args) {
 
-        new Ventana();
+        new Menú();
     }
    }
