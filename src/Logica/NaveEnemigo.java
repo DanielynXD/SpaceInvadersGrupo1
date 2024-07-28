@@ -1,32 +1,30 @@
 package Logica;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
-public class NaveEnemigoUno extends Logica.Nave{
+public abstract class NaveEnemigo extends Logica.Nave{
     private static final int ANCHO_NAVE_ENEMIGO = 64;
+    public static final int VELOCIDAD_DEL_ENEMIGO = 1;
+    protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 7;
     private int PosicionEnX;
     private int PosicionEnY;
     private int velocidad;
 
+    protected NaveEnemigo[] filaDeEnemigos = new NaveEnemigo[NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE];
 
-    public NaveEnemigoUno(int x, int y) {
+    public NaveEnemigo(int x, int y) {
         this.PosicionEnX = x;
         this.PosicionEnY = y;
-        iniciarEnemigoUno();
-
+        iniciarEnemigo();
     }
 
-    private void iniciarEnemigoUno() {
-<<<<<<< HEAD
-        image = new ImageIcon(Objects.requireNonNull(NaveEnemigoUno.class.getResource("/ImagenesJuego/Enemigos/ImagenEnemigoUno.png"))).getImage();
-        velocidadDelEnemigo = 0.25; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
-=======
-        velocidad = 1; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
->>>>>>> 5d3ab3073c891968e36d903e7181ad45c3f01703
+    protected void iniciarEnemigo() {
+        velocidad = VELOCIDAD_DEL_ENEMIGO; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
     }
 
     public void mover(int direccion) {
         PosicionEnX += velocidad * direccion;
-
         //todo darle responsabilidad unica a la velocidad y a la direccion
     }
 
@@ -40,7 +38,7 @@ public class NaveEnemigoUno extends Logica.Nave{
 
     @Override
     public int obtenerPosicionEnX() {
-        return (int) PosicionEnX;
+        return PosicionEnX;
     }
 
     @Override
