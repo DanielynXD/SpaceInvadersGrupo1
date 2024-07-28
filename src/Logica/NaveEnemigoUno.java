@@ -19,7 +19,7 @@ public class NaveEnemigoUno extends Logica.Nave {
 
     private void iniciarEnemigoUno() {
         image = new ImageIcon(Objects.requireNonNull(NaveEnemigoUno.class.getResource("/ImagenesJuego/Enemigos/ImagenEnemigoUno.png"))).getImage();
-        velocidadDelEnemigo = 0.5; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
+        velocidadDelEnemigo = 0.25; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
     }
 
     public void mover(int direccion) {
