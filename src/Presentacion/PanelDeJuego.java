@@ -1,8 +1,6 @@
 package Presentacion;
 
-import Logica.NaveEnemigoUno;
-import Logica.NaveJugador;
-import Logica.Proyectil;
+import Logica.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,14 +17,18 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public static final int NUMERO_DE_FILAS_ENEMIGOS = 5, NUMERO_DE_COLUMNAS_ENEMIGOS = 7;
     private Timer temporizador;
     private NaveJugador nave;
-    private List<NaveEnemigoUno> enemigos;
+    protected EnjambreUno enemigoUno;
+    private EnjambreDos enemigoDos;
+    private EnjambreTres enemigoTres;
+
+    private List<NaveEnemigo> enemigos;
     private int posicioInicialDelEnemigoEnX = 50;
     private int posicioInicialDelEnemigoEnY = 50;
-    private int contador = 0;
     private int direccionMovimiento;
     private boolean descendiendo;
     private int unidadesDescendidas;
     private Pintor pintor;
+
 
     public PanelDeJuego() {
         iniciarPanel();
@@ -40,6 +42,9 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
 
         enemigos = new ArrayList<>();//inicializa el array de enemigos
+        enemigoUno = new EnjambreUno(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
+        enemigoDos = new EnjambreDos(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
+        enemigoTres = new EnjambreTres(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
         agregarEnemigos();//agrega enemigos
 
         temporizador = new Timer(10, this);
@@ -48,31 +53,22 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         direccionMovimiento = 1; //se inicia con derecha
     }
 
-    //----------------
     private void agregarEnemigos() {
-        for (int i = 0; i < (NUMERO_DE_COLUMNAS_ENEMIGOS); i++) { // se cambia el "i <" para disminuir o aumentar las columnas de los enemigos
-            enemigos.add(new NaveEnemigoUno(posicioInicialDelEnemigoEnX + i * 100, posicioInicialDelEnemigoEnY));
-            if(i == NUMERO_DE_COLUMNAS_ENEMIGOS-1){
-                if (contador < NUMERO_DE_FILAS_ENEMIGOS-1) {//controla las filas de enemigos que existe y evita un bucle en la recursividad
-                    contador++;
-                    posicioInicialDelEnemigoEnY += 50;
-                    agregarEnemigos();
-                }
-            }
-        }
+        enemigoUno.agregarEnjambreUno(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
+        enemigos.addAll(enemigoUno.obtenerEnjambreDeEnemigos());
+
+        enemigoDos.agregarEnjambreDos(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY + 55);
+        enemigos.addAll(enemigoDos.obtenerEnjambreDeEnemigos());
+
+        enemigoTres.agregarEnjambreTres(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY + 165);
+        enemigos.addAll(enemigoTres.obtenerEnjambreDeEnemigos());
     }
-    //---------
 
     @Override
     public void paintComponent(Graphics g) {
         //super.paintComponent(g);
         pintor.paintComponent(g);
     }
-
-    /*
-    Clase emjambre tiene enemigos, emjambre tiene movimient
-     */
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -108,7 +104,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         boolean cambiarDireccion = false;
 
         if (descendiendo) {
-            for (NaveEnemigoUno enemigo : enemigos) {
+            for (NaveEnemigo enemigo : enemigos) {
                 enemigo.descender();
             }
             unidadesDescendidas++;
@@ -118,8 +114,8 @@ public class PanelDeJuego extends JPanel implements ActionListener {
             }
             return;
         }
-
-        for (NaveEnemigoUno enemigo : enemigos) {
+        //todo: Modificar, ahora los enemigos si o si topan los bordes, TODOS
+        for (NaveEnemigo enemigo : enemigos) {
             enemigo.mover(direccionMovimiento);
             if (enemigo.obtenerPosicionEnX() <= 0 || enemigo.obtenerPosicionEnX() >= ANCHO - enemigo.obtenerAncho()) {
                 cambiarDireccion = true;
@@ -137,13 +133,13 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
         List<Proyectil> proyectiles = nave.obtenerProyectiles();
 
-        List<NaveEnemigoUno> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
+        List<NaveEnemigo> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
 
         for (Proyectil proyectil : proyectiles) {
             Rectangle hitboxProyectil = proyectil.obtenerHitBox();
 
             for (int i = 0; i < enemigos.size(); i++) {
-                NaveEnemigoUno enemigo = enemigos.get(i);
+                NaveEnemigo enemigo = enemigos.get(i);
                 Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
 
                 if (hitboxProyectil.intersects(hitboxEnemigo)) {
@@ -155,7 +151,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
         enemigos.removeAll(enemigosAEliminar);//elimina a los enemigos en la lista
 
-        for (NaveEnemigoUno enemigo : enemigos) {
+        for (NaveEnemigo enemigo : enemigos) {
             Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
             if (hitboxNave.intersects(hitboxEnemigo)) {
                 System.exit(0); // TERMINA EL JUEGO PORQUE SOLO TIENE 1 VIDA, ese sistem termina el programa
@@ -172,25 +168,54 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         return nave.obtenerPosicionEnY();
     }
 
-    public ArrayList<int[]> obtenerPosicionesEnemigos() {
-
-        ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
-        for(NaveEnemigoUno enemigo: enemigos){
-            int [] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
-            posicionesEnemigos.add(aux);
+    public ArrayList<int[]> obtenerPosicionesEnjambreUno() {
+        ArrayList<int[]> posicionesEnjambreUno = new ArrayList<>();
+        for (NaveEnemigo enemigo : enemigos) {
+            if (enemigo instanceof EnjambreUno) {
+                int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
+                posicionesEnjambreUno.add(aux);
+            }
         }
-        return posicionesEnemigos;
+        return posicionesEnjambreUno;
     }
+
+    public ArrayList<int[]> obtenerPosicionesEnjambreDos() {
+        ArrayList<int[]> posicionesEnjambreDos = new ArrayList<>();
+        for (NaveEnemigo enemigo : enemigos) {
+            if (enemigo instanceof EnjambreDos) {
+                int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
+                posicionesEnjambreDos.add(aux);
+            }
+        }
+        return posicionesEnjambreDos;
+    }
+
+    public ArrayList<int[]> obtenerPosicionesEnjambreTres() {
+        ArrayList<int[]> posicionesEnjambreTres = new ArrayList<>();
+        for (NaveEnemigo enemigo : enemigos) {
+            if (enemigo instanceof EnjambreTres) {
+                int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
+                posicionesEnjambreTres.add(aux);
+            }
+        }
+        return posicionesEnjambreTres;
+    }
+
+
+
+//------------------------------------------------------------------------------------
 
     public ArrayList<int[]> obtenerPosicionesProyectiles() {
 
         ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
-        for(Proyectil proyectil: nave.obtenerProyectiles()){
-            int [] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
+        for (Proyectil proyectil : nave.obtenerProyectiles()) {
+            int[] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
             posicionesEnemigos.add(aux);
         }
         return posicionesEnemigos;
     }
+
+
 
 
     private class TAdapter extends KeyAdapter {

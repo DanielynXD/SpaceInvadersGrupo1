@@ -1,23 +1,31 @@
 package Logica;
 import javax.swing.*;
 import java.awt.*;
+<<<<<<< HEAD:src/Logica/NaveEnemigoUno.java
 import java.util.Objects;
+=======
+import java.util.ArrayList;
+import java.util.Collection;
+>>>>>>> e5bb5cbc9456351017d014e2d207ff920540527c:src/Logica/NaveEnemigo.java
 
-public class NaveEnemigoUno extends Logica.Nave{
+public abstract class NaveEnemigo extends Logica.Nave{
     private static final int ANCHO_NAVE_ENEMIGO = 64;
+    public static final int VELOCIDAD_DEL_ENEMIGO = 1;
+    protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 7;
     private int PosicionEnX;
     private int PosicionEnY;
     private int velocidad;
     private double velocidadDelEnemigo;
 
+    protected NaveEnemigo[] filaDeEnemigos = new NaveEnemigo[NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE];
 
-    public NaveEnemigoUno(int x, int y) {
+    public NaveEnemigo(int x, int y) {
         this.PosicionEnX = x;
         this.PosicionEnY = y;
-        iniciarEnemigoUno();
-
+        iniciarEnemigo();
     }
 
+<<<<<<< HEAD:src/Logica/NaveEnemigoUno.java
     private void iniciarEnemigoUno() {
 
         Image image = new ImageIcon(Objects.requireNonNull(NaveEnemigoUno.class.getResource("/ImagenesJuego/Enemigos/ImagenEnemigoUno.png"))).getImage();
@@ -25,11 +33,14 @@ public class NaveEnemigoUno extends Logica.Nave{
 
         velocidad = 1; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
 
+=======
+    protected void iniciarEnemigo() {
+        velocidad = VELOCIDAD_DEL_ENEMIGO; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
+>>>>>>> e5bb5cbc9456351017d014e2d207ff920540527c:src/Logica/NaveEnemigo.java
     }
 
     public void mover(int direccion) {
         PosicionEnX += velocidad * direccion;
-
         //todo darle responsabilidad unica a la velocidad y a la direccion
     }
 
@@ -43,7 +54,7 @@ public class NaveEnemigoUno extends Logica.Nave{
 
     @Override
     public int obtenerPosicionEnX() {
-        return (int) PosicionEnX;
+        return PosicionEnX;
     }
 
     @Override
