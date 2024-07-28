@@ -1,11 +1,14 @@
 package Logica;
+import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class NaveEnemigoUno extends Logica.Nave{
     private static final int ANCHO_NAVE_ENEMIGO = 64;
     private int PosicionEnX;
     private int PosicionEnY;
     private int velocidad;
+    private double velocidadDelEnemigo;
 
 
     public NaveEnemigoUno(int x, int y) {
@@ -16,12 +19,12 @@ public class NaveEnemigoUno extends Logica.Nave{
     }
 
     private void iniciarEnemigoUno() {
-<<<<<<< HEAD
-        image = new ImageIcon(Objects.requireNonNull(NaveEnemigoUno.class.getResource("/ImagenesJuego/Enemigos/ImagenEnemigoUno.png"))).getImage();
+
+        Image image = new ImageIcon(Objects.requireNonNull(NaveEnemigoUno.class.getResource("/ImagenesJuego/Enemigos/ImagenEnemigoUno.png"))).getImage();
         velocidadDelEnemigo = 0.25; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
-=======
+
         velocidad = 1; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
->>>>>>> 5d3ab3073c891968e36d903e7181ad45c3f01703
+
     }
 
     public void mover(int direccion) {
