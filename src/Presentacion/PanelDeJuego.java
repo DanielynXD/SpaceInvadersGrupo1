@@ -14,9 +14,9 @@ import java.util.List;
 public class PanelDeJuego extends JPanel implements ActionListener {
 
     public static final int ANCHO = 800, ALTO = 600;
-    public static final int NUMERO_DE_FILAS_ENEMIGOS = 5, NUMERO_DE_COLUMNAS_ENEMIGOS = 7;
     private Timer temporizador;
     private NaveJugador nave;
+
     protected EnjambreUno enemigoUno;
     private EnjambreDos enemigoDos;
     private EnjambreTres enemigoTres;
@@ -39,6 +39,8 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         setFocusable(true);
         setSize(ANCHO, ALTO);
         nave = new NaveJugador();
+
+
         addKeyListener(new TAdapter());
 
         enemigos = new ArrayList<>();//inicializa el array de enemigos
@@ -73,7 +75,8 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         actualizarNave();
-        actualizarProyectiles();
+        actualizarProyectilesDelJugador();
+        actualizarProyectilesDelEnemigo();
         repaint();
         pintor.actualizar();
         verificarColisiones();
@@ -82,10 +85,32 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
+        enemigosDisparar();
     }
 
-    private void actualizarProyectiles() {
-        List<Proyectil> proyectiles = nave.obtenerProyectiles();
+    private void enemigosDisparar() {
+        for (NaveEnemigo enemigo : enemigos) {
+            if (enemigo.debeDisparar()) {
+                enemigo.disparar();
+            }
+        }
+    }
+    private void actualizarProyectilesDelEnemigo() {
+        for (NaveEnemigo enemigo : enemigos) {
+            List<ProyectilDelEnemigo> proyectiles = enemigo.obtenerProyectiles();
+            for (int i = 0; i < proyectiles.size(); i++) {
+                Proyectil proyectil = proyectiles.get(i);
+                if (proyectil.esVisible()) {
+                    proyectil.mover();
+                } else {
+                    proyectiles.remove(i);
+                }
+            }
+        }
+    }
+
+    private void actualizarProyectilesDelJugador() {
+        List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
         for (int i = 0; i < proyectiles.size(); i++) {
             Proyectil proyectil = proyectiles.get(i);
             if (proyectil.esVisible()) {
@@ -117,7 +142,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         //todo: Modificar, ahora los enemigos si o si topan los bordes, TODOS
         for (NaveEnemigo enemigo : enemigos) {
             enemigo.mover(direccionMovimiento);
-            if (enemigo.obtenerPosicionEnX() <= 0 || enemigo.obtenerPosicionEnX() >= ANCHO - enemigo.obtenerAncho()) {
+            if (enemigo.obtenerPosicionEnX() <= 0 || enemigo.obtenerPosicionEnX() >= ANCHO - enemigo.obtenerAncho() - 20) {//este 20 es para que los enemigos no sobrepasen el lado derecho
                 cambiarDireccion = true;
             }
         }
@@ -130,14 +155,11 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     private void verificarColisiones() {
         Rectangle hitboxNave = nave.obtenerHitbox();
-
-        List<Proyectil> proyectiles = nave.obtenerProyectiles();
-
+        List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
         List<NaveEnemigo> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
 
         for (Proyectil proyectil : proyectiles) {
             Rectangle hitboxProyectil = proyectil.obtenerHitBox();
-
             for (int i = 0; i < enemigos.size(); i++) {
                 NaveEnemigo enemigo = enemigos.get(i);
                 Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
@@ -153,9 +175,19 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
         for (NaveEnemigo enemigo : enemigos) {
             Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
-            if (hitboxNave.intersects(hitboxEnemigo)) {
-                System.exit(0); // TERMINA EL JUEGO PORQUE SOLO TIENE 1 VIDA, ese sistem termina el programa
-                // TODO: añadir explosión, mas vidas y reducción de vida
+            List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();
+            for (ProyectilDelEnemigo proyectilEnemigo : proyectilesEnemigo) {
+                Rectangle hitboxProyectilEnemigo = proyectilEnemigo.obtenerHitBox();
+                if (hitboxNave.intersects(hitboxEnemigo)) {
+                    System.exit(0); // Termina el juego porque lo tocaron
+                }
+                if (hitboxNave.intersects(hitboxProyectilEnemigo)) {
+                    nave.volverAlPuntoDeRespaw();
+                    nave.numeroDeVidas--;
+                    if (nave.numeroDeVidas == 0) {
+                        System.exit(0); // Termina el juego porque pierde las 3 vidas
+                    }
+                }
             }
         }
     }
@@ -201,10 +233,6 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         return posicionesEnjambreTres;
     }
 
-
-
-//------------------------------------------------------------------------------------
-
     public ArrayList<int[]> obtenerPosicionesProyectiles() {
 
         ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
@@ -215,7 +243,17 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         return posicionesEnemigos;
     }
 
+    public ArrayList<int[]> obtenerPosicionesProyectilesEnemigos() {
+        ArrayList<int[]> posicionesProyectilesEnemigos = new ArrayList<>();
 
+        for (NaveEnemigo enemigo : enemigos) {
+            for (ProyectilDelEnemigo proyectil : enemigo.obtenerProyectiles()) {
+                int[] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
+                posicionesProyectilesEnemigos.add(aux);
+            }
+        }
+        return posicionesProyectilesEnemigos;
+    }
 
 
     private class TAdapter extends KeyAdapter {

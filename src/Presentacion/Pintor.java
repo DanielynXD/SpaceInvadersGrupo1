@@ -17,11 +17,13 @@ public class Pintor extends JPanel {
     private Image imagenNaveEnemigoDos;
     private Image imagenNaveEnemigoTres;
     private Image imagenProyectil;
+    private Image imagenProyectilEnemigo;
 
     public Pintor(PanelDeJuego panel) {
         this.panel = panel;
         imagenNaveJugador = new ImageIcon(Objects.requireNonNull(NaveJugador.class.getResource("/ImagenesJuego/Jugador/ModeloNaveJugador.png"))).getImage();
         imagenProyectil = new ImageIcon(Objects.requireNonNull(Proyectil.class.getResource("/ImagenesJuego/Proyectiles/ProyectilJugador.png"))).getImage();
+        imagenProyectilEnemigo = new ImageIcon(Objects.requireNonNull(Proyectil.class.getResource("/ImagenesJuego/Proyectiles/ProyectilEnemigo.png"))).getImage();
         imagenNaveEnemigoUno = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoUno.gif"))).getImage();
         imagenNaveEnemigoDos = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoDos.gif"))).getImage();
         imagenNaveEnemigoTres = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoTres.gif"))).getImage();
@@ -35,7 +37,15 @@ public class Pintor extends JPanel {
         dibujarNave(g);
         dibujarEnemigos(g);//dibuja a los enemigos
         dibujarProyectiles(g);
+        dibujarProyectilesEnemigos(g);
         Toolkit.getDefaultToolkit().sync();
+    }
+
+    private void dibujarProyectilesEnemigos(Graphics g) {
+        for (int[] arregloPosiciones : panel.obtenerPosicionesProyectilesEnemigos()) {
+            g.drawImage(imagenProyectilEnemigo, arregloPosiciones[0], arregloPosiciones[1], this);
+        }
+
     }
 
     private void dibujarEnemigos(Graphics g) {
@@ -81,4 +91,4 @@ public class Pintor extends JPanel {
     public void actualizar() {
         repaint();
     }
-}
+    }

@@ -2,17 +2,17 @@ package Logica;
 
 import java.awt.*;
 
-public class Proyectil {
+public abstract class Proyectil {
     public static final int ANCHO_PROYECTIL = 16;
     private int posicionEnX;
     private int posicionEnY;
     private int velocidad;
     private boolean visible;
 
-    public Proyectil(int x, int y) {
+    public Proyectil(int x, int y, int velocidad) {
         this.posicionEnX = x;
         this.posicionEnY = y;
-        velocidad = 10;
+        this.velocidad = velocidad;
         visible = true;
 
     }

@@ -1,42 +1,31 @@
 package Logica;
-import javax.swing.*;
 import java.awt.*;
-<<<<<<< HEAD:src/Logica/NaveEnemigoUno.java
-import java.util.Objects;
-=======
 import java.util.ArrayList;
-import java.util.Collection;
->>>>>>> e5bb5cbc9456351017d014e2d207ff920540527c:src/Logica/NaveEnemigo.java
+import java.util.List;
+import java.util.Random;
 
 public abstract class NaveEnemigo extends Logica.Nave{
     private static final int ANCHO_NAVE_ENEMIGO = 64;
-    public static final int VELOCIDAD_DEL_ENEMIGO = 1;
-    protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 7;
-    private int PosicionEnX;
+    public static final double VELOCIDAD_DEL_ENEMIGO = .30;
+    protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 10;
+    private double PosicionEnX;
     private int PosicionEnY;
-    private int velocidad;
-    private double velocidadDelEnemigo;
-
-    protected NaveEnemigo[] filaDeEnemigos = new NaveEnemigo[NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE];
+    private double velocidad;
+    private final List<ProyectilDelEnemigo> proyectilEnemigo;
+    protected int puntajeDelEnemigo;
+    protected boolean puedeDisparar;
+    private Random random = new Random();
 
     public NaveEnemigo(int x, int y) {
         this.PosicionEnX = x;
         this.PosicionEnY = y;
+        proyectilEnemigo = new ArrayList<>();
+        this.puedeDisparar = true;
         iniciarEnemigo();
     }
 
-<<<<<<< HEAD:src/Logica/NaveEnemigoUno.java
-    private void iniciarEnemigoUno() {
-
-        Image image = new ImageIcon(Objects.requireNonNull(NaveEnemigoUno.class.getResource("/ImagenesJuego/Enemigos/ImagenEnemigoUno.png"))).getImage();
-        velocidadDelEnemigo = 0.25; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
-
-        velocidad = 1; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
-
-=======
     protected void iniciarEnemigo() {
         velocidad = VELOCIDAD_DEL_ENEMIGO; //velocidad de los enemigos, puse un cast en el metodo obtenerHitbox()
->>>>>>> e5bb5cbc9456351017d014e2d207ff920540527c:src/Logica/NaveEnemigo.java
     }
 
     public void mover(int direccion) {
@@ -54,7 +43,7 @@ public abstract class NaveEnemigo extends Logica.Nave{
 
     @Override
     public int obtenerPosicionEnX() {
-        return PosicionEnX;
+        return (int)PosicionEnX;//cast para evitar que las naves se queden estaticas
     }
 
     @Override
@@ -64,10 +53,29 @@ public abstract class NaveEnemigo extends Logica.Nave{
 
     @Override
     public Rectangle obtenerHitBox() {
-        return new Rectangle(PosicionEnX, PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
+        return new Rectangle((int)PosicionEnX, PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
     }
 
     public int obtenerAncho() {
         return ANCHO_NAVE_ENEMIGO;
     }
+
+    public void disparar() {
+        proyectilEnemigo.add(new ProyectilDelEnemigo(obtenerPosicionEnX() + ANCHO_NAVE_ENEMIGO / 2, obtenerPosicionEnY(),5));
+    }
+
+    public boolean debeDisparar() {
+        int probabilidadDisparo = random.nextInt(10000);//17180
+
+        return probabilidadDisparo < 3 ; // 5% de disparo aleatorio
+    }
+
+    public List<ProyectilDelEnemigo> obtenerProyectiles() {
+        return proyectilEnemigo;
+    }
+
+    public Rectangle obtenerHitBoxProyectilEnemigo() {
+        return new Rectangle((int)PosicionEnX, (int)PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
+    }
 }
+

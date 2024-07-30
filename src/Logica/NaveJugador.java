@@ -17,14 +17,16 @@ public class NaveJugador extends Nave {
     public static final int VELOCIDAD = 4;
     public static final int ANCHO_NAVE = 64;
     public static final int ALTO_NAVE = 64;
+    public int numeroDeVidas;
     private Movimiento movimiento;
-    private final List<Proyectil> proyectiles;
+    private final List<ProyectilDelJugador> proyectiles;
     private boolean puedeDisparar;
     private Timer temporizadorDisparo;
 
     public NaveJugador() {
         proyectiles = new ArrayList<>();
         movimiento = new MovimientoNaveJugador(POSICIÓN_INICIAL_EN_X, POSICIÓN_INCIAL_EN_Y);
+        numeroDeVidas = 3;
         iniciarNave();
     }
 
@@ -62,13 +64,13 @@ public class NaveJugador extends Nave {
         return new Rectangle(obtenerPosicionEnX(), obtenerPosicionEnY(), ANCHO_NAVE, ALTO_NAVE); //hice un cast de int para la velocidad de la nave;
     }
 
-    public List<Proyectil> obtenerProyectiles(){
+    public List<ProyectilDelJugador> obtenerProyectiles(){
         return proyectiles;
     }
 
-    public void disparar(){
+    protected void disparar(){
         if (puedeDisparar) {
-            proyectiles.add(new Proyectil (obtenerPosicionEnX() + (ANCHO_NAVE / 2) - 8, obtenerPosicionEnY()));
+            proyectiles.add(new ProyectilDelJugador (obtenerPosicionEnX() + (ANCHO_NAVE / 2) - 8, obtenerPosicionEnY(), 10));
             puedeDisparar = false;
             temporizadorDisparo.start();
         }
@@ -113,5 +115,9 @@ public class NaveJugador extends Nave {
 
     public Rectangle obtenerHitbox() {
         return new Rectangle(movimiento.obtenerPosicionEnX(), movimiento.obtenerPosicionEnY(), ANCHO_NAVE, ANCHO_NAVE);
+    }
+
+    public void volverAlPuntoDeRespaw() {
+        movimiento = new MovimientoNaveJugador(POSICIÓN_INICIAL_EN_X, POSICIÓN_INCIAL_EN_Y);
     }
 }
