@@ -1,21 +1,26 @@
 package Logica;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 public abstract class NaveEnemigo extends Logica.Nave{
     private static final int ANCHO_NAVE_ENEMIGO = 64;
-    public static final int VELOCIDAD_DEL_ENEMIGO = 1;
-    protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 7;
-    private int PosicionEnX;
+    public static final double VELOCIDAD_DEL_ENEMIGO = .30;
+    protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 10;
+    private double PosicionEnX;
     private int PosicionEnY;
-    private int velocidad;
-
-    protected NaveEnemigo[] filaDeEnemigos = new NaveEnemigo[NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE];
+    private double velocidad;
+    private final List<ProyectilDelEnemigo> proyectilEnemigo;
+    protected int puntajeDelEnemigo;
+    protected boolean puedeDisparar;
+    private Random random = new Random();
 
     public NaveEnemigo(int x, int y) {
         this.PosicionEnX = x;
         this.PosicionEnY = y;
+        proyectilEnemigo = new ArrayList<>();
+        this.puedeDisparar = true;
         iniciarEnemigo();
     }
 
@@ -38,7 +43,7 @@ public abstract class NaveEnemigo extends Logica.Nave{
 
     @Override
     public int obtenerPosicionEnX() {
-        return PosicionEnX;
+        return (int)PosicionEnX;//cast para evitar que las naves se queden estaticas
     }
 
     @Override
@@ -48,10 +53,29 @@ public abstract class NaveEnemigo extends Logica.Nave{
 
     @Override
     public Rectangle obtenerHitBox() {
-        return new Rectangle(PosicionEnX, PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
+        return new Rectangle((int)PosicionEnX, PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
     }
 
     public int obtenerAncho() {
         return ANCHO_NAVE_ENEMIGO;
     }
+
+    public void disparar() {
+        proyectilEnemigo.add(new ProyectilDelEnemigo(obtenerPosicionEnX() + ANCHO_NAVE_ENEMIGO / 2, obtenerPosicionEnY(),5));
+    }
+
+    public boolean debeDisparar() {
+        int probabilidadDisparo = random.nextInt(10000);//17180
+
+        return probabilidadDisparo < 3 ; // 5% de disparo aleatorio
+    }
+
+    public List<ProyectilDelEnemigo> obtenerProyectiles() {
+        return proyectilEnemigo;
+    }
+
+    public Rectangle obtenerHitBoxProyectilEnemigo() {
+        return new Rectangle((int)PosicionEnX, (int)PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
+    }
 }
+
