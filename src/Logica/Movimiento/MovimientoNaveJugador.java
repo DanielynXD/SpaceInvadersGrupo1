@@ -1,10 +1,9 @@
-package Logica;
+package Logica.Movimiento;
 
 public class MovimientoNaveJugador implements Movimiento {
     private int posicionEnX;
     private final int posicionEnY;
     private int distanciaDesplazada;
-    private final int VELOCIDAD = 4;
     private final int LIMITE_DERECHO = 785;
     private final int ANCHO_NAVE = 64;
 

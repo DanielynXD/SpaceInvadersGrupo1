@@ -1,4 +1,4 @@
-package Logica;
+package Logica.Movimiento;
 
 public interface Movimiento {
     void mover();

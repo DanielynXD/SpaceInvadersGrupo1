@@ -1,6 +1,17 @@
 package Presentacion;
 
-import Logica.*;
+import Logica.Enjambre.EnjambreDos;
+import Logica.Enjambre.EnjambreTres;
+import Logica.Naves.Enemigos.EnemigoDos;
+import Logica.Naves.Enemigos.EnemigoTres;
+import Logica.Naves.Enemigos.EnemigoUno;
+import Logica.Naves.Enemigos.NaveEnemigo;
+import Logica.Enjambre.Enjambre;
+import Logica.Enjambre.EnjambreUno;
+import Logica.Naves.Jugador.NaveJugador;
+import Logica.Proyectiles.Proyectil;
+import Logica.Proyectiles.ProyectilDelEnemigo;
+import Logica.Proyectiles.ProyectilDelJugador;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +28,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public static final int ANCHO = 800, ALTO = 600;
     private Timer temporizador;
     private NaveJugador nave;
+    private Enjambre enjambre1, enjambre2, enjambre3;
 
     protected EnjambreUno enemigoUno;
     private EnjambreDos enemigoDos;
@@ -45,9 +57,11 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
 
         enemigos = new ArrayList<>();//inicializa el array de enemigos
-        enemigoUno = new EnjambreUno(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
-        enemigoDos = new EnjambreDos(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
-        enemigoTres = new EnjambreTres(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
+
+        enjambre1 = new EnjambreUno(1, 10, new EnemigoUno(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
+        enjambre2 = new EnjambreDos(2, 10, new EnemigoDos(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
+        enjambre3 = new EnjambreTres(2, 10, new EnemigoTres(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
+
         agregarEnemigos();//agrega enemigos
 
         temporizador = new Timer(10, this);
@@ -57,14 +71,14 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     }
 
     private void agregarEnemigos() {
-        enemigoUno.agregarEnjambreUno(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
-        enemigos.addAll(enemigoUno.obtenerEnjambreDeEnemigos());
+        enjambre1.agregarEnjambre(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
+        enemigos.addAll(enjambre1.obtenerEnjambreDeEnemigos());
 
-        enemigoDos.agregarEnjambreDos(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY + 55);
-        enemigos.addAll(enemigoDos.obtenerEnjambreDeEnemigos());
+        enjambre2.agregarEnjambre(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY + 55);
+        enemigos.addAll(enjambre2.obtenerEnjambreDeEnemigos());
 
-        enemigoTres.agregarEnjambreTres(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY + 165);
-        enemigos.addAll(enemigoTres.obtenerEnjambreDeEnemigos());
+        enjambre3.agregarEnjambre(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY + 165);
+        enemigos.addAll(enjambre3.obtenerEnjambreDeEnemigos());
     }
 
     @Override
@@ -246,7 +260,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public ArrayList<int[]> obtenerPosicionesEnjambreUno() {
         ArrayList<int[]> posicionesEnjambreUno = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
-            if (enemigo instanceof EnjambreUno) {
+            if (enemigo instanceof EnemigoUno) {
                 int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
                 posicionesEnjambreUno.add(aux);
             }
@@ -257,7 +271,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public ArrayList<int[]> obtenerPosicionesEnjambreDos() {
         ArrayList<int[]> posicionesEnjambreDos = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
-            if (enemigo instanceof EnjambreDos) {
+            if (enemigo instanceof EnemigoDos) {
                 int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
                 posicionesEnjambreDos.add(aux);
             }
@@ -268,7 +282,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public ArrayList<int[]> obtenerPosicionesEnjambreTres() {
         ArrayList<int[]> posicionesEnjambreTres = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
-            if (enemigo instanceof EnjambreTres) {
+            if (enemigo instanceof EnemigoTres) {
                 int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
                 posicionesEnjambreTres.add(aux);
             }

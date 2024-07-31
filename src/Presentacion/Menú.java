@@ -48,8 +48,6 @@ public class Menú extends JFrame implements ActionListener {
             new VentanaPuntuaciones();
         }
 
-
-
     }
 
     private void abrirVentanaJuego() {
