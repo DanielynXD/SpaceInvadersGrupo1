@@ -18,6 +18,9 @@ public class Pintor extends JPanel {
     private Image imagenNaveEnemigoTres;
     private Image imagenProyectil;
     private Image imagenProyectilEnemigo;
+    private Image imagenPuntajeDelEnemigoUno;
+    private Image imagenPuntajeDelEnemigoDos;
+    private Image imagenPuntajeDelEnemigoTres;
 
     public Pintor(PanelDeJuego panel) {
         this.panel = panel;
@@ -27,6 +30,11 @@ public class Pintor extends JPanel {
         imagenNaveEnemigoUno = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoUno.gif"))).getImage();
         imagenNaveEnemigoDos = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoDos.gif"))).getImage();
         imagenNaveEnemigoTres = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoTres.gif"))).getImage();
+
+//        imagenPuntajeDelEnemigoUno = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Imagen100Puntos.png"))).getImage();
+//        imagenPuntajeDelEnemigoDos = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Imagen200Puntos.png"))).getImage();
+//        imagenPuntajeDelEnemigoTres = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Imagen300Puntos.png"))).getImage();
+
         fondo = new ImageIcon(Objects.requireNonNull(PanelDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoEscena.png"))).getImage();
     }
 

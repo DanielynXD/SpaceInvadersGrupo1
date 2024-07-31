@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.util.List;
+import javax.swing.Timer;
 
 public class PanelDeJuego extends JPanel implements ActionListener {
 
@@ -68,7 +69,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        //super.paintComponent(g);
+        //super.paintComponent(g); porque estaba comentado?
         pintor.paintComponent(g);
     }
 
@@ -158,6 +159,14 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
         List<NaveEnemigo> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
 
+        verificarColisionesEnemigosYProyectilesDelJugador(proyectiles, enemigosAEliminar);
+        verificarColisionesJugadorYProyectilEnemigo(hitboxNave);
+        verificarColisionesProyectilYProyectilEnemigo(proyectiles);
+
+    }
+
+    private void verificarColisionesEnemigosYProyectilesDelJugador(List<ProyectilDelJugador> proyectiles,
+                                                                   List<NaveEnemigo> enemigosAEliminar) {
         for (Proyectil proyectil : proyectiles) {
             Rectangle hitboxProyectil = proyectil.obtenerHitBox();
             for (int i = 0; i < enemigos.size(); i++) {
@@ -170,9 +179,10 @@ public class PanelDeJuego extends JPanel implements ActionListener {
                 }
             }
         }
-
         enemigos.removeAll(enemigosAEliminar);//elimina a los enemigos en la lista
+    }
 
+    private void verificarColisionesJugadorYProyectilEnemigo(Rectangle hitboxNave) {
         for (NaveEnemigo enemigo : enemigos) {
             Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
             List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();
@@ -182,7 +192,8 @@ public class PanelDeJuego extends JPanel implements ActionListener {
                     System.exit(0); // Termina el juego porque lo tocaron
                 }
                 if (hitboxNave.intersects(hitboxProyectilEnemigo)) {
-                    nave.volverAlPuntoDeRespaw();
+                    limpiarProyectilesDeLaVentana();
+                    pausaDeReaparicion();
                     nave.numeroDeVidas--;
                     if (nave.numeroDeVidas == 0) {
                         System.exit(0); // Termina el juego porque pierde las 3 vidas
@@ -192,12 +203,44 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         }
     }
 
-    public int obtenerPosicionEnXNave() {
-        return nave.obtenerPosicionEnX();
+    private void verificarColisionesProyectilYProyectilEnemigo(List<ProyectilDelJugador> proyectiles) {
+        for (NaveEnemigo enemigo : enemigos) {
+            List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();
+            for (ProyectilDelEnemigo proyectilEnemigo : proyectilesEnemigo) {
+                Rectangle hitboxProyectilEnemigo = proyectilEnemigo.obtenerHitBox();
+                for (ProyectilDelJugador proyectilJugador : proyectiles) {
+                    if (hitboxProyectilEnemigo.intersects(proyectilJugador.obtenerHitBox())) {
+                        proyectilJugador.setVisible(false);
+                        proyectilEnemigo.setVisible(false);
+                    }
+                }
+            }
+        }
     }
 
-    public int obtenerPosicionEnYNave() {
-        return nave.obtenerPosicionEnY();
+    private void limpiarProyectilesDeLaVentana() {
+        nave.obtenerProyectiles().clear();
+        List<ProyectilDelEnemigo> proyectilesAEliminar = new ArrayList<>();//lista temporal creada
+        for (NaveEnemigo enemigo : enemigos) {
+            List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();// Obtenemos la lista de proyectiles de cada enemigo
+            proyectilesAEliminar.addAll(proyectilesEnemigo); // Añadimos todos los proyectiles a eliminar en la lista temporal
+        }
+        for (ProyectilDelEnemigo proyectil : proyectilesAEliminar) {// Eliminamos todos los proyectiles de la lista temporal
+            proyectil.setVisible(false);
+        }
+    }
+
+    private void pausaDeReaparicion() {
+        temporizador.stop();
+        Timer pausaParaReaparicion = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nave.volverAlPuntoDeRespaw();
+                temporizador.start();
+            }
+        } );
+        pausaParaReaparicion.setRepeats(false);
+        pausaParaReaparicion.start();
     }
 
     public ArrayList<int[]> obtenerPosicionesEnjambreUno() {
@@ -255,6 +298,13 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         return posicionesProyectilesEnemigos;
     }
 
+    public int obtenerPosicionEnXNave() {
+        return nave.obtenerPosicionEnX();
+    }
+
+    public int obtenerPosicionEnYNave() {
+        return nave.obtenerPosicionEnY();
+    }
 
     private class TAdapter extends KeyAdapter {
 
