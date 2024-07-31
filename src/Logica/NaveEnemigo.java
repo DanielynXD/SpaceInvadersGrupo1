@@ -6,7 +6,7 @@ import java.util.Random;
 
 public abstract class NaveEnemigo extends Logica.Nave{
     private static final int ANCHO_NAVE_ENEMIGO = 64;
-    public static final double VELOCIDAD_DEL_ENEMIGO = .30;
+    public static final double VELOCIDAD_DEL_ENEMIGO = .10;//0.30 velocidad ideal
     protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 10;
     private double PosicionEnX;
     private int PosicionEnY;
@@ -75,7 +75,6 @@ public abstract class NaveEnemigo extends Logica.Nave{
     }
 
     public Rectangle obtenerHitBoxProyectilEnemigo() {
-        return new Rectangle((int)PosicionEnX, (int)PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
+        return new Rectangle((int)PosicionEnX, PosicionEnY, ANCHO_NAVE_ENEMIGO, ANCHO_NAVE_ENEMIGO); //hice un cast de int para la velocidad de la nave;
     }
 }
-
