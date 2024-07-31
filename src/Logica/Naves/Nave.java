@@ -1,6 +1,5 @@
-package Logica;
+package Logica.Naves;
 import java.awt.*;
-import java.util.List;
 
 public abstract class Nave {
 

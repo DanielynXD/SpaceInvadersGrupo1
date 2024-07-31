@@ -1,10 +1,13 @@
-package Logica;
+package Logica.Naves.Enemigos;
+import Logica.Naves.Nave;
+import Logica.Proyectiles.ProyectilDelEnemigo;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class NaveEnemigo extends Logica.Nave{
+public abstract class NaveEnemigo extends Nave {
     private static final int ANCHO_NAVE_ENEMIGO = 64;
     public static final double VELOCIDAD_DEL_ENEMIGO = .10;//0.30 velocidad ideal
     protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 10;

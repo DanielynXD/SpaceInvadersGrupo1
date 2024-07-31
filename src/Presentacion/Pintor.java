@@ -1,9 +1,8 @@
 package Presentacion;
 
-import Logica.EnjambreUno;
-import Logica.NaveEnemigo;
-import Logica.NaveJugador;
-import Logica.Proyectil;
+import Logica.Naves.Enemigos.NaveEnemigo;
+import Logica.Naves.Jugador.NaveJugador;
+import Logica.Proyectiles.Proyectil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,15 +56,13 @@ public class Pintor extends JPanel {
     }
 
     private void dibujarEnemigos(Graphics g) {
-
         dibujarEnjambreUno(g);
         dibujarEnjambreDos(g);
         dibujarEnjambreTres(g);
-
     }
 
     private void dibujarEnjambreUno(Graphics g) {
-        for (int[] arregloPosiciones : panel.obtenerPosicionesEnjambreUno()) {
+        for (int [] arregloPosiciones : panel.obtenerPosicionesEnjambreUno()){
             g.drawImage(imagenNaveEnemigoUno, arregloPosiciones[0], arregloPosiciones[1], this);
         }
     }
@@ -77,7 +74,7 @@ public class Pintor extends JPanel {
     }
 
     private void dibujarEnjambreTres(Graphics g) {
-        for (int[] arregloPosiciones : panel.obtenerPosicionesEnjambreTres()) {
+       for (int[] arregloPosiciones : panel.obtenerPosicionesEnjambreTres()) {
             g.drawImage(imagenNaveEnemigoTres, arregloPosiciones[0], arregloPosiciones[1], this);
         }
     }

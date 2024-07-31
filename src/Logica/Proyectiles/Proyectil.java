@@ -1,4 +1,4 @@
-package Logica;
+package Logica.Proyectiles;
 
 import java.awt.*;
 
