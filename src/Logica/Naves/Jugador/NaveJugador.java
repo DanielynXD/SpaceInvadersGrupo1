@@ -4,6 +4,7 @@ import Logica.Movimiento.Movimiento;
 import Logica.Movimiento.MovimientoNaveJugador;
 import Logica.Naves.Nave;
 import Logica.Proyectiles.ProyectilDelJugador;
+import Logica.VerificadorDeColisiones;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -120,7 +121,7 @@ public class NaveJugador extends Nave {
         return new Rectangle(movimiento.obtenerPosicionEnX(), movimiento.obtenerPosicionEnY(), ANCHO_NAVE, ANCHO_NAVE);
     }
 
-    public void volverAlPuntoDeRespaw() {
+    public void volverAlPuntoDeRespawn() {
         movimiento = new MovimientoNaveJugador(POSICIÓN_INICIAL_EN_X, POSICIÓN_INCIAL_EN_Y);
     }
 }

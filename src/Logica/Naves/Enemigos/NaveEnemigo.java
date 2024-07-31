@@ -9,7 +9,7 @@ import java.util.Random;
 
 public abstract class NaveEnemigo extends Nave {
     private static final int ANCHO_NAVE_ENEMIGO = 64;
-    public static final double VELOCIDAD_DEL_ENEMIGO = .10;//0.30 velocidad ideal
+    public static final double VELOCIDAD_DEL_ENEMIGO = 1;//0.30 velocidad ideal
     protected static final int NUMERO_DE_ENEMIGOS_DEL_ENJAMBRE = 10;
     private double PosicionEnX;
     private int PosicionEnY;

@@ -1,17 +1,19 @@
 package Presentacion;
 
-import Logica.Enjambre.EnjambreDos;
-import Logica.Enjambre.EnjambreTres;
-import Logica.Naves.Enemigos.EnemigoDos;
-import Logica.Naves.Enemigos.EnemigoTres;
-import Logica.Naves.Enemigos.EnemigoUno;
+import Logica.ActualizadorEntidades;
+import Logica.Enjambre.EnjambreDeCalaverasMágicas;
+import Logica.Enjambre.EnjambreDeGatosPlatillos;
+import Logica.Naves.Enemigos.CalaveraMágica;
+import Logica.Naves.Enemigos.GatoPlatillo;
+import Logica.Naves.Enemigos.PlatilloMalo;
 import Logica.Naves.Enemigos.NaveEnemigo;
 import Logica.Enjambre.Enjambre;
-import Logica.Enjambre.EnjambreUno;
+import Logica.Enjambre.EnjambreDePlatillosMalos;
 import Logica.Naves.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
 import Logica.Proyectiles.ProyectilDelEnemigo;
 import Logica.Proyectiles.ProyectilDelJugador;
+import Logica.VerificadorDeColisiones;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,19 +31,13 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     private Timer temporizador;
     private NaveJugador nave;
     private Enjambre enjambre1, enjambre2, enjambre3;
-
-    protected EnjambreUno enemigoUno;
-    private EnjambreDos enemigoDos;
-    private EnjambreTres enemigoTres;
-
-    private List<NaveEnemigo> enemigos;
+    private ArrayList<NaveEnemigo> enemigos;
+    private VerificadorDeColisiones verificadorDeColisiones;
     private int posicioInicialDelEnemigoEnX = 50;
     private int posicioInicialDelEnemigoEnY = 50;
     private int direccionMovimiento;
-    private boolean descendiendo;
-    private int unidadesDescendidas;
     private Pintor pintor;
-
+    private ActualizadorEntidades actualizadorEntidades;
 
     public PanelDeJuego() {
         iniciarPanel();
@@ -52,22 +48,20 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         setFocusable(true);
         setSize(ANCHO, ALTO);
         nave = new NaveJugador();
-
-
         addKeyListener(new TAdapter());
-
         enemigos = new ArrayList<>();//inicializa el array de enemigos
-
-        enjambre1 = new EnjambreUno(1, 10, new EnemigoUno(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
-        enjambre2 = new EnjambreDos(2, 10, new EnemigoDos(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
-        enjambre3 = new EnjambreTres(2, 10, new EnemigoTres(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
+        verificadorDeColisiones = new VerificadorDeColisiones(this);
+        enjambre1 = new EnjambreDePlatillosMalos(1, 10, new PlatilloMalo(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
+        enjambre2 = new EnjambreDeCalaverasMágicas(2, 10, new CalaveraMágica(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
+        enjambre3 = new EnjambreDeGatosPlatillos(2, 10, new GatoPlatillo(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
 
         agregarEnemigos();//agrega enemigos
 
         temporizador = new Timer(10, this);
         temporizador.start();
-
+        actualizadorEntidades = new ActualizadorEntidades();
         direccionMovimiento = 1; //se inicia con derecha
+
     }
 
     private void agregarEnemigos() {
@@ -83,23 +77,21 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        //super.paintComponent(g); porque estaba comentado?
+        //super.paintComponent(g); porque estaba coment
         pintor.paintComponent(g);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        actualizarNave();
-        actualizarProyectilesDelJugador();
-        actualizarProyectilesDelEnemigo();
-        repaint();
-        pintor.actualizar();
-        verificarColisiones();
         try {
-            actualizarEnemigos();//actualiza la posicion de los enemigos
+            actualizadorEntidades.actualizarEntidades(nave, enemigos);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
+        repaint();
+        pintor.actualizar();
+        verificadorDeColisiones.verificarColisiones(nave, enemigos);
+
         enemigosDisparar();
     }
 
@@ -110,129 +102,8 @@ public class PanelDeJuego extends JPanel implements ActionListener {
             }
         }
     }
-    private void actualizarProyectilesDelEnemigo() {
-        for (NaveEnemigo enemigo : enemigos) {
-            List<ProyectilDelEnemigo> proyectiles = enemigo.obtenerProyectiles();
-            for (int i = 0; i < proyectiles.size(); i++) {
-                Proyectil proyectil = proyectiles.get(i);
-                if (proyectil.esVisible()) {
-                    proyectil.mover();
-                } else {
-                    proyectiles.remove(i);
-                }
-            }
-        }
-    }
 
-    private void actualizarProyectilesDelJugador() {
-        List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
-        for (int i = 0; i < proyectiles.size(); i++) {
-            Proyectil proyectil = proyectiles.get(i);
-            if (proyectil.esVisible()) {
-                proyectil.mover();
-            } else {
-                proyectiles.remove(i);
-            }
-        }
-    }
-
-    private void actualizarNave() {
-        nave.mover();
-    }
-
-    private void actualizarEnemigos() throws InterruptedException {
-        boolean cambiarDireccion = false;
-
-        if (descendiendo) {
-            for (NaveEnemigo enemigo : enemigos) {
-                enemigo.descender();
-            }
-            unidadesDescendidas++;
-            if (unidadesDescendidas >= (enemigos.get(0).obtenerAncho() / 3)) {
-                descendiendo = false;
-                unidadesDescendidas = 0;
-            }
-            return;
-        }
-        //todo: Modificar, ahora los enemigos si o si topan los bordes, TODOS
-        for (NaveEnemigo enemigo : enemigos) {
-            enemigo.mover(direccionMovimiento);
-            if (enemigo.obtenerPosicionEnX() <= 0 || enemigo.obtenerPosicionEnX() >= ANCHO - enemigo.obtenerAncho() - 20) {//este 20 es para que los enemigos no sobrepasen el lado derecho
-                cambiarDireccion = true;
-            }
-        }
-
-        if (cambiarDireccion) {
-            direccionMovimiento = -direccionMovimiento;
-            descendiendo = true;
-        }
-    }
-
-    private void verificarColisiones() {
-        Rectangle hitboxNave = nave.obtenerHitbox();
-        List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
-        List<NaveEnemigo> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
-
-        verificarColisionesEnemigosYProyectilesDelJugador(proyectiles, enemigosAEliminar);
-        verificarColisionesJugadorYProyectilEnemigo(hitboxNave);
-        verificarColisionesProyectilYProyectilEnemigo(proyectiles);
-
-    }
-
-    private void verificarColisionesEnemigosYProyectilesDelJugador(List<ProyectilDelJugador> proyectiles,
-                                                                   List<NaveEnemigo> enemigosAEliminar) {
-        for (Proyectil proyectil : proyectiles) {
-            Rectangle hitboxProyectil = proyectil.obtenerHitBox();
-            for (int i = 0; i < enemigos.size(); i++) {
-                NaveEnemigo enemigo = enemigos.get(i);
-                Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
-
-                if (hitboxProyectil.intersects(hitboxEnemigo)) {
-                    proyectil.setVisible(false);
-                    enemigosAEliminar.add(enemigo);//añade al enemigo a la lista
-                }
-            }
-        }
-        enemigos.removeAll(enemigosAEliminar);//elimina a los enemigos en la lista
-    }
-
-    private void verificarColisionesJugadorYProyectilEnemigo(Rectangle hitboxNave) {
-        for (NaveEnemigo enemigo : enemigos) {
-            Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
-            List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();
-            for (ProyectilDelEnemigo proyectilEnemigo : proyectilesEnemigo) {
-                Rectangle hitboxProyectilEnemigo = proyectilEnemigo.obtenerHitBox();
-                if (hitboxNave.intersects(hitboxEnemigo)) {
-                    System.exit(0); // Termina el juego porque lo tocaron
-                }
-                if (hitboxNave.intersects(hitboxProyectilEnemigo)) {
-                    limpiarProyectilesDeLaVentana();
-                    pausaDeReaparicion();
-                    nave.numeroDeVidas--;
-                    if (nave.numeroDeVidas == 0) {
-                        System.exit(0); // Termina el juego porque pierde las 3 vidas
-                    }
-                }
-            }
-        }
-    }
-
-    private void verificarColisionesProyectilYProyectilEnemigo(List<ProyectilDelJugador> proyectiles) {
-        for (NaveEnemigo enemigo : enemigos) {
-            List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();
-            for (ProyectilDelEnemigo proyectilEnemigo : proyectilesEnemigo) {
-                Rectangle hitboxProyectilEnemigo = proyectilEnemigo.obtenerHitBox();
-                for (ProyectilDelJugador proyectilJugador : proyectiles) {
-                    if (hitboxProyectilEnemigo.intersects(proyectilJugador.obtenerHitBox())) {
-                        proyectilJugador.setVisible(false);
-                        proyectilEnemigo.setVisible(false);
-                    }
-                }
-            }
-        }
-    }
-
-    private void limpiarProyectilesDeLaVentana() {
+    public void limpiarProyectilesDeLaVentana() {
         nave.obtenerProyectiles().clear();
         List<ProyectilDelEnemigo> proyectilesAEliminar = new ArrayList<>();//lista temporal creada
         for (NaveEnemigo enemigo : enemigos) {
@@ -244,12 +115,12 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         }
     }
 
-    private void pausaDeReaparicion() {
+    public void pausaDeReaparicion() {
         temporizador.stop();
         Timer pausaParaReaparicion = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                nave.volverAlPuntoDeRespaw();
+                nave.volverAlPuntoDeRespawn();
                 temporizador.start();
             }
         } );
@@ -260,7 +131,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public ArrayList<int[]> obtenerPosicionesEnjambreUno() {
         ArrayList<int[]> posicionesEnjambreUno = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
-            if (enemigo instanceof EnemigoUno) {
+            if (enemigo instanceof PlatilloMalo) {
                 int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
                 posicionesEnjambreUno.add(aux);
             }
@@ -271,7 +142,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public ArrayList<int[]> obtenerPosicionesEnjambreDos() {
         ArrayList<int[]> posicionesEnjambreDos = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
-            if (enemigo instanceof EnemigoDos) {
+            if (enemigo instanceof CalaveraMágica) {
                 int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
                 posicionesEnjambreDos.add(aux);
             }
@@ -282,7 +153,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     public ArrayList<int[]> obtenerPosicionesEnjambreTres() {
         ArrayList<int[]> posicionesEnjambreTres = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
-            if (enemigo instanceof EnemigoTres) {
+            if (enemigo instanceof GatoPlatillo) {
                 int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
                 posicionesEnjambreTres.add(aux);
             }
