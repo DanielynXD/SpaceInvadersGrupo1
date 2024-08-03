@@ -84,7 +84,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            actualizadorEntidades.actualizarEntidades(nave, enemigos);
+            actualizadorEntidades.actualizarEntidades(nave, enemigos, enjambre1);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }

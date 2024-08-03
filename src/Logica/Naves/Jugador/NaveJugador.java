@@ -22,10 +22,11 @@ public class NaveJugador extends Nave {
     public static final int ANCHO_NAVE = 64;
     public static final int ALTO_NAVE = 64;
     public int numeroDeVidas;
-    private Movimiento movimiento;
+    private MovimientoNaveJugador movimiento;
     private final List<ProyectilDelJugador> proyectiles;
     private boolean puedeDisparar;
     private Timer temporizadorDisparo;
+    private int velocidad = 4;
 
     public NaveJugador() {
         proyectiles = new ArrayList<>();
@@ -50,9 +51,7 @@ public class NaveJugador extends Nave {
     }
 
     public void fijarDistanciaDesplazada(int distanciaDesplazada){
-        if (movimiento instanceof MovimientoNaveJugador) {
-            ((MovimientoNaveJugador) movimiento).fijarDistanciaDesplazada(distanciaDesplazada);
-        }
+        movimiento.fijarDistanciaDesplazada(distanciaDesplazada);
     }
 
     public int obtenerPosicionEnX() {
@@ -78,6 +77,21 @@ public class NaveJugador extends Nave {
             puedeDisparar = false;
             temporizadorDisparo.start();
         }
+    }
+
+    @Override
+    public int obtenerVelocidad() {
+        return velocidad;
+    }
+
+    @Override
+    public void fijarNuevaPosicionEnX(int nuevaPosicionEnX) {
+
+    }
+
+    @Override
+    public void fijarNuevaPosicionEnY(int nuevaPosicionEnY) {
+
     }
 
     public void teclaPresionada(KeyEvent e) {
