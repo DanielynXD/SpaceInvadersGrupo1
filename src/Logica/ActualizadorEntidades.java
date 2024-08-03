@@ -16,11 +16,18 @@ public class ActualizadorEntidades {
     private int direccionMovimiento = 1;
 
 
-    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, Enjambre enjambre) throws InterruptedException {
+    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, Enjambre ... enjambres) throws InterruptedException {
         actualizarProyectilesDelEnemigo(enemigos);
         actualizarProyectilesDelJugador(nave);
-        actualizarEnemigos(enemigos);
+        //actualizarEnemigos(enemigos);
         actualizarNave(nave);
+        actualizarEnjambres(enjambres);
+    }
+
+    private void actualizarEnjambres(Enjambre[] enjambres) {
+        for(Enjambre enjambre : enjambres) {
+            enjambre.mover();
+        }
     }
 
     private void actualizarProyectilesDelEnemigo(ArrayList<NaveEnemigo> enemigos) {

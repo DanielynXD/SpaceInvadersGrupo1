@@ -18,7 +18,8 @@ public abstract class Enjambre {
     protected final NaveEnemigo enemigo;
     ArrayList<NaveEnemigo> enjambre = new ArrayList<>();
     protected int numeroFilasGenerado;
-    private boolean descendiendo;
+    private boolean descendiendo = false;
+    private int direccion = 0;
     private int unidadesDescendidas;
 
     public Enjambre(int numeroFilas, int numeroColumnas, NaveEnemigo enemigo) {
@@ -32,7 +33,7 @@ public abstract class Enjambre {
         this.movimientoIzquierda = new MovimientoIzquierda(enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY());
         this.movimientoAbajo = new MovimientoAbajo(enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY());
         this.descendiendo = false;
-        this.unidadesDescendidas = 0;
+        //this.unidadesDescendidas = 0;
     }
 
     public void agregarEnjambre(int posicionEnX, int posicionEnY) {
@@ -41,9 +42,10 @@ public abstract class Enjambre {
 
     public void mover(){
         boolean cambiarDireccion = false;
+
         if (descendiendo) {
-            for (int i = 0; i < enjambre.size(); i++) {
-                movimientoAbajo.mover(enjambre.get(i));
+            for(NaveEnemigo naveEnemigo : enjambre){
+                movimientoAbajo.mover(naveEnemigo);
             }
             unidadesDescendidas++;
             if (unidadesDescendidas >= 16) {
@@ -52,18 +54,28 @@ public abstract class Enjambre {
             }
             return;
         }
-        for(int i = 0; i < enjambre.size(); i++){
-            movimientoDerecha.mover(enjambre.get(i));
-        }
-        if (enemigo.obtenerPosicionEnX() <= 0 || enemigo.obtenerPosicionEnX() > 732) {//este 20 es para que los enemigos no sobrepasen el lado derecho
-            cambiarDireccion = true;
-        }
-        if (cambiarDireccion) {
-            for (int i = 0; i < enjambre.size(); i++) {
-                movimientoIzquierda.mover(enjambre.get(i));
+
+        for (NaveEnemigo naveEnemigo : enjambre) {
+            if (direccion == 1) {
+                movimientoIzquierda.mover(naveEnemigo);
+            } else {
+                movimientoDerecha.mover(naveEnemigo);
             }
+            cambiarDireccion = seDebeCambiarDireccion(naveEnemigo, cambiarDireccion);
+        }
+
+        if (cambiarDireccion) {
+            direccion = (direccion == 1) ? 0 : 1;
             descendiendo = true;
         }
+
+    }
+
+    private static boolean seDebeCambiarDireccion(NaveEnemigo naveEnemigo, boolean cambiarDireccion) {
+        if (naveEnemigo.obtenerPosicionEnX() <= 0 || naveEnemigo.obtenerPosicionEnX() > 732) {
+            cambiarDireccion = true;
+        }
+        return cambiarDireccion;
     }
 
     public abstract void generarEnemigosDelEnjambre(int posicionEnX, int posicionEnY);
