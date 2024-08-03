@@ -1,5 +1,7 @@
 package Logica.Movimiento;
 
+import Logica.Naves.Nave;
+
 public class MovimientoNaveJugador implements Movimiento {
     private int posicionEnX;
     private final int posicionEnY;
@@ -12,7 +14,7 @@ public class MovimientoNaveJugador implements Movimiento {
         this.posicionEnY = posicionInicialEnY;
     }
 
-    @Override
+    //@Override
     public void mover() {
         posicionEnX += distanciaDesplazada;
         if (estaEnElLimiteDerecho()) {
@@ -29,6 +31,11 @@ public class MovimientoNaveJugador implements Movimiento {
 
     private boolean estaEnElLimiteDerecho() {
         return posicionEnX > LIMITE_DERECHO - ANCHO_NAVE;
+    }
+
+    @Override
+    public void mover(Nave entidad) {
+
     }
 
     @Override

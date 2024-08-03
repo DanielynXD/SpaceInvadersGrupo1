@@ -5,4 +5,10 @@ public class CalaveraMágica extends NaveEnemigo {
     public CalaveraMágica(int x, int y) {
         super(x, y);
     }
+
+
+    @Override
+    public int obtenerVelocidad() {
+        return 1;
+    }
 }
