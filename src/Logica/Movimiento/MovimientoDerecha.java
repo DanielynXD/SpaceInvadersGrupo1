@@ -1,5 +1,6 @@
 package Logica.Movimiento;
 
+import Logica.Entidad;
 import Logica.Naves.Nave;
 
 public class MovimientoDerecha implements Movimiento{
@@ -16,7 +17,7 @@ public class MovimientoDerecha implements Movimiento{
     }
 
     @Override
-    public void mover(Nave entidad) {
+    public void mover(Entidad entidad) {
         entidad.fijarNuevaPosicionEnX(entidad.obtenerPosicionEnX() + entidad.obtenerVelocidad() * direccion);
     }
 

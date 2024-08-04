@@ -1,5 +1,6 @@
 package Logica.Movimiento;
 
+import Logica.Entidad;
 import Logica.Naves.Enemigos.NaveEnemigo;
 import Logica.Naves.Nave;
 
@@ -30,7 +31,7 @@ public class MovimientoEnemigo implements Movimiento{
     }
 
     @Override
-    public void mover(Nave enemigo) {
+    public void mover(Entidad enemigo) {
         if (descendiendo) {
             movimientoAbajo.mover(enemigo);
             unidadesDescendidas++;
@@ -38,6 +39,7 @@ public class MovimientoEnemigo implements Movimiento{
                 descendiendo = false;
                 unidadesDescendidas = 0;
             }
+            //enemigo.actualizarHitBox();
             return;
         }
         movimientoDerecha.mover(enemigo);
@@ -48,6 +50,7 @@ public class MovimientoEnemigo implements Movimiento{
             movimientoIzquierda.mover(enemigo);
             descendiendo = true;
         }
+        //enemigo.actualizarHitBox();
     }
 
 

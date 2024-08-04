@@ -37,7 +37,14 @@ public class Pintor extends JPanel {
         dibujarEnemigos(g);//dibuja a los enemigos
         dibujarProyectiles(g);
         dibujarProyectilesEnemigos(g);
+        dibujarModificadores(g);
         Toolkit.getDefaultToolkit().sync();
+    }
+
+    private void dibujarModificadores(Graphics g) {
+        for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
+            g.drawImage(imagenNaveEnemigoUno, arregloPosiciones[0], arregloPosiciones[1], this);
+        }
     }
 
     private void dibujarProyectilesEnemigos(Graphics g) {

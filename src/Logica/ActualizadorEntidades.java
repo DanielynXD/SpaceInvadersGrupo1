@@ -11,17 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActualizadorEntidades {
-    private int unidadesDescendidas;
-    private boolean descendiendo = false;
-    private int direccionMovimiento = 1;
 
-
-    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, Enjambre ... enjambres) throws InterruptedException {
+    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Modificadores> modificadores, Enjambre ... enjambres) throws InterruptedException {
         actualizarProyectilesDelEnemigo(enemigos);
         actualizarProyectilesDelJugador(nave);
         //actualizarEnemigos(enemigos);
         actualizarNave(nave);
         actualizarEnjambres(enjambres);
+        actualizarModificadores(modificadores);
+    }
+
+    private void actualizarModificadores(ArrayList<Modificadores> modificadores) {
+        for (Modificadores modificador : modificadores) {
+            modificador.mover();
+        }
     }
 
     private void actualizarEnjambres(Enjambre[] enjambres) {
@@ -56,11 +59,6 @@ public class ActualizadorEntidades {
         }
     }
 
-    private void actualizarEnemigos(ArrayList<NaveEnemigo> enemigos) throws InterruptedException {
-        for (NaveEnemigo enemigo : enemigos) {
-            enemigo.mover();
-        }
-    }
 
     private void actualizarNave(NaveJugador nave) {
         nave.mover();

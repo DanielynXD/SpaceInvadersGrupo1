@@ -61,7 +61,10 @@ public abstract class Enjambre {
             } else {
                 movimientoDerecha.mover(naveEnemigo);
             }
-            cambiarDireccion = seDebeCambiarDireccion(naveEnemigo, cambiarDireccion);
+
+            if (naveEnemigo.obtenerPosicionEnX() <= 0 || naveEnemigo.obtenerPosicionEnX() > 732) {
+                cambiarDireccion = true;
+            }
         }
 
         if (cambiarDireccion) {
@@ -69,13 +72,6 @@ public abstract class Enjambre {
             descendiendo = true;
         }
 
-    }
-
-    private static boolean seDebeCambiarDireccion(NaveEnemigo naveEnemigo, boolean cambiarDireccion) {
-        if (naveEnemigo.obtenerPosicionEnX() <= 0 || naveEnemigo.obtenerPosicionEnX() > 732) {
-            cambiarDireccion = true;
-        }
-        return cambiarDireccion;
     }
 
     public abstract void generarEnemigosDelEnjambre(int posicionEnX, int posicionEnY);

@@ -23,8 +23,6 @@ public class VerificadorDeColisiones {
         Rectangle hitboxNave = nave.obtenerHitbox();
         java.util.List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
         List<NaveEnemigo> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
-
-
         verificarColisionesEnemigosYProyectilesDelJugador(proyectiles, enemigosAEliminar, enemigos);
         verificarColisionesJugadorYProyectilEnemigo(hitboxNave, enemigos, nave);
         verificarColisionesProyectilYProyectilEnemigo(proyectiles, enemigos);
@@ -42,6 +40,7 @@ public class VerificadorDeColisiones {
                 if (hitboxProyectil.intersects(hitboxEnemigo)) {
                     proyectil.setVisible(false);
                     enemigosAEliminar.add(enemigo);//añade al enemigo a la lista
+                    panelDeJuego.agregarModificador(enemigo.generarModificador());
                 }
             }
         }
