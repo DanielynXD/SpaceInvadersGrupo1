@@ -16,8 +16,8 @@ import javax.swing.*;
 
 public class NaveJugador extends Nave {
 
-    public static final int POSICIÓN_INICIAL_EN_X = 350;
-    public static final int POSICIÓN_INCIAL_EN_Y = 500;
+    public int POSICIÓN_INICIAL_EN_X = 350;
+    public int POSICIÓN_INICIAL_EN_Y = 500;
     public static final int VELOCIDAD = 4;
     public static final int ANCHO_NAVE = 64;
     public static final int ALTO_NAVE = 64;
@@ -26,11 +26,12 @@ public class NaveJugador extends Nave {
     private final List<ProyectilDelJugador> proyectiles;
     private boolean puedeDisparar;
     private Timer temporizadorDisparo;
-    private int velocidad = 4;
+//    private int velocidad = 4;
 
     public NaveJugador() {
+        super(350, 500, 4, 64, 64);
         proyectiles = new ArrayList<>();
-        movimiento = new MovimientoNaveJugador(POSICIÓN_INICIAL_EN_X, POSICIÓN_INCIAL_EN_Y);
+        movimiento = new MovimientoNaveJugador(POSICIÓN_INICIAL_EN_X, POSICIÓN_INICIAL_EN_Y);
         numeroDeVidas = 3;
         iniciarNave();
     }
@@ -47,25 +48,25 @@ public class NaveJugador extends Nave {
     }
 
     public void mover() {
-       movimiento.mover();
+       movimiento.mover(this);
     }
 
     public void fijarDistanciaDesplazada(int distanciaDesplazada){
         movimiento.fijarDistanciaDesplazada(distanciaDesplazada);
     }
 
-    public int obtenerPosicionEnX() {
-        return movimiento.obtenerPosicionEnX();
-    }
+//    public int obtenerPosicionEnX() {
+//        return movimiento.obtenerPosicionEnX();
+//    }
+//
+//    public int obtenerPosicionEnY() {
+//        return movimiento.obtenerPosicionEnY();
+//    }
 
-    public int obtenerPosicionEnY() {
-        return movimiento.obtenerPosicionEnY();
-    }
-
-    @Override
-    public Rectangle obtenerHitBox() {
-        return new Rectangle(obtenerPosicionEnX(), obtenerPosicionEnY(), ANCHO_NAVE, ALTO_NAVE); //hice un cast de int para la velocidad de la nave;
-    }
+//    @Override
+//    public Rectangle obtenerHitBox() {
+//        return new Rectangle(obtenerPosicionEnX(), obtenerPosicionEnY(), ANCHO_NAVE, ALTO_NAVE); //hice un cast de int para la velocidad de la nave;
+//    }
 
     public List<ProyectilDelJugador> obtenerProyectiles(){
         return proyectiles;
@@ -79,20 +80,19 @@ public class NaveJugador extends Nave {
         }
     }
 
-    @Override
-    public int obtenerVelocidad() {
-        return velocidad;
-    }
-
-    @Override
-    public void fijarNuevaPosicionEnX(int nuevaPosicionEnX) {
-
-    }
-
-    @Override
-    public void fijarNuevaPosicionEnY(int nuevaPosicionEnY) {
-
-    }
+//    @Override
+//    public int obtenerVelocidad() {
+//        return velocidad;
+//    }
+//    @Override
+//    public void fijarNuevaPosicionEnX(int nuevaPosicionEnX) {
+//
+//    }
+//
+//    @Override
+//    public void fijarNuevaPosicionEnY(int nuevaPosicionEnY) {
+//
+//    }
 
     public void teclaPresionada(KeyEvent e) {
         int tecla = e.getKeyCode();
@@ -131,11 +131,12 @@ public class NaveJugador extends Nave {
 
     }
 
-    public Rectangle obtenerHitbox() {
-        return new Rectangle(movimiento.obtenerPosicionEnX(), movimiento.obtenerPosicionEnY(), ANCHO_NAVE, ANCHO_NAVE);
-    }
+//    public Rectangle obtenerHitbox() {
+//        return new Rectangle(movimiento.obtenerPosicionEnX(), movimiento.obtenerPosicionEnY(), ANCHO_NAVE, ANCHO_NAVE);
+//    }
 
     public void volverAlPuntoDeRespawn() {
-        movimiento = new MovimientoNaveJugador(POSICIÓN_INICIAL_EN_X, POSICIÓN_INCIAL_EN_Y);
+        //movimiento = new MovimientoNaveJugador(POSICIÓN_INICIAL_EN_X, POSICIÓN_INICIAL_EN_Y);
+        this.fijarNuevaPosicionEnX(0);
     }
 }

@@ -3,6 +3,7 @@ package Presentacion;
 import Logica.ActualizadorEntidades;
 import Logica.Enjambre.EnjambreDeCalaverasMágicas;
 import Logica.Enjambre.EnjambreDeGatosPlatillos;
+import Logica.Modificadores;
 import Logica.Naves.Enemigos.CalaveraMágica;
 import Logica.Naves.Enemigos.GatoPlatillo;
 import Logica.Naves.Enemigos.PlatilloMalo;
@@ -35,9 +36,9 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     private VerificadorDeColisiones verificadorDeColisiones;
     private int posicioInicialDelEnemigoEnX = 50;
     private int posicioInicialDelEnemigoEnY = 50;
-    private int direccionMovimiento;
     private Pintor pintor;
     private ActualizadorEntidades actualizadorEntidades;
+    private ArrayList<Modificadores> modificadores;
 
     public PanelDeJuego() {
         iniciarPanel();
@@ -60,7 +61,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         temporizador = new Timer(10, this);
         temporizador.start();
         actualizadorEntidades = new ActualizadorEntidades();
-        direccionMovimiento = 1; //se inicia con derecha
+        modificadores = new ArrayList<>();
 
     }
 
@@ -77,14 +78,13 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        //super.paintComponent(g); porque estaba coment
         pintor.paintComponent(g);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            actualizadorEntidades.actualizarEntidades(nave, enemigos, enjambre1, enjambre2, enjambre3);
+            actualizadorEntidades.actualizarEntidades(nave, enemigos, modificadores , enjambre1, enjambre2, enjambre3);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
@@ -161,8 +161,9 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         return posicionesEnjambreTres;
     }
 
-    public ArrayList<int[]> obtenerPosicionesProyectiles() {
 
+
+    public ArrayList<int[]> obtenerPosicionesProyectiles() {
         ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
         for (Proyectil proyectil : nave.obtenerProyectiles()) {
             int[] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
@@ -189,6 +190,20 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     public int obtenerPosicionEnYNave() {
         return nave.obtenerPosicionEnY();
+    }
+
+    public ArrayList<int[]> obtenerPosicionesModificadores() {
+        ArrayList<int[]> posicionesModificadores = new ArrayList<>();
+        for(Modificadores modificador : modificadores) {
+            posicionesModificadores.add(modificador.obtenerPosicion());
+        }
+        return posicionesModificadores;
+    }
+
+    public void agregarModificador(Modificadores modificador) {
+        if(modificador != null){
+            this.modificadores.add(modificador);
+        }
     }
 
     private class TAdapter extends KeyAdapter {

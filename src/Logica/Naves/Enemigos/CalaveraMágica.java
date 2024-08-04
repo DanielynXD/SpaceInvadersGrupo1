@@ -7,8 +7,8 @@ public class CalaveraMágica extends NaveEnemigo {
     }
 
 
-    @Override
-    public int obtenerVelocidad() {
-        return 1;
-    }
+//    @Override
+//    public int obtenerVelocidad() {
+//        return 1;
+//    }
 }

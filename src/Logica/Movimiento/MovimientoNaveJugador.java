@@ -1,6 +1,6 @@
 package Logica.Movimiento;
 
-import Logica.Naves.Nave;
+import Logica.Entidad;
 
 public class MovimientoNaveJugador implements Movimiento {
     private int posicionEnX;
@@ -14,28 +14,43 @@ public class MovimientoNaveJugador implements Movimiento {
         this.posicionEnY = posicionInicialEnY;
     }
 
-    //@Override
-    public void mover() {
-        posicionEnX += distanciaDesplazada;
-        if (estaEnElLimiteDerecho()) {
-            posicionEnX = LIMITE_DERECHO - ANCHO_NAVE;
-        }
-        if (estaEnElLimiteIzquierdo()) {
-            posicionEnX = 0;
-        }
+//    //@Override
+//    public void mover() {
+//        posicionEnX += distanciaDesplazada;
+//        if (estaEnElLimiteDerecho()) {
+//            posicionEnX = LIMITE_DERECHO - ANCHO_NAVE;
+//        }
+//        if (estaEnElLimiteIzquierdo()) {
+//            posicionEnX = 0;
+//        }
+//    }
+
+    private boolean estaEnElLimiteIzquierdo(Entidad entidad) {
+        return entidad.obtenerPosicionEnX() < 0;
     }
 
-    private boolean estaEnElLimiteIzquierdo() {
-        return posicionEnX < 0;
-    }
-
-    private boolean estaEnElLimiteDerecho() {
-        return posicionEnX > LIMITE_DERECHO - ANCHO_NAVE;
+    private boolean estaEnElLimiteDerecho(Entidad entidad) {
+        return entidad.obtenerPosicionEnX() > LIMITE_DERECHO - ANCHO_NAVE;
     }
 
     @Override
-    public void mover(Nave entidad) {
+    public void mover(Entidad entidad) {
 
+//        if(distanciaDesplazada>0){
+//            entidad.fijarNuevaPosicionEnX(entidad.obtenerPosicionEnX() + distanciaDesplazada);
+//        }else{
+//            entidad.fijarNuevaPosicionEnX(entidad.obtenerPosicionEnX() + distanciaDesplazada);
+//        }
+        //posicionEnX += distanciaDesplazada;
+        if (estaEnElLimiteDerecho(entidad)) {
+            entidad.fijarNuevaPosicionEnX(LIMITE_DERECHO-ANCHO_NAVE);
+            //posicionEnX = LIMITE_DERECHO - ANCHO_NAVE;
+        }
+        if (estaEnElLimiteIzquierdo(entidad)) {
+            //posicionEnX = 0;
+            entidad.fijarNuevaPosicionEnX(0);
+        }
+        entidad.fijarNuevaPosicionEnX(entidad.obtenerPosicionEnX() + distanciaDesplazada);
     }
 
     @Override
