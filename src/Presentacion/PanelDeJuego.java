@@ -39,10 +39,24 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     private Pintor pintor;
     private ActualizadorEntidades actualizadorEntidades;
     private ArrayList<Modificadores> modificadores;
+    private JFrame jFrame;
+    private int puntajeTotal;
 
     public PanelDeJuego() {
+        this.jFrame = jFrame;
         iniciarPanel();
-        pintor = new Pintor(this);
+        pintor = new Pintor(this, verificadorDeColisiones);
+    }
+
+    public PanelDeJuego(JFrame jFrame) {
+        this.jFrame = jFrame;
+        puntajeTotal = 0;
+        iniciarPanel();
+        pintor = new Pintor(this,verificadorDeColisiones);
+    }
+
+    public VerificadorDeColisiones getVerificadorDeColisiones() {
+        return verificadorDeColisiones;
     }
 
     private void iniciarPanel() {
@@ -63,6 +77,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         actualizadorEntidades = new ActualizadorEntidades();
         modificadores = new ArrayList<>();
 
+
     }
 
     private void agregarEnemigos() {
@@ -78,6 +93,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
+
         pintor.paintComponent(g);
     }
 
@@ -217,5 +233,9 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             nave.teclaPresionada(e);
         }
+    }
+
+    public JFrame getJFrame() {
+        return jFrame;
     }
 }

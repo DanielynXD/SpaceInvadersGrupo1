@@ -12,7 +12,7 @@ public class Escenario extends JFrame{
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        PanelDeJuego gamePanel = new PanelDeJuego();
+        PanelDeJuego gamePanel = new PanelDeJuego(this);
         setContentPane(gamePanel);
         setVisible(true);
     }

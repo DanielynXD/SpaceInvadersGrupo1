@@ -19,6 +19,7 @@ public abstract class NaveEnemigo extends Nave {
     protected boolean puedeDisparar;
     private Random random = new Random();
     private MovimientoEnemigo movimiento;
+    public int puntosDelEnemigo;
 
 //    public int getPosicionEnY() {
 //        return posicionEnY;
@@ -28,7 +29,7 @@ public abstract class NaveEnemigo extends Nave {
 //        return (int)posicionEnX;
 //    }
 
-    public NaveEnemigo(int x, int y) {
+    public NaveEnemigo(int x, int y, int puntosDelEnemigo) {
 //        this.posicionEnX = x;
 //        this.posicionEnY = y;
 //        this.velocidad = 1;
@@ -36,6 +37,7 @@ public abstract class NaveEnemigo extends Nave {
         proyectilEnemigo = new ArrayList<>();
         this.puedeDisparar = true;
         this.movimiento = new MovimientoEnemigo(obtenerPosicionEnX(), obtenerPosicionEnY());
+        this.puntosDelEnemigo = puntosDelEnemigo;
         //iniciarEnemigo();
     }
 
@@ -114,6 +116,10 @@ public abstract class NaveEnemigo extends Nave {
     private boolean puedeGenerarModificador() {
         int probabilidadModificador = random.nextInt(10000);
         return true ;
+    }
+
+    public int getPuntosDelEnemigo() {
+        return puntosDelEnemigo;
     }
 
 }

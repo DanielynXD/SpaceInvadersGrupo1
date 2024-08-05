@@ -3,13 +3,20 @@ package Presentacion;
 import Logica.Naves.Enemigos.NaveEnemigo;
 import Logica.Naves.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
+import Logica.VerificadorDeColisiones;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
+import java.util.List;
 
 public class Pintor extends JPanel {
     PanelDeJuego panel;
+    private VentanaPuntuaciones ventanaPuntuaciones;
+    private VentanaFinDeJuego ventanaFinDeJuego;
+    private VerificadorDeColisiones puntajeTiempoReal;
+    private Menú  ventanaMenu;
+
     private Image fondo;
     private Image imagenNaveJugador;
     private Image imagenNaveEnemigoUno;
@@ -17,28 +24,95 @@ public class Pintor extends JPanel {
     private Image imagenNaveEnemigoTres;
     private Image imagenProyectil;
     private Image imagenProyectilEnemigo;
+    private Image imagenPuntuaciones;
 
-    public Pintor(PanelDeJuego panel) {
+    private Image imagenFinDelJuego;
+    private Image imagenMenu;
+
+    public Pintor(PanelDeJuego panel, VerificadorDeColisiones puntajeTiempoReal) {
         this.panel = panel;
-        imagenNaveJugador = new ImageIcon(Objects.requireNonNull(NaveJugador.class.getResource("/ImagenesJuego/Jugador/ModeloNaveJugador.png"))).getImage();
+        this.puntajeTiempoReal = puntajeTiempoReal;
+        imagenNaveJugador = new ImageIcon(Objects.requireNonNull(NaveJugador.class.getResource("/ImagenesJuego/Jugador/ModeloNaveJugador.gif"))).getImage();
         imagenProyectil = new ImageIcon(Objects.requireNonNull(Proyectil.class.getResource("/ImagenesJuego/Proyectiles/ProyectilJugador.png"))).getImage();
         imagenProyectilEnemigo = new ImageIcon(Objects.requireNonNull(Proyectil.class.getResource("/ImagenesJuego/Proyectiles/ProyectilEnemigo.png"))).getImage();
         imagenNaveEnemigoUno = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoUno.gif"))).getImage();
         imagenNaveEnemigoDos = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoDos.gif"))).getImage();
         imagenNaveEnemigoTres = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoTres.gif"))).getImage();
+        fondo = new ImageIcon(Objects.requireNonNull(PanelDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoEscena.gif"))).getImage();
 
-        fondo = new ImageIcon(Objects.requireNonNull(PanelDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoEscena.png"))).getImage();
+    }
+
+    public Pintor(VentanaPuntuaciones panelPuntuaciones) {
+        imagenPuntuaciones = new ImageIcon(Objects.requireNonNull(VentanaPuntuaciones.class.getResource("/ImagenesJuego/Fondos/FondoPuntuaciones.gif"))).getImage();
+        this.ventanaPuntuaciones = panelPuntuaciones;
+    }
+
+    public Pintor(VentanaFinDeJuego finDeJuego) {
+        //imagenFinDelJuego = new ImageIcon(Objects.requireNonNull(VentanaFinDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoGameOver.png"))).getImage();
+        imagenFinDelJuego = new ImageIcon(Objects.requireNonNull(getClass().getResource("/ImagenesJuego/Fondos/FondoGameOver.png"))).getImage();
+        this.ventanaFinDeJuego = finDeJuego;
+    }
+
+    public Pintor(Menú menu) {
+        imagenMenu = new ImageIcon(Objects.requireNonNull(Menú.class.getResource("/ImagenesJuego/Fondos/FondoMenu.gif"))).getImage();
+        this.ventanaMenu = menu;
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        dibujarFondo(g);
-        dibujarNave(g);
-        dibujarEnemigos(g);//dibuja a los enemigos
-        dibujarProyectiles(g);
-        dibujarProyectilesEnemigos(g);
-        dibujarModificadores(g);
+
+        super.paintComponent(g);
+
+
+        if (ventanaMenu != null ){
+            mensajeInicial(g);
+        } else if (panel != null) {
+            dibujarFondo(g);
+            dibujarPuntajesEnPantalla(g);
+            dibujarNave(g);
+            dibujarEnemigos(g);
+            dibujarModificadores(g);
+            dibujarProyectiles(g);
+            dibujarProyectilesEnemigos(g);
+        } else if (ventanaPuntuaciones != null) {
+            dibujarContenidoDePuntajes(g);
+        } else if (ventanaFinDeJuego != null) {
+            mensajeFinal(g);
+        }
         Toolkit.getDefaultToolkit().sync();
+
+    }
+
+    private void dibujarPuntajesEnPantalla(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Serif", Font.BOLD, 20));
+        g.drawString("Puntuacion: ", 25, 25);
+        g.drawString(String.valueOf(puntajeTiempoReal.getPuntajeTotal()), 130, 25);
+    }
+
+    private void dibujarContenidoDePuntajes(Graphics g) {
+        if (ventanaPuntuaciones == null) {
+            return;
+        }
+
+        g.drawImage(imagenPuntuaciones, 0, 0, 520, 800, this);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Serif", Font.BOLD, 20));
+        g.drawString("PUNTUACIONES", 180, 50);
+        int inicioDeLosPuntajes = 100;
+
+        List<Puntaje> puntuaciones = ventanaPuntuaciones.getPuntuaciones();
+        int diezMejoresJugadores= Math.min(puntuaciones.size(), 10);
+
+
+        for (int i = 0; i < diezMejoresJugadores; i++) {
+            Puntaje puntuacion = puntuaciones.get(i);
+            String nombre = puntuacion.getNombre();
+            String puntos = String.valueOf(puntuacion.getPuntaje());
+            g.drawString(nombre, 80, inicioDeLosPuntajes);
+            g.drawString(puntos, getWidth() - 125, inicioDeLosPuntajes);
+            inicioDeLosPuntajes += 30;
+        }
     }
 
     private void dibujarModificadores(Graphics g) {
@@ -95,4 +169,23 @@ public class Pintor extends JPanel {
     public void actualizar() {
         repaint();
     }
+    public void mensajeInicial(Graphics g) {
+        g.drawImage(imagenMenu, 0, 0, getWidth(), getHeight(), this);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Serif", Font.BOLD, 50));
+        g.drawString("SPACE INVADERS", 150, 100);
+
     }
+
+    private void mensajeFinal(Graphics g) {
+        g.drawImage(imagenFinDelJuego, 0, 0, getWidth(), getHeight(), this);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Serif", Font.BOLD, 50));
+        g.drawString("GAME OVER", 25, 180);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Britannic Bold", Font.BOLD, 20));
+        g.drawString("INGRESA", 360, 280);
+        g.setColor(Color.WHITE);
+        g.drawString("TU NOMBRE", 445, 280);
+    }
+}
