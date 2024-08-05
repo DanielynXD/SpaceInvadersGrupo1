@@ -6,23 +6,28 @@ import Logica.Proyectiles.Proyectil;
 import Logica.Proyectiles.ProyectilDelEnemigo;
 import Logica.Proyectiles.ProyectilDelJugador;
 import Presentacion.PanelDeJuego;
+import Presentacion.VentanaFinDeJuego;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VerificadorDeColisiones {
-
     private PanelDeJuego panelDeJuego;
+    private boolean ventanaFinDeJuegoAbierta = false;
+    public int puntajeTotal;
 
     public VerificadorDeColisiones(PanelDeJuego panelDeJuego) {
         this.panelDeJuego = panelDeJuego;
+        puntajeTotal = 0;
     }
 
     public void verificarColisiones (NaveJugador nave, ArrayList<NaveEnemigo> enemigos) {
         Rectangle hitboxNave = nave.obtenerHitbox();
         java.util.List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
         List<NaveEnemigo> enemigosAEliminar = new ArrayList<>();//almacena a los enemigos a eliminar
+
+
         verificarColisionesEnemigosYProyectilesDelJugador(proyectiles, enemigosAEliminar, enemigos);
         verificarColisionesJugadorYProyectilEnemigo(hitboxNave, enemigos, nave);
         verificarColisionesProyectilYProyectilEnemigo(proyectiles, enemigos);
@@ -36,9 +41,9 @@ public class VerificadorDeColisiones {
             for (int i = 0; i < enemigos.size(); i++) {
                 NaveEnemigo enemigo = enemigos.get(i);
                 Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
-
                 if (hitboxProyectil.intersects(hitboxEnemigo)) {
                     proyectil.setVisible(false);
+                    puntajeTotal += enemigo.getPuntosDelEnemigo();
                     enemigosAEliminar.add(enemigo);//añade al enemigo a la lista
                     panelDeJuego.agregarModificador(enemigo.generarModificador());
                 }
@@ -54,17 +59,28 @@ public class VerificadorDeColisiones {
             for (ProyectilDelEnemigo proyectilEnemigo : proyectilesEnemigo) {
                 Rectangle hitboxProyectilEnemigo = proyectilEnemigo.obtenerHitBox();
                 if (hitboxNave.intersects(hitboxEnemigo)) {
-                    System.exit(0); // Termina el juego porque lo tocaron
+                    generarVentanaFinDelJuego(puntajeTotal);
+                    return;
                 }
+
                 if (hitboxNave.intersects(hitboxProyectilEnemigo)) {
                     panelDeJuego.limpiarProyectilesDeLaVentana();
                     panelDeJuego.pausaDeReaparicion();
                     nave.numeroDeVidas--;
-                    if (nave.numeroDeVidas == 0) {
-                        System.exit(0); // Termina el juego porque pierde las 3 vidas
+                    if (nave.numeroDeVidas == 2) {
+                        generarVentanaFinDelJuego(getPuntajeTotal());
+                        return;
                     }
                 }
             }
+        }
+    }
+
+    private void generarVentanaFinDelJuego(int puntajeTotal) {
+        if (!ventanaFinDeJuegoAbierta) {
+            ventanaFinDeJuegoAbierta = true; // Evitar abrir múltiples ventanas
+            panelDeJuego.getJFrame().dispose();
+            new VentanaFinDeJuego(puntajeTotal);
         }
     }
 
@@ -82,5 +98,11 @@ public class VerificadorDeColisiones {
             }
         }
     }
+    public int getPuntajeTotal() {
+        return puntajeTotal;
+    }
+
+
+
 
 }
