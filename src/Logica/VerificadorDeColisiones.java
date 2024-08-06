@@ -98,6 +98,7 @@ public class VerificadorDeColisiones {
             }
         }
     }
+
     public int getPuntajeTotal() {
         return puntajeTotal;
     }

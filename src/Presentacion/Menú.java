@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 
 public class Menú extends JFrame implements ActionListener{
+    private final ReproductorMúsica reproductorDeMúsica;
     private JButton botonIniciarJuego, botonSalir, botonPuntuaciones;
     public static final int ANCHO = 768, ALTO = 432;
 
@@ -37,6 +38,9 @@ public class Menú extends JFrame implements ActionListener{
         add(panel);
         panel.setLayout(null);
         setVisible(true);
+
+        reproductorDeMúsica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/MusicaMenuJuego.wav");
+        reproductorDeMúsica.bucle();
     }
 
 
@@ -56,6 +60,7 @@ public class Menú extends JFrame implements ActionListener{
     }
 
     private void abrirVentanaJuego() {
+        reproductorDeMúsica.detener();
         new Escenario();
         this.dispose();
     }

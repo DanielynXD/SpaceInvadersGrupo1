@@ -5,6 +5,7 @@ import Logica.Movimiento.MovimientoNaveJugador;
 import Logica.Naves.Nave;
 import Logica.Proyectiles.ProyectilDelJugador;
 import Logica.VerificadorDeColisiones;
+import Presentacion.ReproductorMúsica;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ public class NaveJugador extends Nave {
     private final List<ProyectilDelJugador> proyectiles;
     private boolean puedeDisparar;
     private Timer temporizadorDisparo;
+    private ReproductorMúsica sonidoDisparo;
 //    private int velocidad = 4;
 
     public NaveJugador() {
@@ -38,6 +40,7 @@ public class NaveJugador extends Nave {
 
     private void iniciarNave() {
         puedeDisparar = true;
+        sonidoDisparo = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/DisparoNave.wav");
         temporizadorDisparo = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,6 +78,7 @@ public class NaveJugador extends Nave {
     protected void disparar(){
         if (puedeDisparar) {
             proyectiles.add(new ProyectilDelJugador (obtenerPosicionEnX() + (ANCHO_NAVE / 2) - 8, obtenerPosicionEnY(), 10));
+            sonidoDisparo.reproducir();
             puedeDisparar = false;
             temporizadorDisparo.start();
         }
