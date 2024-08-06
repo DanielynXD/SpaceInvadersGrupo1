@@ -3,6 +3,7 @@ package Presentacion;
 import Logica.Naves.Enemigos.NaveEnemigo;
 import Logica.Naves.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
+import Logica.Puntaje.Puntaje;
 import Logica.VerificadorDeColisiones;
 
 import javax.swing.*;
@@ -169,6 +170,7 @@ public class Pintor extends JPanel {
     public void actualizar() {
         repaint();
     }
+
     public void mensajeInicial(Graphics g) {
         g.drawImage(imagenMenu, 0, 0, getWidth(), getHeight(), this);
         g.setColor(Color.WHITE);

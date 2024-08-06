@@ -1,4 +1,4 @@
-package Presentacion;
+package Logica.Puntaje;
 
 import java.util.Comparator;
 
