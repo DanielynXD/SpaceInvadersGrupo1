@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.Objects;
 
 public class VentanaFinDeJuego extends JFrame implements ActionListener {
     private final int puntajeDelPartida;

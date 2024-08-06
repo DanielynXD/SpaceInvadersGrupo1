@@ -1,8 +1,10 @@
 package Presentacion;
 
+import Logica.Puntaje.ComparadorDePuntajes;
+import Logica.Puntaje.Puntaje;
+
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.io.*;
 import java.util.Objects;

@@ -1,5 +1,4 @@
-package Presentacion;
-import Presentacion.Puntaje;
+package Logica.Puntaje;
 
 
 public class Puntaje {

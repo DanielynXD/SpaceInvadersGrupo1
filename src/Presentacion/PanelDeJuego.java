@@ -13,7 +13,6 @@ import Logica.Enjambre.EnjambreDePlatillosMalos;
 import Logica.Naves.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
 import Logica.Proyectiles.ProyectilDelEnemigo;
-import Logica.Proyectiles.ProyectilDelJugador;
 import Logica.VerificadorDeColisiones;
 
 import java.awt.*;
@@ -43,11 +42,11 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     private int puntajeTotal;
     private ReproductorMúsica reproductorDeMúsica;
 
-    public PanelDeJuego() {
-        this.jFrame = jFrame;
-        iniciarPanel();
-        pintor = new Pintor(this, verificadorDeColisiones);
-    }
+//    public PanelDeJuego() {
+//        this.jFrame = jFrame;
+//        iniciarPanel();
+//        pintor = new Pintor(this, verificadorDeColisiones);
+//    }
 
     public PanelDeJuego(JFrame jFrame) {
         this.jFrame = jFrame;
@@ -56,9 +55,10 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         pintor = new Pintor(this,verificadorDeColisiones);
     }
 
-    public VerificadorDeColisiones getVerificadorDeColisiones() {
-        return verificadorDeColisiones;
-    }
+//    public VerificadorDeColisiones getVerificadorDeColisiones() {
+//        return verificadorDeColisiones;
+//    }
+    //todo preguntar victor
 
     private void iniciarPanel() {
         setFocusable(true);
@@ -178,8 +178,6 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         }
         return posicionesEnjambreTres;
     }
-
-
 
     public ArrayList<int[]> obtenerPosicionesProyectiles() {
         ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
