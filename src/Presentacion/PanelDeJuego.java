@@ -41,6 +41,7 @@ public class PanelDeJuego extends JPanel implements ActionListener {
     private ArrayList<Modificadores> modificadores;
     private JFrame jFrame;
     private int puntajeTotal;
+    private ReproductorMúsica reproductorDeMúsica;
 
     public PanelDeJuego() {
         this.jFrame = jFrame;
@@ -77,7 +78,8 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         actualizadorEntidades = new ActualizadorEntidades();
         modificadores = new ArrayList<>();
 
-
+        reproductorDeMúsica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/OverThinker.wav");
+        reproductorDeMúsica.reproducir();
     }
 
     private void agregarEnemigos() {
