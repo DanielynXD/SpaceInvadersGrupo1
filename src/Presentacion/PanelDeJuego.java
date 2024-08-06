@@ -224,6 +224,10 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         }
     }
 
+    public void detenerMusica() {
+        reproductorDeMúsica.detener();
+    }
+
     private class TAdapter extends KeyAdapter {
 
         @Override

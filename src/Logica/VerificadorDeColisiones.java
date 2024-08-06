@@ -59,6 +59,7 @@ public class VerificadorDeColisiones {
             for (ProyectilDelEnemigo proyectilEnemigo : proyectilesEnemigo) {
                 Rectangle hitboxProyectilEnemigo = proyectilEnemigo.obtenerHitBox();
                 if (hitboxNave.intersects(hitboxEnemigo)) {
+                    panelDeJuego.detenerMusica();
                     generarVentanaFinDelJuego(puntajeTotal);
                     return;
                 }
@@ -78,6 +79,7 @@ public class VerificadorDeColisiones {
 
     private void generarVentanaFinDelJuego(int puntajeTotal) {
         if (!ventanaFinDeJuegoAbierta) {
+            panelDeJuego.detenerMusica();
             ventanaFinDeJuegoAbierta = true; // Evitar abrir múltiples ventanas
             panelDeJuego.getJFrame().dispose();
             new VentanaFinDeJuego(puntajeTotal);

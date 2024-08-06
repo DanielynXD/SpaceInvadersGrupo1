@@ -13,6 +13,7 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
     private final int puntajeDelPartida;
     private JButton reintentarBoton, salirBoton;
     private JTextField nombreDelJugador;
+    private ReproductorMúsica reproductorMusica;
 
     public VentanaFinDeJuego(int puntajeDelJugador) {
         this.puntajeDelPartida = puntajeDelJugador;
@@ -44,6 +45,9 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
 
         add(panelFinDeJuego);
         setVisible(true);
+
+        reproductorMusica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/SonidoFinDeJuego.wav");
+        reproductorMusica.reproducir();
     }
 
     public void actionPerformed(ActionEvent e) {
