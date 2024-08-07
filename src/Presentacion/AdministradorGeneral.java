@@ -28,9 +28,9 @@ public class AdministradorGeneral {
         panelDeJuego.agregarModificador(modificadores);
     }
 
-    public void generarFinDeJuego(){
-        verificadorDeColisiones.generarVentanaFinDelJuego(verificadorDeColisiones.getPuntajeTotal());
-    }
+//    public void generarFinDeJuego(){
+//        verificadorDeColisiones.generarVentanaFinDelJuego(verificadorDeColisiones.getPuntajeTotal());
+//    }
 
     public void detenerMusica() {
         panelDeJuego.detenerMusica();
@@ -69,4 +69,7 @@ public class AdministradorGeneral {
     }
 
 
+    public void cargarPartida(PanelDeJuegoData panelDeJuegoData) {
+        verificadorDeColisiones.actualizarPuntaje(panelDeJuegoData.obtenerPuntaje());
+    }
 }

@@ -19,8 +19,8 @@ public class VentanaPartidaGuardada extends JFrame{
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         panelDeJuegoData = obtenerPartidaGuardada();
+        new Escenario(panelDeJuegoData);
     }
 
     private PanelDeJuegoData obtenerPartidaGuardada() {

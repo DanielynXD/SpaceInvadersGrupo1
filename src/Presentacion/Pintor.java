@@ -3,15 +3,21 @@ package Presentacion;
 import Logica.Entidades.Modificadores.Modificador;
 import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Entidades.Jugador.NaveJugador;
+import Logica.Entidades.Modificadores.VelocidadAumentada;
+import Logica.Entidades.Modificadores.VelocidadDeDisparoAumentada;
+import Logica.Entidades.Modificadores.VidaExtra;
 import Logica.Proyectiles.Proyectil;
 import Logica.Puntaje.Puntaje;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.List;
 
 public class Pintor extends JPanel {
+
+
     PanelDeJuego panel;
     private VentanaPuntuaciones ventanaPuntuaciones;
     private VentanaFinDeJuego ventanaFinDeJuego;
@@ -28,6 +34,9 @@ public class Pintor extends JPanel {
     private Image imagenModificadorVidaExtra;
     private Image imagenFinDelJuego;
     private Image imagenMenu;
+    private Image imagenModificadorVelocidadAumentada;
+    private Image imagenModificadorVelocidadDisparoJugador;
+
 
     public Pintor(PanelDeJuego panel) {
         this.panel = panel;
@@ -37,7 +46,9 @@ public class Pintor extends JPanel {
         imagenNaveEnemigoUno = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoUno.gif"))).getImage();
         imagenNaveEnemigoDos = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoDos.gif"))).getImage();
         imagenNaveEnemigoTres = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoTres.gif"))).getImage();
-        imagenModificadorVidaExtra = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/VidaExtra.gif"))).getImage();
+        imagenModificadorVidaExtra = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/modificadorVidaExtra.png"))).getImage();
+        imagenModificadorVelocidadAumentada = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/modificadorVelocidadJugador.png"))).getImage();
+        imagenModificadorVelocidadDisparoJugador = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/modificadorVelocidadDisparoJugador.png"))).getImage();
         fondo = new ImageIcon(Objects.requireNonNull(PanelDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoEscena.gif"))).getImage();
 
     }
@@ -124,9 +135,25 @@ public class Pintor extends JPanel {
     }
 
     private void dibujarModificadores(Graphics g) {
-        for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
-            g.drawImage(imagenModificadorVidaExtra, arregloPosiciones[0], arregloPosiciones[1], this);
+        ArrayList<Modificador> modificadores = panel.obtenerModificadores();
+        for (Modificador modificador : modificadores){
+            if (modificador instanceof VidaExtra){
+                for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
+                    g.drawImage(imagenModificadorVidaExtra, arregloPosiciones[0], arregloPosiciones[1], this);
+                }
+            }
+            if (modificador instanceof VelocidadDeDisparoAumentada){
+                for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
+                    g.drawImage(imagenModificadorVelocidadDisparoJugador, arregloPosiciones[0], arregloPosiciones[1], this);
+                }
+            }
+            if (modificador instanceof VelocidadAumentada){
+                for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
+                    g.drawImage(imagenModificadorVelocidadAumentada, arregloPosiciones[0], arregloPosiciones[1], this);
+                }
+            }
         }
+
     }
 
     private void dibujarProyectilesEnemigos(Graphics g) {

@@ -32,7 +32,7 @@ public class Menú extends JFrame implements ActionListener{
         panel.add(botonPuntuaciones);
 
         botonCargarPartida = new JButton("Cargar Partida");
-        botonCargarPartida.setBounds(300, 250, 150, 40);
+        botonCargarPartida.setBounds(300, 300, 150, 40);
         botonCargarPartida.addActionListener(this);
         panel.add(botonCargarPartida);
 
@@ -59,10 +59,8 @@ public class Menú extends JFrame implements ActionListener{
             new VentanaPuntuaciones();
         }
         if (e.getSource() == botonCargarPartida) {
-            VentanaPartidaGuardada ventana = new VentanaPartidaGuardada();
-            new Escenario(ventana.obtenerPanelDeJuegoGuardado());
-            this.dispose();
-
+            new VentanaPartidaGuardada();
+            //new Escenario(ventana.obtenerPanelDeJuegoGuardado());
 
         }
         if(e.getSource() == botonSalir) {

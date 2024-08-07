@@ -8,9 +8,11 @@ import java.awt.event.ActionListener;
 public class PantallaDePausa extends JPanel {
     private JButton botonReanudar, botonGuardar;
     private PanelDeJuego panelDeJuego;
+    private PanelDeJuegoData panelDeJuegoData;
 
-    public PantallaDePausa(PanelDeJuego panelDeJuego) {
+    public PantallaDePausa(PanelDeJuego panelDeJuego, PanelDeJuegoData panelDeJuegoData) {
         this.panelDeJuego = panelDeJuego;
+        this.panelDeJuegoData = panelDeJuegoData;
         setLayout(null);
         setBackground(new Color(0, 0, 0, 150));
 
@@ -27,12 +29,12 @@ public class PantallaDePausa extends JPanel {
 
         botonGuardar = new JButton("Guardar");
         botonGuardar.setBounds(350, 400, 100, 50);
-//        botonGuardar.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                panelDeJuegoData.guardarPartida();
-//            }
-//        });
+        botonGuardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelDeJuegoData.guardarPartida();
+            }
+        });
         add(botonGuardar);
 
 

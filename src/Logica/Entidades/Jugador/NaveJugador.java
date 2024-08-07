@@ -26,7 +26,7 @@ public class NaveJugador extends Nave {
     private boolean puedeDisparar;
     private Timer temporizadorDisparo;
     private ReproductorMúsica sonidoDisparo;
-    private int velocidadDisparo = 500;
+    private int velocidadDisparo = 1000;
     private java.util.Timer timer;
 
     public NaveJugador() {
@@ -41,7 +41,6 @@ public class NaveJugador extends Nave {
     private void iniciarNave() {
         puedeDisparar = true;
         sonidoDisparo = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/DisparoNave.wav");
-
 
 //        temporizadorDisparo = new Timer(velocidadDisparo, new ActionListener() {
 //            @Override
@@ -98,15 +97,20 @@ public class NaveJugador extends Nave {
     public void aumentarVelocidadDeDisparo(){
         System.out.println("Se incremento la velicidad");
 
-        this.velocidadDisparo = 100;
+        this.velocidadDisparo = 1;
         TimerTask timerDos = new TimerTask() {
+
             @Override
             public void run() {
                 restablecerVelocidadDeDisparo();
                 System.out.println("Se reestablecio la velocidad normal");
+                actualizarValores();
             }
         };
-        timer.schedule(timerDos, 5000);
+        timer.schedule(timerDos,2000);
+
+
+        //restablecerVelocidadThread.start();
 
 //        this.velocidadDisparo = 1;
 //
@@ -122,6 +126,14 @@ public class NaveJugador extends Nave {
     }
 
     public void restablecerVelocidadDeDisparo() {
-        this.velocidadDisparo = 5000;
+        this.velocidadDisparo = 500000;
+    }
+
+    public void actualizarValores() {
+        temporizadorDisparo.setDelay(velocidadDisparo);
+    }
+
+    public void actualizarNumeroDeVidas(int i) {
+        numeroDeVidas = i;
     }
 }

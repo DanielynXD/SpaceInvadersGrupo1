@@ -47,28 +47,33 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     private PanelDeJuegoData panelDeJuegoData;
 
     private  PantallaDePausa pantallaDePausa;
-    private ArrayList<Modificador> modificadoresVidaExtra;
-    private ArrayList<Modificador> modificadoresVelocidadAumentada;
-    private ArrayList<Modificador> modificadoresVelocidadDisparoAumentada;
-    private ArrayList<Modificador> modificadoresProbabilidadDisparoEnemigosAumentada;
-    //private boolean enPausa;
 
 
     public PanelDeJuego(JFrame jFrame)  {
         this.jFrame = jFrame;
         //enPausa = false;
-        pantallaDePausa = new PantallaDePausa(this);
         iniciarPanel();
+        this.panelDeJuegoData = new PanelDeJuegoData();
+        pantallaDePausa = new PantallaDePausa(this, panelDeJuegoData);
+
         pintor = new Pintor(this);
     }
 
     public PanelDeJuego(JFrame jFrame, PanelDeJuegoData panelDeJuegoData)  {
         this.jFrame = jFrame;
-        //enPausa = false;
-        pantallaDePausa = new PantallaDePausa(this);
         iniciarPanel();
+        this.panelDeJuegoData = panelDeJuegoData;
+        this.cargarPartida();
+        pantallaDePausa = new PantallaDePausa(this, panelDeJuegoData);
         pintor = new Pintor(this);
     }
+
+    private void cargarPartida() {
+        administradorGeneral.cargarPartida(panelDeJuegoData);
+        nave.actualizarNumeroDeVidas(panelDeJuegoData.obtenerVidas());
+        numeroOleada = panelDeJuegoData.obtenerNumeroDeOleada();
+    }
+
 
     private void iniciarPanel()  {
         setFocusable(true);
@@ -82,12 +87,7 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
         temporizador = new Timer(10, this);
         temporizador.start();
-//        actualizadorEntidades = new ActualizadorEntidades();
         modificadores = new ArrayList<>();
-        modificadoresVidaExtra = new ArrayList<>();
-        modificadoresVelocidadAumentada = new ArrayList<>();
-        modificadoresVelocidadDisparoAumentada = new ArrayList<>();
-        modificadoresProbabilidadDisparoEnemigosAumentada = new ArrayList<>();
 
         reproductorDeMúsica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/SonidoIntensoPanelJuego.wav");
         reproductorDeMúsica.reproducir();
@@ -129,7 +129,7 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
             throw new RuntimeException(ex);
         }
         administradorGeneral.verficarExistenciaEnemigos(enemigos);
-        panelDeJuegoData.actualizarDatos(obtenerPosicionesEnjambreUno(), obtenerPosicionesEnjambreDos(), obtenerPosicionesEnjambreTres(), obtenerPosicionEnXNave(), obtenerPosicionEnYNave(), obtenerVidasJugador(), getPuntajeTotal());
+        panelDeJuegoData.actualizarDatos(obtenerPosicionesEnjambreUno(), obtenerPosicionesEnjambreDos(), obtenerPosicionesEnjambreTres(), obtenerPosicionEnXNave(), obtenerPosicionEnYNave(), obtenerVidasJugador(), getPuntajeTotal(), nave.obtenerVidasDisponibles(), numeroOleada);
 
     }
 
@@ -235,18 +235,7 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
     public void agregarModificador(Modificador modificador) {
         if (modificador != null) {
-            if(modificador instanceof VidaExtra){
-                this.modificadoresVidaExtra.add(modificador);
-            }
-            if(modificador instanceof VelocidadAumentada){
-                this.modificadoresVelocidadAumentada.add(modificador);
-            }
-            if(modificador instanceof VelocidadDeDisparoAumentada){
-                this.modificadoresVelocidadDisparoAumentada.add(modificador);
-            }
-            if(modificador instanceof ProbabilidadDisparoEnemigosAumentada){
-                this.modificadoresProbabilidadDisparoEnemigosAumentada.add(modificador);
-            }
+            modificadores.add(modificador);
         }
     }
 
@@ -260,6 +249,10 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
     public int obtenerVidasJugador() {
         return nave.obtenerVidasDisponibles();
+    }
+
+    public ArrayList<Modificador> obtenerModificadores() {
+        return modificadores;
     }
 
 
