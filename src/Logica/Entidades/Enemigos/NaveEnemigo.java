@@ -58,27 +58,16 @@ public abstract class NaveEnemigo extends Nave {
     }
 
     private Modificador establecerTipoDeModificador() {
-        int probabilidadModificador = random.nextInt(3);
+        int probabilidadModificador = random.nextInt(4);
 
-//        switch (probabilidadModificador) {
-//
-//            case 0:
-//                return new VidaExtra(obtenerPosicionEnX(), obtenerPosicionEnY());
-//
-//            case 1:
-//                return new VelocidadAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
-//
-//            case 2:
-//                return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
-//
-//            case 3:
-//                return new ProbabilidadDisparoEnemigosAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
-//            default:
-//                return null;
-//        }
-
-        return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
-
+        return switch (probabilidadModificador) {
+            case 0 -> new VidaExtra(obtenerPosicionEnX(), obtenerPosicionEnY());
+            case 1 -> new VelocidadAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+            case 2 -> new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+            case 3 -> new ProbabilidadDisparoEnemigosAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+            default -> null;
+        };
+        //return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
     }
 
     private boolean puedeGenerarModificador() {

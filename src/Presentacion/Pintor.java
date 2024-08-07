@@ -33,6 +33,7 @@ public class Pintor extends JPanel {
     private Image imagenMenu;
     private Image imagenModificadorVelocidadAumentada;
     private Image imagenModificadorVelocidadDisparoJugador;
+    private Image imagenModificadorPolitecnico;
 
 
     public Pintor(PanelDeJuego panel) {
@@ -46,6 +47,7 @@ public class Pintor extends JPanel {
         imagenModificadorVidaExtra = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/modificadorVidaExtra.png"))).getImage();
         imagenModificadorVelocidadAumentada = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/modificadorVelocidadJugador.png"))).getImage();
         imagenModificadorVelocidadDisparoJugador = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/modificadorVelocidadDisparoJugador.png"))).getImage();
+        imagenModificadorPolitecnico =  new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/modificadorPolitecnico.png"))).getImage();
         fondo = new ImageIcon(Objects.requireNonNull(PanelDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoEscena.gif"))).getImage();
 
     }
