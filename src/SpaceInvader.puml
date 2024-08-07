@@ -7,59 +7,151 @@ package Main {
 }
 
 package Logica {
-    class ActualizadorEntidades
-    class Entidad
+    class ActualizadorEntidades {
+        - List<Entidad> entidades
+        + actualizar(): void
+        + agregarEntidad(Entidad entidad): void
+    }
+
+    abstract class Entidad {
+        - int x
+        - int y
+        - int velocidad
+        + actualizar(): void
+        + dibujar(): void
+    }
+
     class Modificadores
-    class VerificadorDeColisiones
+
+    class VerificadorDeColisiones {
+        + verificar(Entidad entidad1, Entidad entidad2): boolean
+    }
+
+    ActualizadorEntidades --> Entidad : updates *
+    VerificadorDeColisiones --> Entidad : verifies
 
     package Enjambre {
-        class Enjambre
-        class EnjambreDeCalaverasMágicas
-        class EnjambreDeGatosPlatillos
-        class EnjambreDePlatillosMalos
+        abstract class Enjambre extends Entidad
+        class EnjambreDeCalaverasMágicas extends Enjambre
+        class EnjambreDeGatosPlatillos extends Enjambre
+        class EnjambreDePlatillosMalos extends Enjambre
     }
 
-    package Movimiento {
-        class MovimientoAbajo
-        class MovimientoDerecha
-        class MovimientoIzquierda
-        class MovimientoNaveJugador
-        class MovimientoEnemigo
+    Entidad <|-- Enjambre
+    Enjambre <|-- EnjambreDeCalaverasMágicas
+    Enjambre <|-- EnjambreDeGatosPlatillos
+    Enjambre <|-- EnjambreDePlatillosMalos
+}
+
+package Movimiento {
+    interface Movimiento {
+        + mover(): void
     }
 
-    package Naves {
-        class Nave
-
-        package Enemigos {
-            class CalaveraMágica
-            class GatoPlatillo
-            class NaveEnemigo
-            class PlatilloMalo
-        }
-
-        package Jugador {
-            class NaveJugador
-        }
+    class MovimientoAbajo implements Movimiento {
+        + mover(): void
     }
 
-    package Proyectiles {
-        class Proyectil
-        class ProyectilDelEnemigo
-        class ProyectilDelJugador
+    class MovimientoDerecha implements Movimiento {
+        + mover(): void
     }
 
-    package Puntaje {
-        class ComparadorDePuntajes
-        class Puntaje
+    class MovimientoIzquierda implements Movimiento {
+        + mover(): void
     }
+
+    class MovimientoNaveJugador implements Movimiento {
+        + mover(): void
+    }
+
+    class MovimientoEnemigo implements Movimiento {
+        + mover(): void
+    }
+
+    Movimiento <|.. MovimientoAbajo
+    Movimiento <|.. MovimientoDerecha
+    Movimiento <|.. MovimientoIzquierda
+    Movimiento <|.. MovimientoNaveJugador
+    Movimiento <|.. MovimientoEnemigo
+}
+
+package Naves {
+    abstract class Nave extends Entidad {
+        - int vida
+        + recibirDaño(int daño): void
+    }
+
+    package Enemigos {
+        class CalaveraMágica extends Nave
+        class GatoPlatillo extends Nave
+        class NaveEnemigo extends Nave
+        class PlatilloMalo extends Nave
+    }
+
+    package Jugador {
+        class NaveJugador extends Nave
+    }
+
+    Entidad <|-- Nave
+    Nave <|-- CalaveraMágica
+    Nave <|-- GatoPlatillo
+    Nave <|-- NaveEnemigo
+    Nave <|-- PlatilloMalo
+    Nave <|-- NaveJugador
+}
+
+package Proyectiles {
+    abstract class Proyectil extends Entidad {
+        - int daño
+        + getDaño(): int
+    }
+
+    class ProyectilDelEnemigo extends Proyectil
+    class ProyectilDelJugador extends Proyectil
+
+    Entidad <|-- Proyectil
+    Proyectil <|-- ProyectilDelEnemigo
+    Proyectil <|-- ProyectilDelJugador
+}
+
+package Puntaje {
+    class ComparadorDePuntajes {
+        + compare(Puntaje p1, Puntaje p2): int
+    }
+
+    class Puntaje {
+        - int puntos
+        + getPuntos(): int
+        + setPuntos(int puntos): void
+    }
+
+    ComparadorDePuntajes --> Puntaje : compares
 }
 
 package Presentacion {
-    class Escenario
-    class Menú
-    class PanelDeJuego
-    class Pintor
-    class ReproductorMúsica
+    class Escenario {
+        - List<Entidad> entidades
+        + actualizar(): void
+        + dibujar(): void
+    }
+
+    class Menú {
+        + mostrar(): void
+    }
+
+    class PanelDeJuego {
+        - Escenario escenario
+        + iniciarJuego(): void
+    }
+
+    class Pintor {
+        + pintar(Entidad entidad): void
+    }
+
+    class ReproductorMúsica {
+        + reproducir(String archivo): void
+    }
+
     class VentanaFinDeJuego
     class VentanaPuntuaciones
 
@@ -70,5 +162,10 @@ package Presentacion {
         class OverThinker
         class SonidoFinDeJuego
     }
+
+    Escenario --> Entidad : contains *
+    PanelDeJuego --> Escenario : uses
+    Pintor --> Entidad : paints
+    ReproductorMúsica --> Menú : uses
 }
 @enduml
