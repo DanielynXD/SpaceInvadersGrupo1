@@ -1,10 +1,10 @@
 package Presentacion;
 
-import Logica.Naves.Enemigos.NaveEnemigo;
-import Logica.Naves.Jugador.NaveJugador;
+import Logica.Entidades.Modificadores.Modificador;
+import Logica.Entidades.Enemigos.NaveEnemigo;
+import Logica.Entidades.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
 import Logica.Puntaje.Puntaje;
-import Logica.VerificadorDeColisiones;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,6 @@ public class Pintor extends JPanel {
     PanelDeJuego panel;
     private VentanaPuntuaciones ventanaPuntuaciones;
     private VentanaFinDeJuego ventanaFinDeJuego;
-    private VerificadorDeColisiones puntajeTiempoReal;
     private Menú  ventanaMenu;
 
     private Image fondo;
@@ -26,19 +25,19 @@ public class Pintor extends JPanel {
     private Image imagenProyectil;
     private Image imagenProyectilEnemigo;
     private Image imagenPuntuaciones;
-
+    private Image imagenModificadorVidaExtra;
     private Image imagenFinDelJuego;
     private Image imagenMenu;
 
-    public Pintor(PanelDeJuego panel, VerificadorDeColisiones puntajeTiempoReal) {
+    public Pintor(PanelDeJuego panel) {
         this.panel = panel;
-        this.puntajeTiempoReal = puntajeTiempoReal;
         imagenNaveJugador = new ImageIcon(Objects.requireNonNull(NaveJugador.class.getResource("/ImagenesJuego/Jugador/ModeloNaveJugador.gif"))).getImage();
         imagenProyectil = new ImageIcon(Objects.requireNonNull(Proyectil.class.getResource("/ImagenesJuego/Proyectiles/ProyectilJugador.png"))).getImage();
         imagenProyectilEnemigo = new ImageIcon(Objects.requireNonNull(Proyectil.class.getResource("/ImagenesJuego/Proyectiles/ProyectilEnemigo.png"))).getImage();
         imagenNaveEnemigoUno = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoUno.gif"))).getImage();
         imagenNaveEnemigoDos = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoDos.gif"))).getImage();
         imagenNaveEnemigoTres = new ImageIcon(Objects.requireNonNull(NaveEnemigo.class.getResource("/ImagenesJuego/Enemigos/GifEnemigoTres.gif"))).getImage();
+        imagenModificadorVidaExtra = new ImageIcon(Objects.requireNonNull(Modificador.class.getResource("/ImagenesJuego/Modificadores/VidaExtra.gif"))).getImage();
         fondo = new ImageIcon(Objects.requireNonNull(PanelDeJuego.class.getResource("/ImagenesJuego/Fondos/FondoEscena.gif"))).getImage();
 
     }
@@ -75,6 +74,7 @@ public class Pintor extends JPanel {
             dibujarModificadores(g);
             dibujarProyectiles(g);
             dibujarProyectilesEnemigos(g);
+            dibujarVidasEnPantalla(g);
         } else if (ventanaPuntuaciones != null) {
             dibujarContenidoDePuntajes(g);
         } else if (ventanaFinDeJuego != null) {
@@ -88,7 +88,14 @@ public class Pintor extends JPanel {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Serif", Font.BOLD, 20));
         g.drawString("Puntuacion: ", 25, 25);
-        g.drawString(String.valueOf(puntajeTiempoReal.getPuntajeTotal()), 130, 25);
+        g.drawString(String.valueOf(panel.getPuntajeTotal()), 130, 25);
+    }
+
+    private void dibujarVidasEnPantalla(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Serif", Font.BOLD, 20));
+        g.drawString("Vidas: ", 25, 50);
+        g.drawString(String.valueOf(panel.obtenerVidasJugador()), 130, 50 );
     }
 
     private void dibujarContenidoDePuntajes(Graphics g) {
@@ -118,7 +125,7 @@ public class Pintor extends JPanel {
 
     private void dibujarModificadores(Graphics g) {
         for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
-            g.drawImage(imagenNaveEnemigoUno, arregloPosiciones[0], arregloPosiciones[1], this);
+            g.drawImage(imagenModificadorVidaExtra, arregloPosiciones[0], arregloPosiciones[1], this);
         }
     }
 

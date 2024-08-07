@@ -7,8 +7,9 @@ import java.awt.event.ActionListener;
 
 public class Menú extends JFrame implements ActionListener{
     private final ReproductorMúsica reproductorDeMúsica;
-    private JButton botonIniciarJuego, botonSalir, botonPuntuaciones;
+    private JButton botonIniciarJuego, botonSalir, botonPuntuaciones, botonCargarPartida;
     public static final int ANCHO = 768, ALTO = 432;
+
 
     public Menú() {
         JPanel panel = new Pintor(this); // Usar Pintor para el dibujo
@@ -30,6 +31,11 @@ public class Menú extends JFrame implements ActionListener{
         botonPuntuaciones.addActionListener(this);
         panel.add(botonPuntuaciones);
 
+        botonCargarPartida = new JButton("Cargar Partida");
+        botonCargarPartida.setBounds(300, 250, 150, 40);
+        botonCargarPartida.addActionListener(this);
+        panel.add(botonCargarPartida);
+
         botonSalir = new JButton("Salir");
         botonSalir.setBounds(300, 300, 150, 40);
         botonSalir.addActionListener(this);
@@ -43,7 +49,6 @@ public class Menú extends JFrame implements ActionListener{
         reproductorDeMúsica.bucle();
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -52,6 +57,13 @@ public class Menú extends JFrame implements ActionListener{
         }
         if(e.getSource() == botonPuntuaciones) {
             new VentanaPuntuaciones();
+        }
+        if (e.getSource() == botonCargarPartida) {
+            VentanaPartidaGuardada ventana = new VentanaPartidaGuardada();
+            new Escenario(ventana.obtenerPanelDeJuegoGuardado());
+            this.dispose();
+
+
         }
         if(e.getSource() == botonSalir) {
             System.exit(0);
@@ -64,6 +76,10 @@ public class Menú extends JFrame implements ActionListener{
         new Escenario();
         this.dispose();
     }
+
+    /*
+
+     */
 }
 
 

@@ -1,0 +1,74 @@
+
+@startuml
+package Main {
+    class Main {
+        + main(String[] args)
+    }
+}
+
+package Logica {
+    class ActualizadorEntidades
+    class Entidad
+    class Modificadores
+    class VerificadorDeColisiones
+
+    package Enjambre {
+        class Enjambre
+        class EnjambreDeCalaverasMágicas
+        class EnjambreDeGatosPlatillos
+        class EnjambreDePlatillosMalos
+    }
+
+    package Movimiento {
+        class MovimientoAbajo
+        class MovimientoDerecha
+        class MovimientoIzquierda
+        class MovimientoNaveJugador
+        class MovimientoEnemigo
+    }
+
+    package Naves {
+        class Nave
+
+        package Enemigos {
+            class CalaveraMágica
+            class GatoPlatillo
+            class NaveEnemigo
+            class PlatilloMalo
+        }
+
+        package Jugador {
+            class NaveJugador
+        }
+    }
+
+    package Proyectiles {
+        class Proyectil
+        class ProyectilDelEnemigo
+        class ProyectilDelJugador
+    }
+
+    package Puntaje {
+        class ComparadorDePuntajes
+        class Puntaje
+    }
+}
+
+package Presentacion {
+    class Escenario
+    class Menú
+    class PanelDeJuego
+    class Pintor
+    class ReproductorMúsica
+    class VentanaFinDeJuego
+    class VentanaPuntuaciones
+
+    package MúsicaYSonido {
+        class DisparoNave
+        class MusicaMenuJuego
+        class MusicaPanelDeJuego
+        class OverThinker
+        class SonidoFinDeJuego
+    }
+}
+@enduml

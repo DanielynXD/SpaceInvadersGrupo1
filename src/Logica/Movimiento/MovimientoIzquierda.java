@@ -1,17 +1,11 @@
 package Logica.Movimiento;
 
-import Logica.Entidad;
-import Logica.Naves.Nave;
+import Logica.Entidades.Entidad;
 
 public class MovimientoIzquierda implements Movimiento{
-
-    private final int posicionEnX;
-    private final int posicionEnY;
     private int direccion;
 
-    public MovimientoIzquierda(int posicionEnX, int posicionEnY) {
-        this.posicionEnX = posicionEnX;
-        this.posicionEnY = posicionEnY;
+    public MovimientoIzquierda() {
         this.direccion = 1;
     }
 
@@ -20,13 +14,4 @@ public class MovimientoIzquierda implements Movimiento{
         entidad.fijarNuevaPosicionEnX(entidad.obtenerPosicionEnX() + entidad.obtenerVelocidad() * -direccion);
     }
 
-    @Override
-    public int obtenerPosicionEnX() {
-        return posicionEnX;
-    }
-
-    @Override
-    public int obtenerPosicionEnY() {
-        return posicionEnY;
-    }
 }

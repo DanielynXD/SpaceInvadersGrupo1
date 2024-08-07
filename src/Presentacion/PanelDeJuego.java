@@ -1,88 +1,108 @@
 package Presentacion;
 
-import Logica.ActualizadorEntidades;
+import Logica.ControlesDeSistema.ActualizadorEntidades;
+import Logica.ControlesDeSistema.ControladorDeTeclas;
+import Logica.ControlesDeSistema.GestorDePartidas;
 import Logica.Enjambre.EnjambreDeCalaverasMágicas;
 import Logica.Enjambre.EnjambreDeGatosPlatillos;
-import Logica.Modificadores;
-import Logica.Naves.Enemigos.CalaveraMágica;
-import Logica.Naves.Enemigos.GatoPlatillo;
-import Logica.Naves.Enemigos.PlatilloMalo;
-import Logica.Naves.Enemigos.NaveEnemigo;
+import Logica.Entidades.Modificadores.*;
+import Logica.Entidades.Enemigos.CalaveraMágica;
+import Logica.Entidades.Enemigos.GatoPlatillo;
+import Logica.Entidades.Enemigos.PlatilloMalo;
+import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Enjambre.Enjambre;
 import Logica.Enjambre.EnjambreDePlatillosMalos;
-import Logica.Naves.Jugador.NaveJugador;
+import Logica.Entidades.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
 import Logica.Proyectiles.ProyectilDelEnemigo;
-import Logica.VerificadorDeColisiones;
+import Logica.ControlesDeSistema.VerificadorDeColisiones;
+
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.util.List;
 import javax.swing.Timer;
 
-public class PanelDeJuego extends JPanel implements ActionListener {
+public class PanelDeJuego extends JPanel implements ActionListener, Serializable {
 
     public static final int ANCHO = 800, ALTO = 600;
     private Timer temporizador;
     private NaveJugador nave;
     private Enjambre enjambre1, enjambre2, enjambre3;
     private ArrayList<NaveEnemigo> enemigos;
-    private VerificadorDeColisiones verificadorDeColisiones;
+//    private VerificadorDeColisiones verificadorDeColisiones;
     private int posicioInicialDelEnemigoEnX = 50;
     private int posicioInicialDelEnemigoEnY = 50;
     private Pintor pintor;
-    private ActualizadorEntidades actualizadorEntidades;
-    private ArrayList<Modificadores> modificadores;
+//    private ActualizadorEntidades actualizadorEntidades;
+    private ArrayList<Modificador> modificadores;
     private JFrame jFrame;
-    private int puntajeTotal;
+    private int numeroOleada;
     private ReproductorMúsica reproductorDeMúsica;
+    private AdministradorGeneral administradorGeneral;
+    private ControladorDeTeclas controladorDeTeclas;
+    private PanelDeJuegoData panelDeJuegoData;
 
-//    public PanelDeJuego() {
-//        this.jFrame = jFrame;
-//        iniciarPanel();
-//        pintor = new Pintor(this, verificadorDeColisiones);
-//    }
+    private  PantallaDePausa pantallaDePausa;
+    private ArrayList<Modificador> modificadoresVidaExtra;
+    private ArrayList<Modificador> modificadoresVelocidadAumentada;
+    private ArrayList<Modificador> modificadoresVelocidadDisparoAumentada;
+    private ArrayList<Modificador> modificadoresProbabilidadDisparoEnemigosAumentada;
+    //private boolean enPausa;
 
-    public PanelDeJuego(JFrame jFrame) {
+
+    public PanelDeJuego(JFrame jFrame)  {
         this.jFrame = jFrame;
-        puntajeTotal = 0;
+        //enPausa = false;
+        pantallaDePausa = new PantallaDePausa(this);
         iniciarPanel();
-        pintor = new Pintor(this,verificadorDeColisiones);
+        pintor = new Pintor(this);
     }
 
-//    public VerificadorDeColisiones getVerificadorDeColisiones() {
-//        return verificadorDeColisiones;
-//    }
-    //todo preguntar victor
+    public PanelDeJuego(JFrame jFrame, PanelDeJuegoData panelDeJuegoData)  {
+        this.jFrame = jFrame;
+        //enPausa = false;
+        pantallaDePausa = new PantallaDePausa(this);
+        iniciarPanel();
+        pintor = new Pintor(this);
+    }
 
-    private void iniciarPanel() {
+    private void iniciarPanel()  {
         setFocusable(true);
         setSize(ANCHO, ALTO);
         nave = new NaveJugador();
+        numeroOleada = 0;
+        panelDeJuegoData = new PanelDeJuegoData();
         addKeyListener(new TAdapter());
         enemigos = new ArrayList<>();//inicializa el array de enemigos
-        verificadorDeColisiones = new VerificadorDeColisiones(this);
-        enjambre1 = new EnjambreDePlatillosMalos(1, 10, new PlatilloMalo(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
-        enjambre2 = new EnjambreDeCalaverasMágicas(2, 10, new CalaveraMágica(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
-        enjambre3 = new EnjambreDeGatosPlatillos(2, 10, new GatoPlatillo(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY));
-
         agregarEnemigos();//agrega enemigos
 
         temporizador = new Timer(10, this);
         temporizador.start();
-        actualizadorEntidades = new ActualizadorEntidades();
+//        actualizadorEntidades = new ActualizadorEntidades();
         modificadores = new ArrayList<>();
+        modificadoresVidaExtra = new ArrayList<>();
+        modificadoresVelocidadAumentada = new ArrayList<>();
+        modificadoresVelocidadDisparoAumentada = new ArrayList<>();
+        modificadoresProbabilidadDisparoEnemigosAumentada = new ArrayList<>();
 
-        reproductorDeMúsica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/OverThinker.wav");
+        reproductorDeMúsica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/SonidoIntensoPanelJuego.wav");
         reproductorDeMúsica.reproducir();
+
+        administradorGeneral = new AdministradorGeneral(this);
+
+        controladorDeTeclas = new ControladorDeTeclas(nave,this);
     }
 
-    private void agregarEnemigos() {
+    public void agregarEnemigos() {
+
+        enjambre1 = new EnjambreDePlatillosMalos(1, 10, numeroOleada, new PlatilloMalo(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY, numeroOleada));
+        enjambre2 = new EnjambreDeCalaverasMágicas(2, 10, numeroOleada, new CalaveraMágica(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY, numeroOleada));
+        enjambre3 = new EnjambreDeGatosPlatillos(2, 10, numeroOleada, new GatoPlatillo(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY, numeroOleada));
+
         enjambre1.agregarEnjambre(posicioInicialDelEnemigoEnX, posicioInicialDelEnemigoEnY);
         enemigos.addAll(enjambre1.obtenerEnjambreDeEnemigos());
 
@@ -101,24 +121,16 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        repaint();
+        pintor.actualizar();
         try {
-            actualizadorEntidades.actualizarEntidades(nave, enemigos, modificadores , enjambre1, enjambre2, enjambre3);
+            administradorGeneral.iniciarCompetencias(modificadores,nave,enemigos, enjambre1, enjambre2, enjambre3);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
-        repaint();
-        pintor.actualizar();
-        verificadorDeColisiones.verificarColisiones(nave, enemigos);
+        administradorGeneral.verficarExistenciaEnemigos(enemigos);
+        panelDeJuegoData.actualizarDatos(obtenerPosicionesEnjambreUno(), obtenerPosicionesEnjambreDos(), obtenerPosicionesEnjambreTres(), obtenerPosicionEnXNave(), obtenerPosicionEnYNave(), obtenerVidasJugador(), getPuntajeTotal());
 
-        enemigosDisparar();
-    }
-
-    private void enemigosDisparar() {
-        for (NaveEnemigo enemigo : enemigos) {
-            if (enemigo.debeDisparar()) {
-                enemigo.disparar();
-            }
-        }
     }
 
     public void limpiarProyectilesDeLaVentana() {
@@ -131,17 +143,22 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         for (ProyectilDelEnemigo proyectil : proyectilesAEliminar) {// Eliminamos todos los proyectiles de la lista temporal
             proyectil.setVisible(false);
         }
+        for(NaveEnemigo enemigo : enemigos){
+            enemigo.obtenerProyectiles().clear();
+        }
+
     }
 
     public void pausaDeReaparicion() {
+
         temporizador.stop();
-        Timer pausaParaReaparicion = new Timer(3000, new ActionListener() {
+        Timer pausaParaReaparicion = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nave.volverAlPuntoDeRespawn();
                 temporizador.start();
             }
-        } );
+        });
         pausaParaReaparicion.setRepeats(false);
         pausaParaReaparicion.start();
     }
@@ -210,15 +227,26 @@ public class PanelDeJuego extends JPanel implements ActionListener {
 
     public ArrayList<int[]> obtenerPosicionesModificadores() {
         ArrayList<int[]> posicionesModificadores = new ArrayList<>();
-        for(Modificadores modificador : modificadores) {
+        for (Modificador modificador : modificadores) {
             posicionesModificadores.add(modificador.obtenerPosicion());
         }
         return posicionesModificadores;
     }
 
-    public void agregarModificador(Modificadores modificador) {
-        if(modificador != null){
-            this.modificadores.add(modificador);
+    public void agregarModificador(Modificador modificador) {
+        if (modificador != null) {
+            if(modificador instanceof VidaExtra){
+                this.modificadoresVidaExtra.add(modificador);
+            }
+            if(modificador instanceof VelocidadAumentada){
+                this.modificadoresVelocidadAumentada.add(modificador);
+            }
+            if(modificador instanceof VelocidadDeDisparoAumentada){
+                this.modificadoresVelocidadDisparoAumentada.add(modificador);
+            }
+            if(modificador instanceof ProbabilidadDisparoEnemigosAumentada){
+                this.modificadoresProbabilidadDisparoEnemigosAumentada.add(modificador);
+            }
         }
     }
 
@@ -226,20 +254,78 @@ public class PanelDeJuego extends JPanel implements ActionListener {
         reproductorDeMúsica.detener();
     }
 
+    public void aumentarNumeroOleada() {
+        numeroOleada++;
+    }
+
+    public int obtenerVidasJugador() {
+        return nave.obtenerVidasDisponibles();
+    }
+
+
     private class TAdapter extends KeyAdapter {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            nave.teclaLiberada(e);
+            controladorDeTeclas.teclaLiberada(e);
         }
-
         @Override
         public void keyPressed(KeyEvent e) {
-            nave.teclaPresionada(e);
+            controladorDeTeclas.teclaPresionada(e);
         }
+    }
+
+    public void pausarJuego() {
+        //enPausa = true;
+        reproductorDeMúsica.detener();
+        temporizador.stop();
+        add(pantallaDePausa);
+        pantallaDePausa.setBounds(0, 0, ANCHO, ALTO);
+        pantallaDePausa.setVisible(true);
+        repaint();
+    }
+
+    public void reanudarJuego() {
+        //enPausa = false;
+        reproductorDeMúsica.reproducir();
+        remove(pantallaDePausa);
+        temporizador.start();
+        repaint();
     }
 
     public JFrame getJFrame() {
         return jFrame;
     }
+
+    public int getPuntajeTotal() {
+        return administradorGeneral.obtenerPuntuaciones();
+    }
+
+
+//    public void guardarPartida() {
+//        String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre para guardar la partida:");
+//        if (nombre != null && !nombre.isEmpty()) {
+//            GestorDePartidas gestorDePartidas = new GestorDePartidas();
+////            nombre = linea.split(" ");
+//
+//            gestorDePartidas.guardarPartida(this, nombre);
+//
+//            JOptionPane.showMessageDialog(this, "Partida guardada exitosamente.");
+//        }
+//        new Menú();
+//        getJFrame().dispose();
+//    }
+
+    /*
+    public void guardarPartida() {
+    String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre para guardar la partida:");
+        if (nombre != null && !nombre.isEmpty()) {
+            GestorDePartidas gestorDePartidas = new GestorDePartidas();
+
+            gestorDePartidas.guardarPartida(panelDeJuego, nombre);
+
+            JOptionPane.showMessageDialog(this, "Partida guardada exitosamente.");
+        }
+    }
+     */
 }
