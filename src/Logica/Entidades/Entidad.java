@@ -1,6 +1,8 @@
 package Logica.Entidades;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Entidad {
     private int velocidad;
@@ -46,4 +48,16 @@ public class Entidad {
         return ancho;
     }
 
+    public void actualizarVelocidad(int velocidadAumentada) {
+        int aux = velocidad;
+        velocidad = velocidadAumentada;
+        Timer timer = new Timer();
+        TimerTask timerDos = new TimerTask() {
+            @Override
+            public void run() {
+                velocidad = aux;
+            }
+        };
+        timer.schedule(timerDos, 5000);
+    }
 }

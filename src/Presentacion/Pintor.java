@@ -1,11 +1,8 @@
 package Presentacion;
 
-import Logica.Entidades.Modificadores.Modificador;
+import Logica.Entidades.Modificadores.*;
 import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Entidades.Jugador.NaveJugador;
-import Logica.Entidades.Modificadores.VelocidadAumentada;
-import Logica.Entidades.Modificadores.VelocidadDeDisparoAumentada;
-import Logica.Entidades.Modificadores.VidaExtra;
 import Logica.Proyectiles.Proyectil;
 import Logica.Puntaje.Puntaje;
 
@@ -148,6 +145,11 @@ public class Pintor extends JPanel {
                 }
             }
             if (modificador instanceof VelocidadAumentada){
+                for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
+                    g.drawImage(imagenModificadorVelocidadAumentada, arregloPosiciones[0], arregloPosiciones[1], this);
+                }
+            }
+            if (modificador instanceof ProbabilidadDisparoEnemigosAumentada){
                 for(int [] arregloPosiciones : panel.obtenerPosicionesModificadores()){
                     g.drawImage(imagenModificadorVelocidadAumentada, arregloPosiciones[0], arregloPosiciones[1], this);
                 }

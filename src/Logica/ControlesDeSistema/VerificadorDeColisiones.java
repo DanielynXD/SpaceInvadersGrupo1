@@ -3,6 +3,7 @@ package Logica.ControlesDeSistema;
 import Logica.Entidades.Modificadores.Modificador;
 import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Entidades.Jugador.NaveJugador;
+import Logica.Entidades.Modificadores.ProbabilidadDisparoEnemigosAumentada;
 import Logica.Proyectiles.Proyectil;
 import Logica.Proyectiles.ProyectilDelEnemigo;
 import Logica.Proyectiles.ProyectilDelJugador;
@@ -30,7 +31,7 @@ public class VerificadorDeColisiones {
         verificarColisionesEnemigosYProyectilesDelJugador(proyectiles, enemigos);
         verificarColisionesJugadorYProyectilEnemigo(hitboxNave, enemigos, nave);
         verificarColisionesProyectilYProyectilEnemigo(proyectiles, enemigos);
-        verificarColisionesJugardorModificador(nave, modificadores);
+        verificarColisionesJugadorModificador(nave, modificadores, enemigos);
         verificarSiEnemigoLlegoAlLimiteInferior(enemigos);
     }
 
@@ -42,11 +43,16 @@ public class VerificadorDeColisiones {
         }
     }
 
-    private void verificarColisionesJugardorModificador(NaveJugador nave, ArrayList<Modificador> modificadores) {
+    private void verificarColisionesJugadorModificador(NaveJugador nave, ArrayList<Modificador> modificadores, ArrayList<NaveEnemigo> enemigos) {
 
         ArrayList<Modificador> modificadoresPorEliminar = new ArrayList<>();
         for(Modificador modificador : modificadores) {
             if(modificador.obtenerHitbox().intersects(nave.obtenerHitbox())){
+                if(modificador instanceof ProbabilidadDisparoEnemigosAumentada){
+                    for(NaveEnemigo enemigo: enemigos){
+                        enemigo.aplicarModificador(modificador);
+                    }
+                }
                 nave.aplicarModificador(modificador);
                 modificadoresPorEliminar.add(modificador);
                 modificador.setVisible(false);
@@ -109,6 +115,9 @@ public class VerificadorDeColisiones {
     }
 
     private void verificarColisionesProyectilYProyectilEnemigo(List<ProyectilDelJugador> proyectiles, ArrayList<NaveEnemigo> enemigos) {
+        ArrayList<Proyectil> proyectilesPorEliminarJugador = new ArrayList<Proyectil>();
+        ArrayList<Proyectil> proyectilesPorEliminarEnemigo = new ArrayList<Proyectil>();
+
         for (NaveEnemigo enemigo : enemigos) {
             List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();
             for (ProyectilDelEnemigo proyectilEnemigo : proyectilesEnemigo) {
@@ -116,11 +125,16 @@ public class VerificadorDeColisiones {
                 for (ProyectilDelJugador proyectilJugador : proyectiles) {
                     if (hitboxProyectilEnemigo.intersects(proyectilJugador.obtenerHitBox())) {
                         proyectilJugador.setVisible(false);
+                        proyectilesPorEliminarJugador.add(proyectilJugador);
                         proyectilEnemigo.setVisible(false);
+                        proyectilesPorEliminarEnemigo.add(proyectilEnemigo);
                     }
                 }
             }
+            enemigo.obtenerProyectiles().removeAll(proyectilesPorEliminarJugador);
         }
+        proyectiles.removeAll(proyectilesPorEliminarJugador);
+
     }
 
     public int getPuntajeTotal() {
@@ -130,7 +144,6 @@ public class VerificadorDeColisiones {
     private boolean llegoAlLimiteInferior(NaveEnemigo enemigo) {
         return enemigo.obtenerPosicionEnY() > 600 - enemigo.obtenerAncho() * 2;
     }
-
 
     public void actualizarPuntaje(int i) {
         puntajeTotal = i;

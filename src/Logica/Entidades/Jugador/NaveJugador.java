@@ -26,7 +26,8 @@ public class NaveJugador extends Nave {
     private boolean puedeDisparar;
     private Timer temporizadorDisparo;
     private ReproductorMúsica sonidoDisparo;
-    private int velocidadDisparo = 1000;
+    private int velocidadDisparo = 500;
+    private int velocidadDisparoInicial = 1000;
     private java.util.Timer timer;
 
     public NaveJugador() {
@@ -73,7 +74,7 @@ public class NaveJugador extends Nave {
             @Override
             public void actionPerformed(ActionEvent e) {
                 puedeDisparar = true;
-                temporizadorDisparo.stop();
+                temporizadorDisparo.restart();
             }
         });
         if (puedeDisparar) {
@@ -93,45 +94,22 @@ public class NaveJugador extends Nave {
     }
 
 
-
-    public void aumentarVelocidadDeDisparo(){
-        System.out.println("Se incremento la velicidad");
-
-        this.velocidadDisparo = 1;
-        TimerTask timerDos = new TimerTask() {
-
-            @Override
-            public void run() {
-                restablecerVelocidadDeDisparo();
-                System.out.println("Se reestablecio la velocidad normal");
-                actualizarValores();
-            }
-        };
-        timer.schedule(timerDos,2000);
-
-
-        //restablecerVelocidadThread.start();
-
-//        this.velocidadDisparo = 1;
-//
-//        // Crear un programador
-//        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//
-//        // Programar la tarea para que se ejecute después de 5 segundos
-//        scheduler.schedule(() -> this.restablecerVelocidadDeDisparo(), 2, TimeUnit.SECONDS);
-//
-//        // Cerrar el scheduler después de programar la tarea para evitar la fuga de recursos
-//        scheduler.shutdown();
-
+    public void aumentarVelocidadDeDisparo(int velocidadAumentada){
+        for(ProyectilDelJugador proyectilDelJugador : proyectiles){
+            proyectilDelJugador.aumentarVelocidad(velocidadAumentada);
+        }
     }
 
-    public void restablecerVelocidadDeDisparo() {
-        this.velocidadDisparo = 500000;
-    }
+//    public void restablecerVelocidadDeDisparo() {
+//        this.velocidadDisparo = velocidadDisparoInicial;
+//        actualizarValores();
+//    }
 
-    public void actualizarValores() {
-        temporizadorDisparo.setDelay(velocidadDisparo);
-    }
+//    public void actualizarValores() {
+//        if (temporizadorDisparo != null) {
+//            temporizadorDisparo.setDelay(velocidadDisparo);
+//        }
+//    }
 
     public void actualizarNumeroDeVidas(int i) {
         numeroDeVidas = i;

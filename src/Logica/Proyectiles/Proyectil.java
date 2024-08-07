@@ -1,6 +1,8 @@
 package Logica.Proyectiles;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public abstract class Proyectil {
     public static final int ANCHO_PROYECTIL = 16;
@@ -48,4 +50,16 @@ public abstract class Proyectil {
         this.visible = visible;
     }
 
+    public void aumentarVelocidad(int velocidadAumentada) {
+        int aux = velocidad;
+        velocidad = velocidadAumentada;
+        Timer timer = new Timer();
+        TimerTask timerDos = new TimerTask() {
+            @Override
+            public void run() {
+                velocidad = aux;
+            }
+        };
+        timer.schedule(timerDos, 5000);
+    }
 }

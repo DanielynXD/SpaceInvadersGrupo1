@@ -50,4 +50,12 @@ public abstract class Enjambre {
             }
         }
     }
+
+    public void recibirEnjambre(ArrayList<NaveEnemigo> enjambre) {
+        this.enjambre = enjambre;
+    }
+
+    public void recibirMovimiento(MovimientoEnjambre movimientoEnjambre) {
+        this.movimientoEnjambre = movimientoEnjambre;
+    }
 }
