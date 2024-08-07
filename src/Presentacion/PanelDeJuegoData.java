@@ -5,7 +5,6 @@ import Logica.ControlesDeSistema.GestorDePartidas;
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PanelDeJuegoData implements Serializable {
 
@@ -14,6 +13,8 @@ public class PanelDeJuegoData implements Serializable {
     private ArrayList<int[]> posicionesEnjambre3;
     private int[] posicionNaveJugador;
     private int puntuacion;
+    private int numeroDeVidas;
+    private int numeroOleada;
 
     public PanelDeJuegoData() {
         posicionesEnjambre1 = new ArrayList<>();
@@ -21,9 +22,10 @@ public class PanelDeJuegoData implements Serializable {
         posicionesEnjambre3 = new ArrayList<>();
         posicionNaveJugador = new int[2];
 
+
     }
 
-    public void actualizarDatos(ArrayList<int[]> ints, ArrayList<int[]> ints1, ArrayList<int[]> ints2, int i, int i1, int i2, int puntajeTotal) {
+    public void actualizarDatos(ArrayList<int[]> ints, ArrayList<int[]> ints1, ArrayList<int[]> ints2, int i, int i1, int i2, int puntajeTotal, int obtenerVidasDisponibles, int numeroOleada) {
 
         posicionesEnjambre1 = ints;
         posicionesEnjambre2 = ints1;
@@ -31,12 +33,13 @@ public class PanelDeJuegoData implements Serializable {
         posicionNaveJugador[0] = i1;
         posicionNaveJugador[1] = i2;
         puntuacion = puntajeTotal;
-
+        numeroDeVidas = obtenerVidasDisponibles;
+        this.numeroOleada = numeroOleada;
 
     }
 
     public void guardarPartida() {
-        String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre para guardar la partida:");
+        String nombre = JOptionPane.showInputDialog( "Ingrese el nombre para guardar la partida:");
         if (nombre != null && !nombre.isEmpty()) {
             GestorDePartidas gestorDePartidas = new GestorDePartidas();
 //            nombre = linea.split(" ");
@@ -47,4 +50,15 @@ public class PanelDeJuegoData implements Serializable {
 
     }
 
+    public int obtenerPuntaje() {
+        return puntuacion;
+    }
+
+    public int obtenerVidas() {
+        return numeroDeVidas;
+    }
+
+    public int obtenerNumeroDeOleada() {
+        return numeroOleada;
+    }
 }

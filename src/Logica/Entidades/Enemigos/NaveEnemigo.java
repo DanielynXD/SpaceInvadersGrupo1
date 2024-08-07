@@ -77,7 +77,7 @@ public abstract class NaveEnemigo extends Nave {
 //                return null;
 //        }
 
-        return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+        return new VidaExtra(obtenerPosicionEnX(), obtenerPosicionEnY());
 
     }
 

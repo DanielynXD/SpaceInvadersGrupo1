@@ -53,7 +53,7 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
         if (e.getSource() == salirBoton) {
             mostrarVentanaFinal();
         } else if (e.getSource() == reintentarBoton) {
-            new Escenario(ventana.obtenerPanelDeJuegoGuardado());
+            new Escenario();
             this.dispose();
         }
     }

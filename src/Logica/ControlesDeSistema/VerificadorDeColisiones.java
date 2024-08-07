@@ -132,5 +132,7 @@ public class VerificadorDeColisiones {
     }
 
 
-
+    public void actualizarPuntaje(int i) {
+        puntajeTotal = i;
+    }
 }
