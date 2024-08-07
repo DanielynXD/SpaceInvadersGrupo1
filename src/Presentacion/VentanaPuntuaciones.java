@@ -61,6 +61,7 @@ public class VentanaPuntuaciones extends JFrame{
         } catch (IOException e) {
             System.out.println("NO EXISTE EL ARCHIVO");;
         }
+
         return puntuaciones;
     }
 
