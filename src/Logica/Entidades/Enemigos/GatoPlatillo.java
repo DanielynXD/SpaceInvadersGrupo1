@@ -8,8 +8,4 @@ public class GatoPlatillo extends NaveEnemigo {
     }
 
 
-//    @Override
-//    public int obtenerVelocidad() {
-//        return 1;
-//    }
 }

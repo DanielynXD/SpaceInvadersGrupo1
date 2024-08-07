@@ -33,11 +33,9 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     private NaveJugador nave;
     private Enjambre enjambre1, enjambre2, enjambre3;
     private ArrayList<NaveEnemigo> enemigos;
-//    private VerificadorDeColisiones verificadorDeColisiones;
     private int posicioInicialDelEnemigoEnX = 50;
     private int posicioInicialDelEnemigoEnY = 50;
     private Pintor pintor;
-//    private ActualizadorEntidades actualizadorEntidades;
     private ArrayList<Modificador> modificadores;
     private JFrame jFrame;
     private int numeroOleada;
@@ -51,39 +49,47 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
     public PanelDeJuego(JFrame jFrame)  {
         this.jFrame = jFrame;
-        //enPausa = false;
+        enemigos = new ArrayList<>();
+        administradorGeneral = new AdministradorGeneral(this);
         iniciarPanel();
         this.panelDeJuegoData = new PanelDeJuegoData();
         pantallaDePausa = new PantallaDePausa(this, panelDeJuegoData);
-
         pintor = new Pintor(this);
     }
 
     public PanelDeJuego(JFrame jFrame, PanelDeJuegoData panelDeJuegoData)  {
         this.jFrame = jFrame;
-        iniciarPanel();
+        enemigos = new ArrayList<>();
+        administradorGeneral = new AdministradorGeneral(this);
         this.panelDeJuegoData = panelDeJuegoData;
         this.cargarPartida();
+        iniciarPanel();
         pantallaDePausa = new PantallaDePausa(this, panelDeJuegoData);
         pintor = new Pintor(this);
     }
 
     private void cargarPartida() {
         administradorGeneral.cargarPartida(panelDeJuegoData);
-        nave.actualizarNumeroDeVidas(panelDeJuegoData.obtenerVidas());
+        enjambre1 = panelDeJuegoData.cargarEnjambre1();
+        enjambre2 = panelDeJuegoData.cargarEnjambre2();
+        enjambre3 = panelDeJuegoData.cargarEnjambre3();
+        nave = panelDeJuegoData.cargarNaveJugador();
         numeroOleada = panelDeJuegoData.obtenerNumeroDeOleada();
+        enemigos.addAll(enjambre1.obtenerEnjambreDeEnemigos());
+        enemigos.addAll(enjambre2.obtenerEnjambreDeEnemigos());
+        enemigos.addAll(enjambre3.obtenerEnjambreDeEnemigos());
     }
 
 
     private void iniciarPanel()  {
         setFocusable(true);
         setSize(ANCHO, ALTO);
-        nave = new NaveJugador();
-        numeroOleada = 0;
-        panelDeJuegoData = new PanelDeJuegoData();
         addKeyListener(new TAdapter());
-        enemigos = new ArrayList<>();//inicializa el array de enemigos
-        agregarEnemigos();//agrega enemigos
+        if(nave == null) {
+            nave = new NaveJugador();
+            agregarEnemigos();
+            numeroOleada = 0;
+        }
 
         temporizador = new Timer(10, this);
         temporizador.start();
@@ -91,8 +97,6 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
         reproductorDeMúsica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/SonidoIntensoPanelJuego.wav");
         reproductorDeMúsica.reproducir();
-
-        administradorGeneral = new AdministradorGeneral(this);
 
         controladorDeTeclas = new ControladorDeTeclas(nave,this);
     }
@@ -129,7 +133,7 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
             throw new RuntimeException(ex);
         }
         administradorGeneral.verficarExistenciaEnemigos(enemigos);
-        panelDeJuegoData.actualizarDatos(obtenerPosicionesEnjambreUno(), obtenerPosicionesEnjambreDos(), obtenerPosicionesEnjambreTres(), obtenerPosicionEnXNave(), obtenerPosicionEnYNave(), obtenerVidasJugador(), getPuntajeTotal(), nave.obtenerVidasDisponibles(), numeroOleada);
+        panelDeJuegoData.actualizarDatos(obtenerPosicionesEnjambreUno(), obtenerPosicionesEnjambreDos(), obtenerPosicionesEnjambreTres(), obtenerPosicionEnXNave(), obtenerVidasJugador(), getPuntajeTotal(), numeroOleada);
 
     }
 
@@ -150,7 +154,6 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     }
 
     public void pausaDeReaparicion() {
-
         temporizador.stop();
         Timer pausaParaReaparicion = new Timer(1500, new ActionListener() {
             @Override
@@ -207,7 +210,6 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
     public ArrayList<int[]> obtenerPosicionesProyectilesEnemigos() {
         ArrayList<int[]> posicionesProyectilesEnemigos = new ArrayList<>();
-
         for (NaveEnemigo enemigo : enemigos) {
             for (ProyectilDelEnemigo proyectil : enemigo.obtenerProyectiles()) {
                 int[] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
@@ -255,7 +257,6 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         return modificadores;
     }
 
-
     private class TAdapter extends KeyAdapter {
 
         @Override
@@ -269,7 +270,6 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     }
 
     public void pausarJuego() {
-        //enPausa = true;
         reproductorDeMúsica.detener();
         temporizador.stop();
         add(pantallaDePausa);
@@ -279,7 +279,6 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     }
 
     public void reanudarJuego() {
-        //enPausa = false;
         reproductorDeMúsica.reproducir();
         remove(pantallaDePausa);
         temporizador.start();
@@ -293,32 +292,4 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     public int getPuntajeTotal() {
         return administradorGeneral.obtenerPuntuaciones();
     }
-
-
-//    public void guardarPartida() {
-//        String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre para guardar la partida:");
-//        if (nombre != null && !nombre.isEmpty()) {
-//            GestorDePartidas gestorDePartidas = new GestorDePartidas();
-////            nombre = linea.split(" ");
-//
-//            gestorDePartidas.guardarPartida(this, nombre);
-//
-//            JOptionPane.showMessageDialog(this, "Partida guardada exitosamente.");
-//        }
-//        new Menú();
-//        getJFrame().dispose();
-//    }
-
-    /*
-    public void guardarPartida() {
-    String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre para guardar la partida:");
-        if (nombre != null && !nombre.isEmpty()) {
-            GestorDePartidas gestorDePartidas = new GestorDePartidas();
-
-            gestorDePartidas.guardarPartida(panelDeJuego, nombre);
-
-            JOptionPane.showMessageDialog(this, "Partida guardada exitosamente.");
-        }
-    }
-     */
 }

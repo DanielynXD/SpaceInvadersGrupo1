@@ -77,14 +77,14 @@ public abstract class NaveEnemigo extends Nave {
 //                return null;
 //        }
 
-        return new VidaExtra(obtenerPosicionEnX(), obtenerPosicionEnY());
+        return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
 
     }
 
     private boolean puedeGenerarModificador() {
         int probabilidadModificador = random.nextInt(10000);
-        //return probabilidadModificador < 500 ;
-        return true;
+        return probabilidadModificador < 1000 ;
+
     }
 
     public int getPuntosDelEnemigo() {
@@ -96,11 +96,12 @@ public abstract class NaveEnemigo extends Nave {
     }
 
     public void aumentarProbabilidadDeDisparo(){
+        probabilidadDeDisparo = 50;
         Timer timer = new Timer();
         TimerTask timerDos = new TimerTask() {
             @Override
             public void run() {
-                probabilidadDeDisparo = 10;
+                probabilidadDeDisparo = 3;
             }
         };
         timer.schedule(timerDos, 5000);

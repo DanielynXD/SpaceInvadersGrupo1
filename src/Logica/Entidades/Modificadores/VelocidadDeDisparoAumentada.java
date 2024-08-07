@@ -10,7 +10,7 @@ public class VelocidadDeDisparoAumentada extends Modificador{
     }
 
     public void aplicarEfecto(Nave nave){
-        ((NaveJugador)nave).aumentarVelocidadDeDisparo();
+        ((NaveJugador)nave).aumentarVelocidadDeDisparo(50);
     }
 
 }
