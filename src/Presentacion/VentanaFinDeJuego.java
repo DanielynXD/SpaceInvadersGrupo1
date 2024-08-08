@@ -15,7 +15,7 @@ import Logica.Puntaje.ComparadorDePuntajes;
 
 public class VentanaFinDeJuego extends JFrame implements ActionListener {
     private final int puntajeDelPartida;
-    private JButton reintentarBoton, botonGuardarYSalir;
+    private JButton reintentarBoton, botonGuardarYSalir, botonVolverAlMenu;
     private JTextField nombreDelJugador;
     private ReproductorMúsica reproductorMusica;
 
@@ -47,6 +47,11 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
         botonGuardarYSalir.addActionListener(this);
         add(botonGuardarYSalir);
 
+        botonVolverAlMenu= new JButton("Volver Al Menu");
+        botonVolverAlMenu.setBounds(50, 250, 200, 50);
+        botonVolverAlMenu.addActionListener(this);
+        add(botonVolverAlMenu);
+
         add(panelFinDeJuego);
         setVisible(true);
 
@@ -60,6 +65,9 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
             mostrarVentanaFinal();
         } else if (e.getSource() == reintentarBoton) {
             new Escenario();
+            this.dispose();
+        } else if (e.getSource() == botonVolverAlMenu) {
+            new Menú();
             this.dispose();
         }
     }
