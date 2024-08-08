@@ -64,7 +64,7 @@ public class Menú extends JFrame implements ActionListener {
             try {
                 new VentanaPartidaGuardada();
             } catch (NoExisteLaPartidaGuardadaException ex) {
-                throw new RuntimeException(ex.getMessage());
+                throw new RuntimeException("No se pudo cargar la partida");
             }
         }
         if (e.getSource() == botonSalir) {

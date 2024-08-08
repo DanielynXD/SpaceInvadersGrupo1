@@ -80,34 +80,6 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre válido.");
             return;
         }
-
-        //-------
-//        List<Puntaje> puntuaciones = ventanaPuntuaciones.leerPuntuaciones("/Puntuaciones/PuntuacionesMejoresJugadores");
-//        puntuaciones.add(new Puntaje(nombre, puntajeDelPartida));
-//
-//        puntuaciones.sort(new ComparadorDePuntajes());
-
-//        if (puntuaciones.size() > 10) {
-//            puntuaciones = puntuaciones.subList(0, 10);
-//        }
-//
-//        File archivo = new File("src/Puntuaciones/PuntuacionesMejoresJugadores");
-//        if (archivo.exists()) {
-//            archivo.delete();
-//        }
-//
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Puntuaciones/PuntuacionesMejoresJugadores", true))) {
-//
-//            for ( Puntaje puntaje : puntuaciones) {
-//                writer.write(puntaje.getNombre() + " " + puntaje.getPuntaje() + "\n");
-//            }
-//            JOptionPane.showMessageDialog(this, "Nombre y puntaje guardados exitosamente");
-//            new Menú();
-//            this.dispose();
-//        } catch (IOException ex) {
-//            JOptionPane.showMessageDialog(this, "Error al guardar el nombre y puntaje");
-//        }
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Puntuaciones/PuntuacionesMejoresJugadores", true))) {
 
             writer.write(nombre + " " + puntajeDelPartida);

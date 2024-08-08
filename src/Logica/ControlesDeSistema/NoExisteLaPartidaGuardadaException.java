@@ -1,11 +1,8 @@
 package Logica.ControlesDeSistema;
 
-public class NoExisteLaPartidaGuardadaException extends Throwable {
-    public NoExisteLaPartidaGuardadaException() {
-        super("No existe la partida");
+public class NoExisteLaPartidaGuardadaException extends Exception {
+    public NoExisteLaPartidaGuardadaException(String mensaje) {
+        super(mensaje);
     }
 
-    public NoExisteLaPartidaGuardadaException(NoExisteLaPartidaGuardadaException e) {
-        super(e.getMessage());
-    }
 }
