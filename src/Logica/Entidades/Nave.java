@@ -10,7 +10,6 @@ public abstract class Nave extends Entidad {
         super(posicionEnX, posicionEnY, velocidad, ancho, alto);
     }
 
-
     protected abstract void disparar();
 
     public Rectangle obtenerHitBox() {

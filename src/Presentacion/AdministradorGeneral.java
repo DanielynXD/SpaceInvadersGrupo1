@@ -2,6 +2,7 @@ package Presentacion;
 
 import Logica.ControlesDeSistema.ActualizadorEntidades;
 import Logica.Enjambre.Enjambre;
+import Logica.Entidades.Barrera;
 import Logica.Entidades.Modificadores.Modificador;
 import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Entidades.Jugador.NaveJugador;
@@ -17,7 +18,6 @@ public class AdministradorGeneral {
     private PanelDeJuego panelDeJuego;
 
     public AdministradorGeneral(PanelDeJuego panelDeJuego) {
-
         this.panelDeJuego = panelDeJuego;
         verificadorDeColisiones = new VerificadorDeColisiones(this);
         actualizadorEntidades = new ActualizadorEntidades();
@@ -40,7 +40,7 @@ public class AdministradorGeneral {
         panelDeJuego.limpiarProyectilesDeLaVentana();
     }
 
-    public void pausaDeReaparicion() {
+    public void activarPausaDeReaparicion() {
         panelDeJuego.pausaDeReaparicion();
     }
 
@@ -48,10 +48,10 @@ public class AdministradorGeneral {
         return panelDeJuego.getJFrame();
     }
 
-    public void iniciarCompetencias(ArrayList<Modificador> modificadores, NaveJugador naveJugador, ArrayList<NaveEnemigo> enemigos , Enjambre ... enjambres) throws InterruptedException {
+    public void iniciarCompetencias(ArrayList<Modificador> modificadores, NaveJugador naveJugador, ArrayList<NaveEnemigo> enemigos, ArrayList<Barrera> barreras, Enjambre... enjambres) throws InterruptedException {
         try {
-            actualizadorEntidades.actualizarEntidades(naveJugador, enemigos, modificadores, enjambres );
-            verificadorDeColisiones.verificarColisiones(naveJugador, enemigos, modificadores);
+            actualizadorEntidades.actualizarEntidades(naveJugador, enemigos, barreras, modificadores, enjambres);
+            verificadorDeColisiones.verificarColisiones(naveJugador, enemigos, modificadores, barreras);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -65,11 +65,19 @@ public class AdministradorGeneral {
     }
 
     public int obtenerPuntuaciones() {
-       return verificadorDeColisiones.getPuntajeTotal();
+        return verificadorDeColisiones.getPuntajeTotal();
     }
 
 
     public void cargarPartida(PanelDeJuegoData panelDeJuegoData) {
         verificadorDeColisiones.actualizarPuntaje(panelDeJuegoData.obtenerPuntaje());
+    }
+
+    public void reproducirExplosionJugador() {
+        panelDeJuego.reproducirExplosionJugador();
+    }
+
+    public void reproducirExplosionEnemigo() {
+        panelDeJuego.reproducirExplosionEnemigo();
     }
 }

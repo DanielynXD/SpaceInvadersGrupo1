@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
 import java.util.Objects;
+import java.io.BufferedReader;
 
-public class VentanaPuntuaciones extends JFrame{
+public class VentanaPuntuaciones extends JFrame {
     private Pintor pintor;
     private List<Puntaje> puntuaciones;
 
-    public VentanaPuntuaciones(){
+    public VentanaPuntuaciones() {
         pintor = new Pintor(this);
         puntuaciones = leerPuntuaciones("/Puntuaciones/PuntuacionesMejoresJugadores");
 
@@ -24,10 +25,10 @@ public class VentanaPuntuaciones extends JFrame{
         setContentPane(pintor);
         setVisible(true);
         setResizable(false);
-
     }
 
     public List<Puntaje> leerPuntuaciones(String Puntuaciones) {
+
         List<Puntaje> puntuaciones = new ArrayList<>();
         try (BufferedReader lineaDePuntuaciones = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(Puntuaciones))))) {
             String linea;
@@ -46,22 +47,11 @@ public class VentanaPuntuaciones extends JFrame{
                 } catch (NumberFormatException e) {
                     System.out.println("Linea invalida (formato de numero): " + linea);
                 }
-
-                /*if (datos.length == 2 && !datos[1].isEmpty()) {
-                    String nombre = datos[0];
-                    int puntaje = Integer.parseInt(datos[1]);
-                    //long puntaje = Long.parseLong(datos[1]); PARA VALORES MUY ALTOS
-                    puntuaciones.add(new Puntaje(nombre, puntaje));
-                } else {
-                    System.out.println("Línea inválida: " + linea);
-                }*/
-
             }
-            puntuaciones.sort(new ComparadorDePuntajes());
+            //puntuaciones.sort(new ComparadorDePuntajes());
         } catch (IOException e) {
-            System.out.println("NO EXISTE EL ARCHIVO");;
+            System.out.println("NO EXISTE EL ARCHIVO");
         }
-
         return puntuaciones;
     }
 

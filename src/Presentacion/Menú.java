@@ -1,11 +1,13 @@
 package Presentacion;
 
+import Logica.ControlesDeSistema.NoExisteLaPartidaGuardadaException;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class Menú extends JFrame implements ActionListener{
+public class Menú extends JFrame implements ActionListener {
     private final ReproductorMúsica reproductorDeMúsica;
     private JButton botonIniciarJuego, botonSalir, botonPuntuaciones, botonCargarPartida;
     public static final int ANCHO = 768, ALTO = 432;
@@ -21,23 +23,23 @@ public class Menú extends JFrame implements ActionListener{
         setLocationRelativeTo(null);
 
         botonIniciarJuego = new JButton("Iniciar Juego");
-        botonIniciarJuego.setBounds(300, 200, 150, 40);
+        botonIniciarJuego.setBounds(300, 190, 150, 40);
         botonIniciarJuego.addActionListener(this);
         panel.add(botonIniciarJuego);
 
 
         botonPuntuaciones = new JButton("Puntuaciones");
-        botonPuntuaciones.setBounds(300, 250, 150, 40);
+        botonPuntuaciones.setBounds(300, 240, 150, 40);
         botonPuntuaciones.addActionListener(this);
         panel.add(botonPuntuaciones);
 
         botonCargarPartida = new JButton("Cargar Partida");
-        botonCargarPartida.setBounds(300, 300, 150, 40);
+        botonCargarPartida.setBounds(300, 290, 150, 40);
         botonCargarPartida.addActionListener(this);
         panel.add(botonCargarPartida);
 
         botonSalir = new JButton("Salir");
-        botonSalir.setBounds(300, 300, 150, 40);
+        botonSalir.setBounds(300, 340, 150, 40);
         botonSalir.addActionListener(this);
         panel.add(botonSalir);
 
@@ -52,18 +54,20 @@ public class Menú extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(e.getSource() == botonIniciarJuego) {
+        if (e.getSource() == botonIniciarJuego) {
             abrirVentanaJuego();
         }
-        if(e.getSource() == botonPuntuaciones) {
+        if (e.getSource() == botonPuntuaciones) {
             new VentanaPuntuaciones();
         }
         if (e.getSource() == botonCargarPartida) {
-            new VentanaPartidaGuardada();
-            //new Escenario(ventana.obtenerPanelDeJuegoGuardado());
-
+            try {
+                new VentanaPartidaGuardada();
+            } catch (NoExisteLaPartidaGuardadaException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-        if(e.getSource() == botonSalir) {
+        if (e.getSource() == botonSalir) {
             System.exit(0);
         }
 
@@ -75,9 +79,6 @@ public class Menú extends JFrame implements ActionListener{
         this.dispose();
     }
 
-    /*
-
-     */
 }
 
 
