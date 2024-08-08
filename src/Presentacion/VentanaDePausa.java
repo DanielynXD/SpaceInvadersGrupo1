@@ -47,6 +47,5 @@ public class VentanaDePausa extends JPanel {
         });
         add(botonGuardar);
 
-
     }
 }

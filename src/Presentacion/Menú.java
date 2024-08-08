@@ -64,7 +64,7 @@ public class Menú extends JFrame implements ActionListener {
             try {
                 new VentanaPartidaGuardada();
             } catch (NoExisteLaPartidaGuardadaException ex) {
-                throw new RuntimeException(ex);
+                throw new RuntimeException(ex.getMessage());
             }
         }
         if (e.getSource() == botonSalir) {

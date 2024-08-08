@@ -29,7 +29,7 @@ public class GestorDePartidas {
     public PanelDeJuegoData cargarPartida(String nombre) throws NoExisteLaPartidaGuardadaException{
 
         File archivo = new File("src/PartidasGuardadas/" + nombre + ".txt");
-         if (archivo.exists()) {
+         if (!archivo.exists()) {
              throw new NoExisteLaPartidaGuardadaException();
          }else {
 
