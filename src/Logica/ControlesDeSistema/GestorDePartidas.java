@@ -30,7 +30,7 @@ public class GestorDePartidas {
 
         File archivo = new File("src/PartidasGuardadas/" + nombre + ".txt");
          if (!archivo.exists()) {
-             throw new NoExisteLaPartidaGuardadaException();
+             throw new NoExisteLaPartidaGuardadaException("No existe la partida " + nombre);
          }else {
 
              FileInputStream flujoDeEntrada = null;

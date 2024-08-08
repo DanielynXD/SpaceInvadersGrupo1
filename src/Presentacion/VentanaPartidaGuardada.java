@@ -31,7 +31,7 @@ public class VentanaPartidaGuardada extends JFrame {
             try {
                 return gestionDePartidas.cargarPartida(nombre);
             } catch (NoExisteLaPartidaGuardadaException e) {
-                throw new NoExisteLaPartidaGuardadaException(e);
+                throw new NoExisteLaPartidaGuardadaException("No existe el archivo");
             }
         } else {
             return null;
