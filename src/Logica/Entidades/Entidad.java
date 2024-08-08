@@ -17,7 +17,13 @@ public class Entidad {
         this.velocidad = velocidad;
         this.ancho = ancho;
         this.alto = alto;
-        //hitbox = new Rectangle(posicionEnX, posicionEnY, ancho, alto);
+    }
+
+    public Entidad(int posicionEnX, int posicionEnY, int ancho, int alto) {
+        this.posicionEnX = posicionEnX;
+        this.posicionEnY = posicionEnY;
+        this.ancho = ancho;
+        this.alto = alto;
     }
 
     public int obtenerPosicionEnX() {
@@ -41,7 +47,7 @@ public class Entidad {
     }
 
     public Rectangle obtenerHitbox() {
-        return new Rectangle((int)posicionEnX, posicionEnY,ancho, alto );
+        return new Rectangle((int)posicionEnX, posicionEnY,ancho-10, alto );
     }
 
     public int obtenerAncho() {
@@ -60,4 +66,9 @@ public class Entidad {
         };
         timer.schedule(timerDos, 5000);
     }
+
+    public boolean estaFueraDelMapa(){
+        return posicionEnY>630 || posicionEnY < -30;
+    }
+
 }

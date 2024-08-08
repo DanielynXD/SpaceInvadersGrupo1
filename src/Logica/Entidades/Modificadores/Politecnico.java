@@ -4,8 +4,8 @@ import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Entidades.Jugador.NaveJugador;
 import Logica.Entidades.Nave;
 
-public class ProbabilidadDisparoEnemigosAumentada extends Modificador {
-    public ProbabilidadDisparoEnemigosAumentada(int posicionEnX, int posicionEnY){
+public class Politecnico extends Modificador {
+    public Politecnico(int posicionEnX, int posicionEnY){
         super(posicionEnX, posicionEnY);
     }
 

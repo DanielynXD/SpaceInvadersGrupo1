@@ -6,7 +6,6 @@ import Logica.Movimiento.MovimientoAbajo;
 
 public abstract class Modificador extends Entidad {
 
-
     private MovimientoAbajo movimientoAbajo;
     private boolean visible;
 
@@ -28,8 +27,6 @@ public abstract class Modificador extends Entidad {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
-
-
 
     @Override
     public int obtenerVelocidad() {

@@ -1,17 +1,27 @@
 package Presentacion;
 
+import Logica.Puntaje.Puntaje;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import Logica.Puntaje.Puntaje;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import Logica.Puntaje.ComparadorDePuntajes;
+
 
 public class VentanaFinDeJuego extends JFrame implements ActionListener {
     private final int puntajeDelPartida;
     private JButton reintentarBoton, salirBoton;
     private JTextField nombreDelJugador;
     private ReproductorMúsica reproductorMusica;
+    private VentanaPuntuaciones ventanaPuntuaciones = new VentanaPuntuaciones();
 
     public VentanaFinDeJuego(int puntajeDelJugador) {
         this.puntajeDelPartida = puntajeDelJugador;
@@ -59,6 +69,7 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
     }
 
     private void mostrarVentanaFinal() {
+
         String nombre = nombreDelJugador.getText().replaceAll("\\s+", "");
 
         if (nombre.isEmpty()) {
@@ -66,9 +77,29 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
             return;
         }
 
+        //-------
+        List<Puntaje> puntuaciones = ventanaPuntuaciones.leerPuntuaciones("/Puntuaciones/PuntuacionesMejoresJugadores");
+        puntuaciones.add(new Puntaje(nombre, puntajeDelPartida));
+
+        puntuaciones.sort(new ComparadorDePuntajes());
+
+        if (puntuaciones.size() > 10) {
+            puntuaciones = puntuaciones.subList(0, 10);
+        }
+
+        File archivo = new File("src/Puntuaciones/PuntuacionesMejoresJugadores");
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+
+
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Puntuaciones/PuntuacionesMejoresJugadores", true))) {
-            writer.write(nombre + " " + puntajeDelPartida);
-            writer.newLine();
+
+            for ( Puntaje puntaje : puntuaciones) {
+                writer.write(puntaje.getNombre() + " " + puntaje.getPuntaje() + "\n");
+            }
             JOptionPane.showMessageDialog(this, "Nombre y puntaje guardados exitosamente");
             new Menú();
             this.dispose();

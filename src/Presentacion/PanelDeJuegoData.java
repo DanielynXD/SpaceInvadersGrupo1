@@ -5,6 +5,7 @@ import Logica.Enjambre.Enjambre;
 import Logica.Enjambre.EnjambreDeCalaverasMágicas;
 import Logica.Enjambre.EnjambreDeGatosPlatillos;
 import Logica.Enjambre.EnjambreDePlatillosMalos;
+import Logica.Entidades.Barrera;
 import Logica.Entidades.Enemigos.CalaveraMágica;
 import Logica.Entidades.Enemigos.GatoPlatillo;
 import Logica.Entidades.Enemigos.NaveEnemigo;
@@ -25,17 +26,18 @@ public class PanelDeJuegoData implements Serializable {
     private int puntuacion;
     private int numeroDeVidas;
     private int numeroOleada;
+    private ArrayList<Integer> numeroDeVidaDeLasBarreras;
 
     public PanelDeJuegoData() {
         posicionesEnjambre1 = new ArrayList<>();
         posicionesEnjambre2 = new ArrayList<>();
         posicionesEnjambre3 = new ArrayList<>();
         posicionNaveJugador = new int[2];
-
+        numeroDeVidaDeLasBarreras = new ArrayList<>();
 
     }
 
-    public void actualizarDatos(ArrayList<int[]> ints, ArrayList<int[]> ints1, ArrayList<int[]> ints2, int i, int i2, int puntajeTotal, int numeroOleada) {
+    public void actualizarDatos(ArrayList<int[]> ints, ArrayList<int[]> ints1, ArrayList<int[]> ints2, int i, int i2, int puntajeTotal, int numeroOleada, ArrayList<Barrera> barreras) {
 
         posicionesEnjambre1 = ints;
         posicionesEnjambre2 = ints1;
@@ -46,13 +48,23 @@ public class PanelDeJuegoData implements Serializable {
         numeroDeVidas = i2;
         this.numeroOleada = numeroOleada;
 
+        for(Barrera barrera: barreras){
+            if(barrera != null){
+                numeroDeVidaDeLasBarreras.add(barrera.obtenerNumeroDeVidas());
+            }else{
+                numeroDeVidaDeLasBarreras.add(0);
+            }
+        }
+
     }
 
     public void guardarPartida() {
-        String nombre = JOptionPane.showInputDialog( "Ingrese el nombre para guardar la partida:");
+
+        String nombre = JOptionPane.showInputDialog("Ingrese el nombre para guardar la partida:");
+
+
         if (nombre != null && !nombre.isEmpty()) {
             GestorDePartidas gestorDePartidas = new GestorDePartidas();
-//            nombre = linea.split(" ");
             gestorDePartidas.guardarPartida(this, nombre);
 
             //JOptionPane.showMessageDialog(, "Partida guardada exitosamente.");
@@ -71,8 +83,8 @@ public class PanelDeJuegoData implements Serializable {
     public ArrayList<NaveEnemigo> generarEnjambre1() {
 
         ArrayList<NaveEnemigo> enjambre = new ArrayList<>();
-        for(int[] posicion : posicionesEnjambre1) {
-            enjambre.add(new PlatilloMalo(posicion[0] , posicion[1], numeroOleada));
+        for (int[] posicion : posicionesEnjambre1) {
+            enjambre.add(new PlatilloMalo(posicion[0], posicion[1], numeroOleada));
         }
         return enjambre;
     }
@@ -80,16 +92,16 @@ public class PanelDeJuegoData implements Serializable {
     public ArrayList<NaveEnemigo> generarEnjambre2() {
 
         ArrayList<NaveEnemigo> enjambre = new ArrayList<>();
-        for(int[] posicion : posicionesEnjambre2) {
-            enjambre.add(new CalaveraMágica(posicion[0] , posicion[1], numeroOleada));
+        for (int[] posicion : posicionesEnjambre2) {
+            enjambre.add(new CalaveraMágica(posicion[0], posicion[1], numeroOleada));
         }
         return enjambre;
     }
 
     public ArrayList<NaveEnemigo> generarEnjambre3() {
         ArrayList<NaveEnemigo> enjambre = new ArrayList<>();
-        for(int[] posicion : posicionesEnjambre3) {
-            enjambre.add(new GatoPlatillo(posicion[0] , posicion[1], numeroOleada));
+        for (int[] posicion : posicionesEnjambre3) {
+            enjambre.add(new GatoPlatillo(posicion[0], posicion[1], numeroOleada));
         }
         return enjambre;
     }
@@ -124,4 +136,19 @@ public class PanelDeJuegoData implements Serializable {
         return enjambre3;
     }
 
+    public ArrayList<Barrera> cargarBarreras() {
+        ArrayList<Barrera> barreras = new ArrayList<>();
+
+        if(numeroDeVidaDeLasBarreras.getFirst() != 0){
+            Barrera barrera0 = new Barrera(200, 400, 64, 24);
+            barreras.add(barrera0);
+            barrera0.fijarVida(numeroDeVidaDeLasBarreras.getFirst());
+        } else if (numeroDeVidaDeLasBarreras.get(1) != 0) {
+            Barrera barrera1 = new Barrera(500, 400, 64, 24);
+            barreras.add(barrera1);
+            barrera1.fijarVida(numeroDeVidaDeLasBarreras.get(1));
+
+        }
+        return barreras;
+    }
 }

@@ -1,6 +1,5 @@
 package Logica.Entidades.Enemigos;
 import Logica.Entidades.Modificadores.*;
-import Logica.Movimiento.MovimientoEnjambre;
 import Logica.Entidades.Nave;
 import Logica.Proyectiles.ProyectilDelEnemigo;
 
@@ -59,15 +58,14 @@ public abstract class NaveEnemigo extends Nave {
 
     private Modificador establecerTipoDeModificador() {
         int probabilidadModificador = random.nextInt(4);
-
         return switch (probabilidadModificador) {
-            case 0 -> new VidaExtra(obtenerPosicionEnX(), obtenerPosicionEnY());
-            case 1 -> new VelocidadAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
-            case 2 -> new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
-            case 3 -> new ProbabilidadDisparoEnemigosAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+            case 1 -> new VidaExtra(obtenerPosicionEnX(), obtenerPosicionEnY());
+            case 2 -> new VelocidadAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+            case 3 -> new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+            case 4 -> new Politecnico(obtenerPosicionEnX(), obtenerPosicionEnY());
             default -> null;
         };
-        //return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
+//        return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
     }
 
     private boolean puedeGenerarModificador() {
@@ -94,7 +92,6 @@ public abstract class NaveEnemigo extends Nave {
             }
         };
         timer.schedule(timerDos, 5000);
-
     }
 
 }

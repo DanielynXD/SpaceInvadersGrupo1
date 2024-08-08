@@ -1,6 +1,7 @@
 package Logica.ControlesDeSistema;
 
 import Logica.Enjambre.Enjambre;
+import Logica.Entidades.Barrera;
 import Logica.Entidades.Modificadores.Modificador;
 import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Entidades.Jugador.NaveJugador;
@@ -13,15 +14,26 @@ import java.util.List;
 
 public class ActualizadorEntidades {
 
-    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Modificador> modificadores, Enjambre ... enjambres) throws InterruptedException {
+    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Barrera> barreras, ArrayList<Modificador> modificadores, Enjambre ... enjambres) throws InterruptedException {
         actualizarProyectilesDelEnemigo(enemigos);
         actualizarProyectilesDelJugador(nave);
         actualizarNave(nave);
         actualizarEnjambres(enjambres);
         actualizarModificadores(modificadores);
+        actualizarBarrera(barreras);
         for(Enjambre enjambre : enjambres){
             enjambre.generarDisparos();
         }
+    }
+
+    private void actualizarBarrera(ArrayList<Barrera> barreras) {
+        ArrayList<Barrera> barrerasPorEliminar = new ArrayList<>();
+        for (Barrera barrera : barreras) {
+            if(barrera.obtenerNumeroDeVidas() == 0){
+                barrerasPorEliminar.add(barrera);
+            }
+        }
+        barreras.removeAll(barrerasPorEliminar);
     }
 
     private void actualizarModificadores(ArrayList<Modificador> modificadores) {

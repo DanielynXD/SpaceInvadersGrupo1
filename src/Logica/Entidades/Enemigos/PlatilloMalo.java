@@ -6,10 +6,4 @@ public class PlatilloMalo extends NaveEnemigo {
         super(x, y, PUNTOS_DEL_ENEMIGO, numeroOleada );
     }
 
-
-
-//    @Override
-//    public int obtenerVelocidad() {
-//        return 1;
-//    }
 }

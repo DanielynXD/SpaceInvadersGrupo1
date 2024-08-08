@@ -1,21 +1,16 @@
 package Presentacion;
 
-import Logica.ControlesDeSistema.ActualizadorEntidades;
 import Logica.ControlesDeSistema.ControladorDeTeclas;
-import Logica.ControlesDeSistema.GestorDePartidas;
 import Logica.Enjambre.EnjambreDeCalaverasMágicas;
 import Logica.Enjambre.EnjambreDeGatosPlatillos;
+import Logica.Entidades.Barrera;
+import Logica.Entidades.Enemigos.*;
 import Logica.Entidades.Modificadores.*;
-import Logica.Entidades.Enemigos.CalaveraMágica;
-import Logica.Entidades.Enemigos.GatoPlatillo;
-import Logica.Entidades.Enemigos.PlatilloMalo;
-import Logica.Entidades.Enemigos.NaveEnemigo;
 import Logica.Enjambre.Enjambre;
 import Logica.Enjambre.EnjambreDePlatillosMalos;
 import Logica.Entidades.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
 import Logica.Proyectiles.ProyectilDelEnemigo;
-import Logica.ControlesDeSistema.VerificadorDeColisiones;
 
 
 import java.awt.*;
@@ -43,28 +38,30 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     private AdministradorGeneral administradorGeneral;
     private ControladorDeTeclas controladorDeTeclas;
     private PanelDeJuegoData panelDeJuegoData;
+    private VentanaDePausa ventanaDePausa;
+    private ArrayList<Barrera> barreras;
+    private ReproductorMúsica reproductorDeExplosionJugador;
+    private ReproductorMúsica reproductorDeExplosionEnemigo;
 
-    private  PantallaDePausa pantallaDePausa;
 
-
-    public PanelDeJuego(JFrame jFrame)  {
+    public PanelDeJuego(JFrame jFrame) {
         this.jFrame = jFrame;
         enemigos = new ArrayList<>();
         administradorGeneral = new AdministradorGeneral(this);
         iniciarPanel();
         this.panelDeJuegoData = new PanelDeJuegoData();
-        pantallaDePausa = new PantallaDePausa(this, panelDeJuegoData);
+        ventanaDePausa = new VentanaDePausa(this, panelDeJuegoData);
         pintor = new Pintor(this);
     }
 
-    public PanelDeJuego(JFrame jFrame, PanelDeJuegoData panelDeJuegoData)  {
+    public PanelDeJuego(JFrame jFrame, PanelDeJuegoData panelDeJuegoData) {
         this.jFrame = jFrame;
         enemigos = new ArrayList<>();
         administradorGeneral = new AdministradorGeneral(this);
         this.panelDeJuegoData = panelDeJuegoData;
         this.cargarPartida();
         iniciarPanel();
-        pantallaDePausa = new PantallaDePausa(this, panelDeJuegoData);
+        ventanaDePausa = new VentanaDePausa(this, panelDeJuegoData);
         pintor = new Pintor(this);
     }
 
@@ -78,27 +75,32 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         enemigos.addAll(enjambre1.obtenerEnjambreDeEnemigos());
         enemigos.addAll(enjambre2.obtenerEnjambreDeEnemigos());
         enemigos.addAll(enjambre3.obtenerEnjambreDeEnemigos());
+        barreras = panelDeJuegoData.cargarBarreras();
     }
 
 
-    private void iniciarPanel()  {
+    private void iniciarPanel() {
         setFocusable(true);
         setSize(ANCHO, ALTO);
         addKeyListener(new TAdapter());
-        if(nave == null) {
+        if (nave == null) {
             nave = new NaveJugador();
             agregarEnemigos();
             numeroOleada = 0;
+            barreras = new ArrayList<>();
+            barreras.add( new Barrera(200, 400, 64, 24));
+            barreras.add(new Barrera(500, 400, 64, 24));
         }
-
         temporizador = new Timer(10, this);
         temporizador.start();
         modificadores = new ArrayList<>();
 
         reproductorDeMúsica = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/SonidoIntensoPanelJuego.wav");
-        reproductorDeMúsica.reproducir();
+        reproductorDeMúsica.bucle();
+        reproductorDeExplosionJugador = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/ExplosionJugador.wav");
+        reproductorDeExplosionEnemigo = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/ExplosionEnemigo.wav");
 
-        controladorDeTeclas = new ControladorDeTeclas(nave,this);
+        controladorDeTeclas = new ControladorDeTeclas(nave, this);
     }
 
     public void agregarEnemigos() {
@@ -119,7 +121,6 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
     @Override
     public void paintComponent(Graphics g) {
-
         pintor.paintComponent(g);
     }
 
@@ -128,12 +129,13 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         repaint();
         pintor.actualizar();
         try {
-            administradorGeneral.iniciarCompetencias(modificadores,nave,enemigos, enjambre1, enjambre2, enjambre3);
+            administradorGeneral.iniciarCompetencias(modificadores, nave, enemigos, barreras, enjambre1, enjambre2, enjambre3);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
         administradorGeneral.verficarExistenciaEnemigos(enemigos);
-        panelDeJuegoData.actualizarDatos(obtenerPosicionesEnjambreUno(), obtenerPosicionesEnjambreDos(), obtenerPosicionesEnjambreTres(), obtenerPosicionEnXNave(), obtenerVidasJugador(), getPuntajeTotal(), numeroOleada);
+        panelDeJuegoData.actualizarDatos(obtenerPosicionesEnjambreUno(), obtenerPosicionesEnjambreDos(), obtenerPosicionesEnjambreTres(),
+                obtenerPosicionEnXNave(), obtenerVidasJugador(), getPuntajeTotal(), numeroOleada, barreras);
 
     }
 
@@ -147,19 +149,21 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         for (ProyectilDelEnemigo proyectil : proyectilesAEliminar) {// Eliminamos todos los proyectiles de la lista temporal
             proyectil.setVisible(false);
         }
-        for(NaveEnemigo enemigo : enemigos){
+        for (NaveEnemigo enemigo : enemigos) {
             enemigo.obtenerProyectiles().clear();
         }
 
     }
 
     public void pausaDeReaparicion() {
+        pintor.permitirDibujarExplosion();
         temporizador.stop();
         Timer pausaParaReaparicion = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nave.volverAlPuntoDeRespawn();
                 temporizador.start();
+                pintor.prohibirPintarExplosion();
             }
         });
         pausaParaReaparicion.setRepeats(false);
@@ -200,12 +204,12 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     }
 
     public ArrayList<int[]> obtenerPosicionesProyectiles() {
-        ArrayList<int[]> posicionesEnemigos = new ArrayList<>();
+        ArrayList<int[]> posicionesProyectilJugadores = new ArrayList<>();
         for (Proyectil proyectil : nave.obtenerProyectiles()) {
             int[] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
-            posicionesEnemigos.add(aux);
+            posicionesProyectilJugadores.add(aux);
         }
-        return posicionesEnemigos;
+        return posicionesProyectilJugadores;
     }
 
     public ArrayList<int[]> obtenerPosicionesProyectilesEnemigos() {
@@ -257,12 +261,25 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         return modificadores;
     }
 
+    public void reproducirExplosionJugador() {
+        reproductorDeExplosionJugador.reproducir();
+    }
+
+    public void reproducirExplosionEnemigo() {
+        reproductorDeExplosionEnemigo.reproducir();
+    }
+
+    public ArrayList<Barrera> obtenerBarreras() {
+        return barreras;
+    }
+
     private class TAdapter extends KeyAdapter {
 
         @Override
         public void keyReleased(KeyEvent e) {
             controladorDeTeclas.teclaLiberada(e);
         }
+
         @Override
         public void keyPressed(KeyEvent e) {
             controladorDeTeclas.teclaPresionada(e);
@@ -272,15 +289,15 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     public void pausarJuego() {
         reproductorDeMúsica.detener();
         temporizador.stop();
-        add(pantallaDePausa);
-        pantallaDePausa.setBounds(0, 0, ANCHO, ALTO);
-        pantallaDePausa.setVisible(true);
+        add(ventanaDePausa);
+        ventanaDePausa.setBounds(0, 0, ANCHO, ALTO);
+        ventanaDePausa.setVisible(true);
         repaint();
     }
 
     public void reanudarJuego() {
         reproductorDeMúsica.reproducir();
-        remove(pantallaDePausa);
+        remove(ventanaDePausa);
         temporizador.start();
         repaint();
     }

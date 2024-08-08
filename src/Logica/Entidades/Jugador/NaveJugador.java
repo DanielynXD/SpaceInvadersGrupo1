@@ -1,7 +1,7 @@
 package Logica.Entidades.Jugador;
 
-import Logica.ControlesDeSistema.ControladorDeTeclas;
 import Logica.Entidades.Modificadores.Modificador;
+import Logica.Entidades.Modificadores.VelocidadDeDisparoAumentada;
 import Logica.Movimiento.MovimientoNaveJugador;
 import Logica.Entidades.Nave;
 import Logica.Proyectiles.ProyectilDelJugador;
@@ -11,11 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 import javax.swing.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class NaveJugador extends Nave {
 
@@ -26,8 +22,8 @@ public class NaveJugador extends Nave {
     private boolean puedeDisparar;
     private Timer temporizadorDisparo;
     private ReproductorMúsica sonidoDisparo;
-    private int velocidadDisparo = 500;
-    private int velocidadDisparoInicial = 1000;
+    private int velocidadDisparo;
+    private int velocidadDisparoInicial = 500;
     private java.util.Timer timer;
 
     public NaveJugador() {
@@ -35,6 +31,7 @@ public class NaveJugador extends Nave {
         proyectiles = new ArrayList<>();
         movimiento = new MovimientoNaveJugador();
         numeroDeVidas = 3;
+        velocidadDisparo = velocidadDisparoInicial;
         timer = new java.util.Timer();
         iniciarNave();
     }
@@ -42,14 +39,17 @@ public class NaveJugador extends Nave {
     private void iniciarNave() {
         puedeDisparar = true;
         sonidoDisparo = new ReproductorMúsica("src/Presentacion/MúsicaYSonido/DisparoNave.wav");
+        actualizarTemporizador();
+    }
 
-//        temporizadorDisparo = new Timer(velocidadDisparo, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                puedeDisparar = true;
-//                temporizadorDisparo.stop();
-//            }
-//        });
+    private void actualizarTemporizador() {
+        temporizadorDisparo = new Timer(velocidadDisparo, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                puedeDisparar = true;
+                temporizadorDisparo.stop();
+            }
+        });
     }
 
     public void mover() {
@@ -63,6 +63,16 @@ public class NaveJugador extends Nave {
     public void aplicarModificador(Modificador modificador){
         //numeroDeVidas += 1;
         modificador.aplicarEfecto(this);
+        if (modificador instanceof VelocidadDeDisparoAumentada) {
+            Timer timer = new Timer(5000, new ActionListener() { // 5 segundos de efecto
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    restablecerVelocidadDeDisparo();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
     }
 
     public List<ProyectilDelJugador> obtenerProyectiles(){
@@ -70,17 +80,11 @@ public class NaveJugador extends Nave {
     }
 
     public void disparar(){
-        temporizadorDisparo = new Timer(velocidadDisparo, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                puedeDisparar = true;
-                temporizadorDisparo.restart();
-            }
-        });
         if (puedeDisparar) {
             proyectiles.add(new ProyectilDelJugador (obtenerPosicionEnX() + (ANCHO_NAVE / 2) - 8, obtenerPosicionEnY(), 10));
             sonidoDisparo.reproducir();
             puedeDisparar = false;
+            temporizadorDisparo.setDelay(velocidadDisparo);
             temporizadorDisparo.start();
         }
     }
@@ -93,25 +97,24 @@ public class NaveJugador extends Nave {
         return numeroDeVidas;
     }
 
-
     public void aumentarVelocidadDeDisparo(int velocidadAumentada){
-        for(ProyectilDelJugador proyectilDelJugador : proyectiles){
-            proyectilDelJugador.aumentarVelocidad(velocidadAumentada);
+        this.velocidadDisparo = velocidadAumentada;
+        actualizarValores();
+    }
+
+    public void restablecerVelocidadDeDisparo() {
+        this.velocidadDisparo = velocidadDisparoInicial;
+        actualizarValores();
+    }
+
+    public void actualizarValores() {
+        if (temporizadorDisparo != null) {
+            temporizadorDisparo.setDelay(velocidadDisparo);
+            actualizarTemporizador();
         }
     }
 
-//    public void restablecerVelocidadDeDisparo() {
-//        this.velocidadDisparo = velocidadDisparoInicial;
-//        actualizarValores();
-//    }
-
-//    public void actualizarValores() {
-//        if (temporizadorDisparo != null) {
-//            temporizadorDisparo.setDelay(velocidadDisparo);
-//        }
-//    }
-
-    public void actualizarNumeroDeVidas(int i) {
-        numeroDeVidas = i;
+    public void actualizarNumeroDeVidas(int numeroDeVidasActualizado) {
+        numeroDeVidas = numeroDeVidasActualizado;
     }
 }
