@@ -48,7 +48,7 @@ public class VentanaPuntuaciones extends JFrame {
                     System.out.println("Linea invalida (formato de numero): " + linea);
                 }
             }
-            //puntuaciones.sort(new ComparadorDePuntajes());
+            puntuaciones.sort(new ComparadorDePuntajes());
         } catch (IOException e) {
             System.out.println("NO EXISTE EL ARCHIVO");
         }
