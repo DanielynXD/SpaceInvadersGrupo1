@@ -9,19 +9,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import Logica.Puntaje.Puntaje;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import Logica.Puntaje.ComparadorDePuntajes;
 
 
 public class VentanaFinDeJuego extends JFrame implements ActionListener {
     private final int puntajeDelPartida;
-    private JButton reintentarBoton, salirBoton;
+    private JButton reintentarBoton, botonGuardarYSalir;
     private JTextField nombreDelJugador;
     private ReproductorMúsica reproductorMusica;
-    private VentanaPuntuaciones ventanaPuntuaciones = new VentanaPuntuaciones();
 
     public VentanaFinDeJuego(int puntajeDelJugador) {
         this.puntajeDelPartida = puntajeDelJugador;
@@ -46,10 +42,10 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
         add(nombreDelJugador);
 
 
-        salirBoton = new JButton("Guardar Puntaje");
-        salirBoton.setBounds(325, 350, 200, 50);
-        salirBoton.addActionListener(this);
-        add(salirBoton);
+        botonGuardarYSalir = new JButton("Guardar Puntaje");
+        botonGuardarYSalir.setBounds(325, 350, 200, 50);
+        botonGuardarYSalir.addActionListener(this);
+        add(botonGuardarYSalir);
 
         add(panelFinDeJuego);
         setVisible(true);
@@ -60,7 +56,7 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == salirBoton) {
+        if (e.getSource() == botonGuardarYSalir) {
             mostrarVentanaFinal();
         } else if (e.getSource() == reintentarBoton) {
             new Escenario();
@@ -78,29 +74,38 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
         }
 
         //-------
-        List<Puntaje> puntuaciones = ventanaPuntuaciones.leerPuntuaciones("/Puntuaciones/PuntuacionesMejoresJugadores");
-        puntuaciones.add(new Puntaje(nombre, puntajeDelPartida));
+//        List<Puntaje> puntuaciones = ventanaPuntuaciones.leerPuntuaciones("/Puntuaciones/PuntuacionesMejoresJugadores");
+//        puntuaciones.add(new Puntaje(nombre, puntajeDelPartida));
+//
+//        puntuaciones.sort(new ComparadorDePuntajes());
 
-        puntuaciones.sort(new ComparadorDePuntajes());
-
-        if (puntuaciones.size() > 10) {
-            puntuaciones = puntuaciones.subList(0, 10);
-        }
-
-        File archivo = new File("src/Puntuaciones/PuntuacionesMejoresJugadores");
-        if (archivo.exists()) {
-            archivo.delete();
-        }
-
-
-
+//        if (puntuaciones.size() > 10) {
+//            puntuaciones = puntuaciones.subList(0, 10);
+//        }
+//
+//        File archivo = new File("src/Puntuaciones/PuntuacionesMejoresJugadores");
+//        if (archivo.exists()) {
+//            archivo.delete();
+//        }
+//
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Puntuaciones/PuntuacionesMejoresJugadores", true))) {
+//
+//            for ( Puntaje puntaje : puntuaciones) {
+//                writer.write(puntaje.getNombre() + " " + puntaje.getPuntaje() + "\n");
+//            }
+//            JOptionPane.showMessageDialog(this, "Nombre y puntaje guardados exitosamente");
+//            new Menú();
+//            this.dispose();
+//        } catch (IOException ex) {
+//            JOptionPane.showMessageDialog(this, "Error al guardar el nombre y puntaje");
+//        }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Puntuaciones/PuntuacionesMejoresJugadores", true))) {
 
-            for ( Puntaje puntaje : puntuaciones) {
-                writer.write(puntaje.getNombre() + " " + puntaje.getPuntaje() + "\n");
-            }
+            writer.write(nombre + " " + puntajeDelPartida);
+            writer.newLine();
             JOptionPane.showMessageDialog(this, "Nombre y puntaje guardados exitosamente");
+
             new Menú();
             this.dispose();
         } catch (IOException ex) {

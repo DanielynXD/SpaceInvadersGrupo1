@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class VentanaDePausa extends JPanel {
-    private JButton botonReanudar, botonGuardar, botonRegresarAlMenú, botonSalir;
+    private JButton botonReanudar, botonGuardar, botonSalir;
     private PanelDeJuego panelDeJuego;
     private PanelDeJuegoData panelDeJuegoData;
 
@@ -27,19 +27,8 @@ public class VentanaDePausa extends JPanel {
 
         add(botonReanudar);
 
-        botonRegresarAlMenú = new JButton("Menú");
-        botonRegresarAlMenú.setBounds(350, 300, 100, 50);
-        botonRegresarAlMenú.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Menú();
-
-            }
-        });
-        add(botonRegresarAlMenú);
-
         botonSalir = new JButton("Salir");
-        botonSalir.setBounds(350, 400, 100, 50);
+        botonSalir.setBounds(350, 275, 100, 50);
         botonSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,7 +38,7 @@ public class VentanaDePausa extends JPanel {
         add(botonSalir);
 
         botonGuardar = new JButton("Guardar");
-        botonGuardar.setBounds(350, 500, 100, 50);
+        botonGuardar.setBounds(350, 350, 100, 50);
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
