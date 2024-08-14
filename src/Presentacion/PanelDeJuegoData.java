@@ -48,10 +48,10 @@ public class PanelDeJuegoData implements Serializable {
         numeroDeVidas = i2;
         this.numeroOleada = numeroOleada;
 
-        for(Barrera barrera: barreras){
-            if(barrera != null){
+        for (Barrera barrera : barreras) {
+            if (barrera != null) {
                 numeroDeVidaDeLasBarreras.add(barrera.obtenerNumeroDeVidas());
-            }else{
+            } else {
                 numeroDeVidaDeLasBarreras.add(0);
             }
         }
@@ -67,7 +67,6 @@ public class PanelDeJuegoData implements Serializable {
             GestorDePartidas gestorDePartidas = new GestorDePartidas();
             gestorDePartidas.guardarPartida(this, nombre);
 
-            //JOptionPane.showMessageDialog(, "Partida guardada exitosamente.");
         }
 
     }
@@ -139,7 +138,7 @@ public class PanelDeJuegoData implements Serializable {
     public ArrayList<Barrera> cargarBarreras() {
         ArrayList<Barrera> barreras = new ArrayList<>();
 
-        if(numeroDeVidaDeLasBarreras.getFirst() != 0){
+        if (numeroDeVidaDeLasBarreras.getFirst() != 0) {
             Barrera barrera0 = new Barrera(200, 400, 64, 24);
             barreras.add(barrera0);
             barrera0.fijarVida(numeroDeVidaDeLasBarreras.getFirst());

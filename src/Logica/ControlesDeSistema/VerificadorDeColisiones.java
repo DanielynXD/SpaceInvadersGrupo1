@@ -25,7 +25,7 @@ public class VerificadorDeColisiones {
         puntajeTotal = 0;
     }
 
-    public void verificarColisiones (NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Modificador> modificadores, ArrayList<Barrera> barreras) {
+    public void verificarColisiones(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Modificador> modificadores, ArrayList<Barrera> barreras) {
         Rectangle hitboxNave = nave.obtenerHitbox();
         java.util.List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
 
@@ -43,18 +43,18 @@ public class VerificadorDeColisiones {
 
     private void verificarEntidadFueraDelMapa(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Modificador> modificadores) {
         ArrayList<Proyectil> proyectilesAEliminar = new ArrayList<>();
-        for(Proyectil proyectil : nave.obtenerProyectiles()) {
-            if(proyectil.estaFueraDelMapa()){
+        for (Proyectil proyectil : nave.obtenerProyectiles()) {
+            if (proyectil.estaFueraDelMapa()) {
                 proyectilesAEliminar.add(proyectil);
             }
         }
         nave.obtenerProyectiles().removeAll(proyectilesAEliminar);
 
 
-        for(NaveEnemigo naveEnemigo : enemigos) {
+        for (NaveEnemigo naveEnemigo : enemigos) {
             ArrayList<Proyectil> proyectilesAEliminarEnemigos = new ArrayList<>();
-            for(Proyectil proyectil : naveEnemigo.obtenerProyectiles()) {
-                if(proyectil.estaFueraDelMapa()){
+            for (Proyectil proyectil : naveEnemigo.obtenerProyectiles()) {
+                if (proyectil.estaFueraDelMapa()) {
                     proyectilesAEliminarEnemigos.add(proyectil);
                 }
             }
@@ -62,8 +62,8 @@ public class VerificadorDeColisiones {
         }
 
         ArrayList<Modificador> modificadoresAEliminar = new ArrayList<>();
-        for(Modificador modificador : modificadores) {
-            if(modificador.estaFueraDelMapa()){
+        for (Modificador modificador : modificadores) {
+            if (modificador.estaFueraDelMapa()) {
                 modificadoresAEliminar.add(modificador);
             }
         }
@@ -71,12 +71,12 @@ public class VerificadorDeColisiones {
     }
 
     private void verificarColisionesProyectilesBarreras(ArrayList<Barrera> barreras, NaveJugador naveJugador, ArrayList<NaveEnemigo> enemigos) {
-        for(NaveEnemigo naveEnemigo : enemigos) {
+        for (NaveEnemigo naveEnemigo : enemigos) {
             ArrayList<Proyectil> proyectilesAEliminar = new ArrayList<>();
-            for(Proyectil proyectil : naveEnemigo.obtenerProyectiles()) {
+            for (Proyectil proyectil : naveEnemigo.obtenerProyectiles()) {
 
-                for(Barrera barrera : barreras){
-                    if(proyectil.obtenerHitbox().intersects(barrera.obtenerHitbox())){
+                for (Barrera barrera : barreras) {
+                    if (proyectil.obtenerHitbox().intersects(barrera.obtenerHitbox())) {
                         barrera.reducirVida();
                         proyectil.setVisible(false);
                         proyectilesAEliminar.add(proyectil);
@@ -87,9 +87,9 @@ public class VerificadorDeColisiones {
         }
 
         ArrayList<Proyectil> proyectilesAEliminarJugador = new ArrayList<>();
-        for(Proyectil proyectil : naveJugador.obtenerProyectiles()) {
-            for(Barrera barrera : barreras){
-                if(proyectil.obtenerHitbox().intersects(barrera.obtenerHitbox())){
+        for (Proyectil proyectil : naveJugador.obtenerProyectiles()) {
+            for (Barrera barrera : barreras) {
+                if (proyectil.obtenerHitbox().intersects(barrera.obtenerHitbox())) {
                     barrera.reducirVida();
                     proyectil.setVisible(false);
                     proyectilesAEliminarJugador.add(proyectil);
@@ -100,7 +100,7 @@ public class VerificadorDeColisiones {
     }
 
     private void verificarColisionEnemigoConLimiteInferior(ArrayList<NaveEnemigo> enemigos) {
-        for (NaveEnemigo enemigo: enemigos){
+        for (NaveEnemigo enemigo : enemigos) {
             if (llegoAlLimiteInferior(enemigo)) {
                 generarVentanaFinDelJuego(puntajeTotal);
             }
@@ -110,10 +110,10 @@ public class VerificadorDeColisiones {
     private void verificarColisionesJugadorModificador(NaveJugador nave, ArrayList<Modificador> modificadores, ArrayList<NaveEnemigo> enemigos) {
 
         ArrayList<Modificador> modificadoresPorEliminar = new ArrayList<>();
-        for(Modificador modificador : modificadores) {
-            if(modificador.obtenerHitbox().intersects(nave.obtenerHitbox())){
-                if(modificador instanceof Politecnico){
-                    for(NaveEnemigo enemigo: enemigos){
+        for (Modificador modificador : modificadores) {
+            if (modificador.obtenerHitbox().intersects(nave.obtenerHitbox())) {
+                if (modificador instanceof Politecnico) {
+                    for (NaveEnemigo enemigo : enemigos) {
                         enemigo.aplicarModificador(modificador);
                     }
                 }
@@ -164,7 +164,7 @@ public class VerificadorDeColisiones {
         }
     }
 
-    private void verificarColisionJugadorYNavesEnemigas(Rectangle hitboxNave, List<NaveEnemigo> enemigos){
+    private void verificarColisionJugadorYNavesEnemigas(Rectangle hitboxNave, List<NaveEnemigo> enemigos) {
         for (NaveEnemigo enemigo : enemigos) {
             Rectangle hitboxEnemigo = enemigo.obtenerHitBox();
             if (hitboxNave.intersects(hitboxEnemigo)) {

@@ -14,10 +14,10 @@ import Logica.Proyectiles.ProyectilDelEnemigo;
 
 
 import java.awt.*;
+import javax.swing.*;
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.swing.*;
 import java.util.List;
 import javax.swing.Timer;
 

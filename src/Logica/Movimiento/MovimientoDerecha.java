@@ -2,11 +2,11 @@ package Logica.Movimiento;
 
 import Logica.Entidades.Entidad;
 
-public class MovimientoDerecha implements Movimiento{
+public class MovimientoDerecha implements Movimiento {
 
     private int direccion;
 
-    public MovimientoDerecha( ) {
+    public MovimientoDerecha() {
         this.direccion = 1;
     }
 

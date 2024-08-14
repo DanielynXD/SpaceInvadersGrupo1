@@ -18,7 +18,7 @@ public class MovimientoNaveJugador implements Movimiento {
     @Override
     public void mover(Entidad entidad) {
         if (estaEnElLimiteDerecho(entidad)) {
-            entidad.fijarNuevaPosicionEnX(LIMITE_DERECHO-ANCHO_NAVE);
+            entidad.fijarNuevaPosicionEnX(LIMITE_DERECHO - ANCHO_NAVE);
         }
         if (estaEnElLimiteIzquierdo(entidad)) {
             entidad.fijarNuevaPosicionEnX(0);
@@ -26,7 +26,7 @@ public class MovimientoNaveJugador implements Movimiento {
         entidad.fijarNuevaPosicionEnX(entidad.obtenerPosicionEnX() + distanciaDesplazada);
     }
 
-    public void fijarDistanciaDesplazada(int distanciaDesplazada){
+    public void fijarDistanciaDesplazada(int distanciaDesplazada) {
         this.distanciaDesplazada = distanciaDesplazada;
     }
 }

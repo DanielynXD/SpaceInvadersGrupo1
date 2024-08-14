@@ -101,7 +101,7 @@ public class Pintor extends JPanel {
     }
 
     private void dibujarBarreras(Graphics g) {
-        for(Barrera barrera : panel.obtenerBarreras()){
+        for (Barrera barrera : panel.obtenerBarreras()) {
             g.drawImage(imagenBarreraCleanCode, barrera.obtenerPosicionEnX(), barrera.obtenerPosicionEnY(), this);
         }
     }

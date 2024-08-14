@@ -16,7 +16,7 @@ public class EnjambreDeCalaverasMágicas extends Enjambre {
         }
         if (numeroFilasGenerado < numeroFilas) {
             numeroFilasGenerado++;
-            posicionEnY +=  60;
+            posicionEnY += 60;
             generarEnemigosDelEnjambre(posicionEnX, posicionEnY);
         }
     }

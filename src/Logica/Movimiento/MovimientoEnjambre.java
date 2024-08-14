@@ -5,7 +5,7 @@ import Logica.Entidades.Entidad;
 
 import java.util.ArrayList;
 
-public class MovimientoEnjambre implements Movimiento{
+public class MovimientoEnjambre implements Movimiento {
 
     private final ArrayList<NaveEnemigo> enjambre;
     Movimiento movimientoIzquierda;
@@ -31,7 +31,7 @@ public class MovimientoEnjambre implements Movimiento{
         boolean cambiarDireccion = false;
 
         if (descendiendo) {
-            for(NaveEnemigo naveEnemigo : enjambre){
+            for (NaveEnemigo naveEnemigo : enjambre) {
                 movimientoAbajo.mover(naveEnemigo);
             }
             unidadesDescendidas++;
