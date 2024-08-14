@@ -14,14 +14,14 @@ import java.util.List;
 
 public class ActualizadorEntidades {
 
-    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Barrera> barreras, ArrayList<Modificador> modificadores, Enjambre ... enjambres) throws InterruptedException {
+    public void actualizarEntidades(NaveJugador nave, ArrayList<NaveEnemigo> enemigos, ArrayList<Barrera> barreras, ArrayList<Modificador> modificadores, Enjambre... enjambres) throws InterruptedException {
         actualizarProyectilesDelEnemigo(enemigos);
         actualizarProyectilesDelJugador(nave);
         actualizarNave(nave);
         actualizarEnjambres(enjambres);
         actualizarModificadores(modificadores);
         actualizarBarrera(barreras);
-        for(Enjambre enjambre : enjambres){
+        for (Enjambre enjambre : enjambres) {
             enjambre.generarDisparos();
         }
     }
@@ -29,7 +29,7 @@ public class ActualizadorEntidades {
     private void actualizarBarrera(ArrayList<Barrera> barreras) {
         ArrayList<Barrera> barrerasPorEliminar = new ArrayList<>();
         for (Barrera barrera : barreras) {
-            if(barrera.obtenerNumeroDeVidas() == 0){
+            if (barrera.obtenerNumeroDeVidas() == 0) {
                 barrerasPorEliminar.add(barrera);
             }
         }
@@ -43,7 +43,7 @@ public class ActualizadorEntidades {
     }
 
     private void actualizarEnjambres(Enjambre[] enjambres) {
-        for(Enjambre enjambre : enjambres) {
+        for (Enjambre enjambre : enjambres) {
             enjambre.mover();
         }
     }

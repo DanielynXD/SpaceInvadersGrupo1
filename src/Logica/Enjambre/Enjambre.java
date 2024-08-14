@@ -5,6 +5,7 @@ import Logica.Movimiento.MovimientoDerecha;
 import Logica.Movimiento.MovimientoEnjambre;
 import Logica.Movimiento.MovimientoIzquierda;
 import Logica.Entidades.Enemigos.NaveEnemigo;
+
 import java.util.ArrayList;
 
 public abstract class Enjambre {
@@ -29,11 +30,11 @@ public abstract class Enjambre {
         generarEnemigosDelEnjambre(posicionEnX, posicionEnY);
     }
 
-    public void mover(){
+    public void mover() {
         movimientoEnjambre.mover(enemigo);
     }
 
-    public int obtenerNumeroDeOleada(){
+    public int obtenerNumeroDeOleada() {
         return numeroOleada;
     }
 
@@ -44,8 +45,8 @@ public abstract class Enjambre {
     }
 
     public void generarDisparos() {
-        for(NaveEnemigo naveEnemigo : enjambre){
-            if(naveEnemigo.debeDisparar()) {
+        for (NaveEnemigo naveEnemigo : enjambre) {
+            if (naveEnemigo.debeDisparar()) {
                 naveEnemigo.disparar();
             }
         }

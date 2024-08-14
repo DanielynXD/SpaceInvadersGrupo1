@@ -10,6 +10,7 @@ public class Puntaje {
         this.puntaje = puntaje;
     }
 
+
     public String getNombre() {
         return nombre;
     }

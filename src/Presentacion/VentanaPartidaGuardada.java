@@ -42,19 +42,5 @@ public class VentanaPartidaGuardada extends JFrame {
         return this.panelDeJuegoData;
     }
 
-    /*
-    private PanelDeJuego obtenerNombreDeLaPartidaGuardada() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre de la partida guardada:");
-        if (nombre != null && !nombre.isEmpty()) {
-            return gestionDePartidas.cargarPartida(nombre);
-        } else {
-            return null;
-        }
-        this.dispose();
-    }
-
-
-    */
 
 }

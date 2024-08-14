@@ -17,7 +17,7 @@ public abstract class Modificador extends Entidad {
     }
 
     public int[] obtenerPosicion() {
-        return new int[] {this.obtenerPosicionEnX(), this.obtenerPosicionEnY()};
+        return new int[]{this.obtenerPosicionEnX(), this.obtenerPosicionEnY()};
     }
 
     public void mover() {

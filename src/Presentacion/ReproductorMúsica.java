@@ -41,9 +41,4 @@ public class ReproductorMúsica {
         }
     }
 
-//    public void cerrar() {
-//        if (clip != null) {
-//            clip.close();
-//        }
-//    }
 }

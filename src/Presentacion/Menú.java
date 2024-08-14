@@ -14,7 +14,7 @@ public class Menú extends JFrame implements ActionListener {
 
 
     public Menú() {
-        JPanel panel = new Pintor(this); // Usar Pintor para el dibujo
+        JPanel panel = new Pintor(this);
 
         setTitle("SpaceInvaders");
         setSize(ANCHO, ALTO);

@@ -53,14 +53,14 @@ public class NaveJugador extends Nave {
     }
 
     public void mover() {
-       movimiento.mover(this);
+        movimiento.mover(this);
     }
 
-    public void fijarDistanciaDesplazada(int distanciaDesplazada){
+    public void fijarDistanciaDesplazada(int distanciaDesplazada) {
         movimiento.fijarDistanciaDesplazada(distanciaDesplazada);
     }
 
-    public void aplicarModificador(Modificador modificador){
+    public void aplicarModificador(Modificador modificador) {
         //numeroDeVidas += 1;
         modificador.aplicarEfecto(this);
         if (modificador instanceof VelocidadDeDisparoAumentada) {
@@ -75,13 +75,13 @@ public class NaveJugador extends Nave {
         }
     }
 
-    public List<ProyectilDelJugador> obtenerProyectiles(){
+    public List<ProyectilDelJugador> obtenerProyectiles() {
         return proyectiles;
     }
 
-    public void disparar(){
+    public void disparar() {
         if (puedeDisparar) {
-            proyectiles.add(new ProyectilDelJugador (obtenerPosicionEnX() + (ANCHO_NAVE / 2) - 8, obtenerPosicionEnY(), 10));
+            proyectiles.add(new ProyectilDelJugador(obtenerPosicionEnX() + (ANCHO_NAVE / 2) - 8, obtenerPosicionEnY(), 10));
             sonidoDisparo.reproducir();
             puedeDisparar = false;
             temporizadorDisparo.setDelay(velocidadDisparo);
@@ -97,7 +97,7 @@ public class NaveJugador extends Nave {
         return numeroDeVidas;
     }
 
-    public void aumentarVelocidadDeDisparo(int velocidadAumentada){
+    public void aumentarVelocidadDeDisparo(int velocidadAumentada) {
         this.velocidadDisparo = velocidadAumentada;
         actualizarValores();
     }

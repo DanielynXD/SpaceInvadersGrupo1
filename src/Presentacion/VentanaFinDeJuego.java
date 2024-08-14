@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+
 import Logica.Puntaje.ComparadorDePuntajes;
 
 
@@ -47,7 +48,7 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
         botonGuardarYSalir.addActionListener(this);
         add(botonGuardarYSalir);
 
-        botonVolverAlMenu= new JButton("Volver Al Menu");
+        botonVolverAlMenu = new JButton("Volver Al Menu");
         botonVolverAlMenu.setBounds(50, 250, 200, 50);
         botonVolverAlMenu.addActionListener(this);
         add(botonVolverAlMenu);

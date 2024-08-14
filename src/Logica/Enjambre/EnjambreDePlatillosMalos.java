@@ -11,11 +11,11 @@ public class EnjambreDePlatillosMalos extends Enjambre {
     @Override
     public void generarEnemigosDelEnjambre(int posicionEnX, int posicionEnY) {
         for (int i = 0; i < numeroColumnas; i++) {
-            enjambre.add(new PlatilloMalo(posicionEnX + i * 72, posicionEnY, obtenerNumeroDeOleada()));//--------esto cambie
+            enjambre.add(new PlatilloMalo(posicionEnX + i * 72, posicionEnY, obtenerNumeroDeOleada()));
         }
         if (numeroFilasGenerado < numeroFilas) {
             numeroFilasGenerado++;
-            posicionEnY +=  60;
+            posicionEnY += 60;
             generarEnemigosDelEnjambre(posicionEnX, posicionEnY);
         }
     }

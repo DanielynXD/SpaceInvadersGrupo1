@@ -1,4 +1,5 @@
 package Logica.Entidades.Enemigos;
+
 import Logica.Entidades.Modificadores.*;
 import Logica.Entidades.Nave;
 import Logica.Proyectiles.ProyectilDelEnemigo;
@@ -16,33 +17,25 @@ public abstract class NaveEnemigo extends Nave {
     private final List<ProyectilDelEnemigo> proyectilEnemigo;
     protected boolean puedeDisparar;
     private Random random = new Random();
-//    private MovimientoEnjambre movimiento;
     public int puntosDelEnemigo;
 
     public NaveEnemigo(int x, int y, int puntosDelEnemigo, int numeroOleada) {
-        super(x,y, 1 + modificadorPorOleada * numeroOleada , 48, 48);
+        super(x, y, 1 + modificadorPorOleada * numeroOleada, 48, 48);
         proyectilEnemigo = new ArrayList<>();
-        this.puedeDisparar = true;;
+        this.puedeDisparar = true;
+        ;
         this.puntosDelEnemigo = puntosDelEnemigo;
 
     }
 
-//    public void mover() {
-//        movimiento.mover(this);
-//    }
-
-//    private boolean llegoAlLimiteInferior() {
-//        return this.obtenerPosicionEnY() > 600 - ANCHO_NAVE * 2;
-//    }
-
     public void disparar() {
-        proyectilEnemigo.add(new ProyectilDelEnemigo(obtenerPosicionEnX() + ANCHO_NAVE / 2, obtenerPosicionEnY(),5));
+        proyectilEnemigo.add(new ProyectilDelEnemigo(obtenerPosicionEnX() + ANCHO_NAVE / 2, obtenerPosicionEnY(), 5));
     }
 
     public boolean debeDisparar() {
         int probabilidadDisparo = random.nextInt(10000);//17180
 
-        return probabilidadDisparo < this.probabilidadDeDisparo ; // 5% de disparo aleatorio
+        return probabilidadDisparo < this.probabilidadDeDisparo; // 5% de disparo aleatorio
     }
 
     public List<ProyectilDelEnemigo> obtenerProyectiles() {
@@ -50,14 +43,14 @@ public abstract class NaveEnemigo extends Nave {
     }
 
     public Modificador generarModificador() {
-        if(puedeGenerarModificador()){
+        if (puedeGenerarModificador()) {
             return establecerTipoDeModificador();
         }
         return null;
     }
 
     private Modificador establecerTipoDeModificador() {
-        int probabilidadModificador = random.nextInt(4);
+        int probabilidadModificador = random.nextInt(5);
         return switch (probabilidadModificador) {
             case 1 -> new VidaExtra(obtenerPosicionEnX(), obtenerPosicionEnY());
             case 2 -> new VelocidadAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
@@ -65,12 +58,11 @@ public abstract class NaveEnemigo extends Nave {
             case 4 -> new Politecnico(obtenerPosicionEnX(), obtenerPosicionEnY());
             default -> null;
         };
-//        return new VelocidadDeDisparoAumentada(obtenerPosicionEnX(), obtenerPosicionEnY());
     }
 
     private boolean puedeGenerarModificador() {
         int probabilidadModificador = random.nextInt(10000);
-        return probabilidadModificador < 1000 ;
+        return probabilidadModificador < 2500;
 
     }
 
@@ -78,11 +70,11 @@ public abstract class NaveEnemigo extends Nave {
         return puntosDelEnemigo;
     }
 
-    public void aplicarModificador(Modificador modificador){
+    public void aplicarModificador(Modificador modificador) {
         modificador.aplicarEfecto(this);
     }
 
-    public void aumentarProbabilidadDeDisparo(){
+    public void aumentarProbabilidadDeDisparo() {
         probabilidadDeDisparo = 50;
         Timer timer = new Timer();
         TimerTask timerDos = new TimerTask() {
