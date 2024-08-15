@@ -55,13 +55,13 @@ public class Entidad {
     }
 
     public void actualizarVelocidad(int velocidadAumentada) {
-        int aux = velocidad;
+        int velocidadTemporal = velocidad;
         velocidad = velocidadAumentada;
         Timer timer = new Timer();
         TimerTask timerDos = new TimerTask() {
             @Override
             public void run() {
-                velocidad = aux;
+                velocidad = velocidadTemporal;
             }
         };
         timer.schedule(timerDos, 5000);

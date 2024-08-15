@@ -12,7 +12,7 @@ public class EnjambreDeCalaverasMágicas extends Enjambre {
     @Override
     public void generarEnemigosDelEnjambre(int posicionEnX, int posicionEnY) {
         for (int i = 0; i < numeroColumnas; i++) {
-            enjambre.add(new CalaveraMágica(posicionEnX + i * 72, posicionEnY, obtenerNumeroDeOleada()));//--------esto cambie
+            enjambre.add(new CalaveraMágica(posicionEnX + i * 72, posicionEnY, obtenerNumeroDeOleada()));
         }
         if (numeroFilasGenerado < numeroFilas) {
             numeroFilasGenerado++;

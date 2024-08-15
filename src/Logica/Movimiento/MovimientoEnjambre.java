@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class MovimientoEnjambre implements Movimiento {
 
+    public static final int LIMITE_UNIDADES_DESCENDIDAS = 16;
+    public static final int POSICION_MINIMA_EN_X = 0;
+    public static final int POSICION_MAXIMA_EN_X = 732;
+    public static final int DIRECCION_DERECHA = 1;
+    public static final int DIRECCION_IZQUIERDA = 0;
     private final ArrayList<NaveEnemigo> enjambre;
     Movimiento movimientoIzquierda;
     Movimiento movimientoDerecha;
@@ -20,7 +25,8 @@ public class MovimientoEnjambre implements Movimiento {
         this.movimientoDerecha = new MovimientoDerecha();
         this.movimientoIzquierda = new MovimientoIzquierda();
         this.movimientoAbajo = new MovimientoAbajo();
-        this.direccion = 1;
+        this.direccion = DIRECCION_DERECHA;
+        System.out.println("MovimientoEnjambre derecha");
         this.descendiendo = false;
         this.unidadesDescendidas = 0;
         this.enjambre = enjambre;
@@ -35,7 +41,7 @@ public class MovimientoEnjambre implements Movimiento {
                 movimientoAbajo.mover(naveEnemigo);
             }
             unidadesDescendidas++;
-            if (unidadesDescendidas >= 16) {
+            if (unidadesDescendidas >= LIMITE_UNIDADES_DESCENDIDAS) {
                 descendiendo = false;
                 unidadesDescendidas = 0;
             }
@@ -43,19 +49,19 @@ public class MovimientoEnjambre implements Movimiento {
         }
 
         for (NaveEnemigo naveEnemigo : enjambre) {
-            if (direccion == 1) {
+            if (direccion == DIRECCION_DERECHA) {
                 movimientoIzquierda.mover(naveEnemigo);
             } else {
                 movimientoDerecha.mover(naveEnemigo);
             }
 
-            if (naveEnemigo.obtenerPosicionEnX() <= 0 || naveEnemigo.obtenerPosicionEnX() > 732) {
+            if (naveEnemigo.obtenerPosicionEnX() <= POSICION_MINIMA_EN_X || naveEnemigo.obtenerPosicionEnX() > POSICION_MAXIMA_EN_X) {
                 cambiarDireccion = true;
             }
         }
 
         if (cambiarDireccion) {
-            direccion = (direccion == 1) ? 0 : 1;
+            direccion = (direccion == DIRECCION_DERECHA) ? DIRECCION_IZQUIERDA : DIRECCION_DERECHA;
             descendiendo = true;
         }
     }

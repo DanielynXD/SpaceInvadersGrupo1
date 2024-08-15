@@ -2,12 +2,9 @@ package Logica.Proyectiles;
 
 import Logica.Entidades.Entidad;
 
-import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public abstract class Proyectil extends Entidad {
     public static final int ANCHO_PROYECTIL = 16;
+    public static final int LIMITE = 0;
     private boolean visible;
 
     public Proyectil(int x, int y, int velocidad) {
@@ -24,7 +21,7 @@ public abstract class Proyectil extends Entidad {
     }
 
     private boolean proyectilLlegoAlLimite() {
-        return obtenerPosicionEnY() < 0;
+        return obtenerPosicionEnY() < LIMITE;
     }
 
 

@@ -178,7 +178,7 @@ public class VerificadorDeColisiones {
     public void generarVentanaFinDelJuego(int puntajeTotal) {
         if (!ventanaFinDeJuegoAbierta) {
             administrador.detenerMusica();
-            ventanaFinDeJuegoAbierta = true; // Evitar abrir múltiples ventanas
+            ventanaFinDeJuegoAbierta = true;
             administrador.getJFrame().dispose();
             new VentanaFinDeJuego(puntajeTotal);
         }
