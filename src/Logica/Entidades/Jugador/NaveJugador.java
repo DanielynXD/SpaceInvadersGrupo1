@@ -64,7 +64,7 @@ public class NaveJugador extends Nave {
         //numeroDeVidas += 1;
         modificador.aplicarEfecto(this);
         if (modificador instanceof VelocidadDeDisparoAumentada) {
-            Timer timer = new Timer(5000, new ActionListener() { // 5 segundos de efecto
+            Timer timer = new Timer(5000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     restablecerVelocidadDeDisparo();

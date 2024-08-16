@@ -11,8 +11,6 @@ import Logica.Enjambre.EnjambreDePlatillosMalos;
 import Logica.Entidades.Jugador.NaveJugador;
 import Logica.Proyectiles.Proyectil;
 import Logica.Proyectiles.ProyectilDelEnemigo;
-
-
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -141,12 +139,12 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
 
     public void limpiarProyectilesDeLaVentana() {
         nave.obtenerProyectiles().clear();
-        List<ProyectilDelEnemigo> proyectilesAEliminar = new ArrayList<>();//lista temporal creada
+        List<ProyectilDelEnemigo> proyectilesAEliminar = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
-            List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();// Obtenemos la lista de proyectiles de cada enemigo
-            proyectilesAEliminar.addAll(proyectilesEnemigo); // Añadimos todos los proyectiles a eliminar en la lista temporal
+            List<ProyectilDelEnemigo> proyectilesEnemigo = enemigo.obtenerProyectiles();
+            proyectilesAEliminar.addAll(proyectilesEnemigo);
         }
-        for (ProyectilDelEnemigo proyectil : proyectilesAEliminar) {// Eliminamos todos los proyectiles de la lista temporal
+        for (ProyectilDelEnemigo proyectil : proyectilesAEliminar) {
             proyectil.setVisible(false);
         }
         for (NaveEnemigo enemigo : enemigos) {
@@ -174,8 +172,8 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         ArrayList<int[]> posicionesEnjambreUno = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
             if (enemigo instanceof PlatilloMalo) {
-                int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
-                posicionesEnjambreUno.add(aux);
+                int[] listaTemporalEnjambreUno = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
+                posicionesEnjambreUno.add(listaTemporalEnjambreUno);
             }
         }
         return posicionesEnjambreUno;
@@ -185,8 +183,8 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         ArrayList<int[]> posicionesEnjambreDos = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
             if (enemigo instanceof CalaveraMágica) {
-                int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
-                posicionesEnjambreDos.add(aux);
+                int[] listaTemporalEnjambreDos = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
+                posicionesEnjambreDos.add(listaTemporalEnjambreDos);
             }
         }
         return posicionesEnjambreDos;
@@ -196,8 +194,8 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         ArrayList<int[]> posicionesEnjambreTres = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
             if (enemigo instanceof GatoPlatillo) {
-                int[] aux = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
-                posicionesEnjambreTres.add(aux);
+                int[] listaTemporalEnjambreTres = {enemigo.obtenerPosicionEnX(), enemigo.obtenerPosicionEnY()};
+                posicionesEnjambreTres.add(listaTemporalEnjambreTres);
             }
         }
         return posicionesEnjambreTres;
@@ -206,8 +204,8 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
     public ArrayList<int[]> obtenerPosicionesProyectiles() {
         ArrayList<int[]> posicionesProyectilJugadores = new ArrayList<>();
         for (Proyectil proyectil : nave.obtenerProyectiles()) {
-            int[] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
-            posicionesProyectilJugadores.add(aux);
+            int[] listaTemporalProyectiles = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
+            posicionesProyectilJugadores.add(listaTemporalProyectiles);
         }
         return posicionesProyectilJugadores;
     }
@@ -216,8 +214,8 @@ public class PanelDeJuego extends JPanel implements ActionListener, Serializable
         ArrayList<int[]> posicionesProyectilesEnemigos = new ArrayList<>();
         for (NaveEnemigo enemigo : enemigos) {
             for (ProyectilDelEnemigo proyectil : enemigo.obtenerProyectiles()) {
-                int[] aux = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
-                posicionesProyectilesEnemigos.add(aux);
+                int[] listaTemporalProyectilesEnemigos = {proyectil.obtenerPosicionEnX(), proyectil.obtenerPosicionEnY()};
+                posicionesProyectilesEnemigos.add(listaTemporalProyectilesEnemigos);
             }
         }
         return posicionesProyectilesEnemigos;

@@ -1,6 +1,5 @@
 package Logica.Puntaje;
 
-
 public class Puntaje {
     private int puntaje;
     private String nombre;
@@ -9,7 +8,6 @@ public class Puntaje {
         this.nombre = nombre;
         this.puntaje = puntaje;
     }
-
 
     public String getNombre() {
         return nombre;
