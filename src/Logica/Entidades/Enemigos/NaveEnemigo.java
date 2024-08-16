@@ -33,9 +33,9 @@ public abstract class NaveEnemigo extends Nave {
     }
 
     public boolean debeDisparar() {
-        int probabilidadDisparo = random.nextInt(10000);//17180
+        int probabilidadDisparo = random.nextInt(10000);
 
-        return probabilidadDisparo < this.probabilidadDeDisparo; // 5% de disparo aleatorio
+        return probabilidadDisparo < this.probabilidadDeDisparo;
     }
 
     public List<ProyectilDelEnemigo> obtenerProyectiles() {

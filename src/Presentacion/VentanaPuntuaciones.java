@@ -42,7 +42,6 @@ public class VentanaPuntuaciones extends JFrame {
                     }
                     String nombre = datos[0];
                     int puntaje = Integer.parseInt(datos[1]);
-                    //long puntaje = Long.parseLong(datos[1]); PARA VALORES MUY ALTOS
                     puntuaciones.add(new Puntaje(nombre, puntaje));
                 } catch (NumberFormatException e) {
                     System.out.println("Linea invalida (formato de numero): " + linea);

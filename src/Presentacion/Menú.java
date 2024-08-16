@@ -1,7 +1,6 @@
 package Presentacion;
 
 import Logica.ControlesDeSistema.NoExisteLaPartidaGuardadaException;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

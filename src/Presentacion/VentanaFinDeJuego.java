@@ -1,20 +1,15 @@
 package Presentacion;
 
-import Logica.Puntaje.Puntaje;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-
-import Logica.Puntaje.ComparadorDePuntajes;
-
 
 public class VentanaFinDeJuego extends JFrame implements ActionListener {
+    public static final int ANCHO_VENTANA = 600;
+    public static final int ALTO_VENTANA = 475;
     private final int puntajeDelPartida;
     private JButton reintentarBoton, botonGuardarYSalir, botonVolverAlMenu;
     private JTextField nombreDelJugador;
@@ -23,7 +18,7 @@ public class VentanaFinDeJuego extends JFrame implements ActionListener {
     public VentanaFinDeJuego(int puntajeDelJugador) {
         this.puntajeDelPartida = puntajeDelJugador;
         setTitle("Fin de Juego");
-        setSize(600, 475);
+        setSize(ANCHO_VENTANA, ALTO_VENTANA);
         setLocationRelativeTo(null);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -37,15 +37,16 @@ public class PanelDeJuegoData implements Serializable {
 
     }
 
-    public void actualizarDatos(ArrayList<int[]> ints, ArrayList<int[]> ints1, ArrayList<int[]> ints2, int i, int i2, int puntajeTotal, int numeroOleada, ArrayList<Barrera> barreras) {
+    public void actualizarDatos(ArrayList<int[]> posicionesEnjambreUno, ArrayList<int[]> posicionesEnjambreDos, ArrayList<int[]> posicionesEnjambreTres,
+                                int posicionJugador, int numeroDeVidasGuardada, int puntajeTotal, int numeroOleada, ArrayList<Barrera> barreras) {
 
-        posicionesEnjambre1 = ints;
-        posicionesEnjambre2 = ints1;
-        posicionesEnjambre3 = ints2;
-        posicionNaveJugador[0] = i;
+        posicionesEnjambre1 = posicionesEnjambreUno;
+        posicionesEnjambre2 = posicionesEnjambreDos;
+        posicionesEnjambre3 = posicionesEnjambreTres;
+        posicionNaveJugador[0] = posicionJugador;
         posicionNaveJugador[1] = 500;
         puntuacion = puntajeTotal;
-        numeroDeVidas = i2;
+        numeroDeVidas = numeroDeVidasGuardada;
         this.numeroOleada = numeroOleada;
 
         for (Barrera barrera : barreras) {
@@ -66,9 +67,7 @@ public class PanelDeJuegoData implements Serializable {
         if (nombre != null && !nombre.isEmpty()) {
             GestorDePartidas gestorDePartidas = new GestorDePartidas();
             gestorDePartidas.guardarPartida(this, nombre);
-
         }
-
     }
 
     public int obtenerPuntaje() {
@@ -146,7 +145,6 @@ public class PanelDeJuegoData implements Serializable {
             Barrera barrera1 = new Barrera(500, 400, 64, 24);
             barreras.add(barrera1);
             barrera1.fijarVida(numeroDeVidaDeLasBarreras.get(1));
-
         }
         return barreras;
     }

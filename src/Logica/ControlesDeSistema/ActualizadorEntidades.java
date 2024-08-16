@@ -51,12 +51,12 @@ public class ActualizadorEntidades {
     private void actualizarProyectilesDelEnemigo(ArrayList<NaveEnemigo> enemigos) {
         for (NaveEnemigo enemigo : enemigos) {
             List<ProyectilDelEnemigo> proyectiles = enemigo.obtenerProyectiles();
-            for (int i = 0; i < proyectiles.size(); i++) {
-                Proyectil proyectil = proyectiles.get(i);
+            for (int numeroDeProyectil = 0; numeroDeProyectil < proyectiles.size(); numeroDeProyectil++) {
+                Proyectil proyectil = proyectiles.get(numeroDeProyectil);
                 if (proyectil.esVisible()) {
                     proyectil.mover();
                 } else {
-                    proyectiles.remove(i);
+                    proyectiles.remove(numeroDeProyectil);
                 }
             }
         }
@@ -64,12 +64,12 @@ public class ActualizadorEntidades {
 
     private void actualizarProyectilesDelJugador(NaveJugador nave) {
         List<ProyectilDelJugador> proyectiles = nave.obtenerProyectiles();
-        for (int i = 0; i < proyectiles.size(); i++) {
-            Proyectil proyectil = proyectiles.get(i);
+        for (int numeroDeProyectil = 0; numeroDeProyectil < proyectiles.size(); numeroDeProyectil++) {
+            Proyectil proyectil = proyectiles.get(numeroDeProyectil);
             if (proyectil.esVisible()) {
                 proyectil.mover();
             } else {
-                proyectiles.remove(i);
+                proyectiles.remove(numeroDeProyectil);
             }
         }
     }

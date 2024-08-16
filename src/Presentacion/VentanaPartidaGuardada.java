@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 
 public class VentanaPartidaGuardada extends JFrame {
+    public static final int ANCHO_VENTANA = 800;
+    public static final int ALTO_VENTANA = 600;
     private GestorDePartidas gestionDePartidas;
     private PanelDeJuegoData panelDeJuegoData;
 
@@ -17,7 +19,7 @@ public class VentanaPartidaGuardada extends JFrame {
         gestionDePartidas = new GestorDePartidas();
 
         setTitle("Menú guardar partida");
-        setSize(800, 600);
+        setSize(ANCHO_VENTANA, ALTO_VENTANA);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         panelDeJuegoData = obtenerPartidaGuardada();

@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public class MovimientoEnjambre implements Movimiento {
 
+    public static final int DIRECCION_IZQUIERDA = 1;
+    public static final int DIRECCION_DERECHA = 0;
+    public static final int LIMITE_INICIAL_EN_X = 0;
+    public static final int LIMITE_FINAL_EN_X = 732;
     private final ArrayList<NaveEnemigo> enjambre;
     Movimiento movimientoIzquierda;
     Movimiento movimientoDerecha;
@@ -20,7 +24,7 @@ public class MovimientoEnjambre implements Movimiento {
         this.movimientoDerecha = new MovimientoDerecha();
         this.movimientoIzquierda = new MovimientoIzquierda();
         this.movimientoAbajo = new MovimientoAbajo();
-        this.direccion = 1;
+        this.direccion = DIRECCION_IZQUIERDA;
         this.descendiendo = false;
         this.unidadesDescendidas = 0;
         this.enjambre = enjambre;
@@ -43,19 +47,19 @@ public class MovimientoEnjambre implements Movimiento {
         }
 
         for (NaveEnemigo naveEnemigo : enjambre) {
-            if (direccion == 1) {
+            if (direccion == DIRECCION_IZQUIERDA) {
                 movimientoIzquierda.mover(naveEnemigo);
             } else {
                 movimientoDerecha.mover(naveEnemigo);
             }
 
-            if (naveEnemigo.obtenerPosicionEnX() <= 0 || naveEnemigo.obtenerPosicionEnX() > 732) {
+            if (naveEnemigo.obtenerPosicionEnX() <= LIMITE_INICIAL_EN_X || naveEnemigo.obtenerPosicionEnX() > LIMITE_FINAL_EN_X) {
                 cambiarDireccion = true;
             }
         }
 
         if (cambiarDireccion) {
-            direccion = (direccion == 1) ? 0 : 1;
+            direccion = (direccion == DIRECCION_IZQUIERDA) ? DIRECCION_DERECHA : DIRECCION_IZQUIERDA;
             descendiendo = true;
         }
     }

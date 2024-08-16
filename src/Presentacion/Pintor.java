@@ -20,7 +20,6 @@ public class Pintor extends JPanel {
     private VentanaPuntuaciones ventanaPuntuaciones;
     private VentanaFinDeJuego ventanaFinDeJuego;
     private Menú ventanaMenu;
-
     private Image fondo;
     private Image imagenNaveJugador;
     private Image imagenNaveEnemigoUno;
@@ -135,8 +134,8 @@ public class Pintor extends JPanel {
         int diezMejoresJugadores = Math.min(puntuaciones.size(), 10);
 
 
-        for (int i = 0; i < diezMejoresJugadores; i++) {
-            Puntaje puntuacion = puntuaciones.get(i);
+        for (int numeroDePuntuacion = 0; numeroDePuntuacion < diezMejoresJugadores; numeroDePuntuacion++) {
+            Puntaje puntuacion = puntuaciones.get(numeroDePuntuacion);
             String nombre = puntuacion.getNombre();
             String puntos = String.valueOf(puntuacion.getPuntaje());
             g.drawString(nombre, 80, inicioDeLosPuntajes);
@@ -149,9 +148,9 @@ public class Pintor extends JPanel {
         ArrayList<Modificador> modificadores = panel.obtenerModificadores();
         ArrayList<int[]> posiciones = panel.obtenerPosicionesModificadores();
 
-        for (int i = 0; i < modificadores.size(); i++) {
-            Modificador modificador = modificadores.get(i);
-            int[] posicion = posiciones.get(i);
+        for (int numeroDeModificador = 0; numeroDeModificador < modificadores.size(); numeroDeModificador++) {
+            Modificador modificador = modificadores.get(numeroDeModificador);
+            int[] posicion = posiciones.get(numeroDeModificador);
 
             if (modificador instanceof VidaExtra) {
                 g.drawImage(imagenModificadorVidaExtra, posicion[0], posicion[1], this);
